@@ -314,12 +314,6 @@ export default function Header() {
           >
             {t('pool')}
           </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
-            UNI
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
-            Vote
-          </StyledNavLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
@@ -332,42 +326,6 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          {availableClaim && !showClaimPopup && (
-            <UNIWrapper onClick={toggleClaimModal}>
-              <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
-                <TYPE.white padding="0 2px">
-                  {claimTxn && !claimTxn?.receipt ? <Dots>Claiming UNI</Dots> : 'Claim UNI'}
-                </TYPE.white>
-              </UNIAmount>
-              <CardNoise />
-            </UNIWrapper>
-          )}
-          {!availableClaim && aggregateBalance && (
-            <UNIWrapper onClick={() => setShowUniBalanceModal(true)}>
-              <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
-                {account && (
-                  <HideSmall>
-                    <TYPE.white
-                      style={{
-                        paddingRight: '.4rem'
-                      }}
-                    >
-                      <CountUp
-                        key={countUpValue}
-                        isCounting
-                        start={parseFloat(countUpValuePrevious)}
-                        end={parseFloat(countUpValue)}
-                        thousandsSeparator={','}
-                        duration={1}
-                      />
-                    </TYPE.white>
-                  </HideSmall>
-                )}
-                UNI
-              </UNIAmount>
-              <CardNoise />
-            </UNIWrapper>
-          )}
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
