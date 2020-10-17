@@ -55,7 +55,7 @@ const StyledArrowLeft = styled(ArrowLeft)`
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
   return (
-    <Tabs style={{ marginBottom: '20px', display: 'none' }}>
+    <Tabs style={{ marginBottom: '20px' }}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
         {t('swap')}
       </StyledNavLink>
@@ -74,7 +74,7 @@ export function FindPoolTabs() {
           <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
-        <QuestionHelper text={"Use this tool to find pairs that don't automatically appear in the interface."} />
+        <QuestionHelper text={'Use this tool to find pairs that don\'t automatically appear in the interface.'} />
       </RowBetween>
     </Tabs>
   )
