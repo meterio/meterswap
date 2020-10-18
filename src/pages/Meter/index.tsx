@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
 import AppBody from '../AppBody'
 import Tabs from './Tabs'
-import Dropdown from './Dropdown'
+import Swap from './Swap'
+import Pool from './Pool'
 
-export default function Swap() {
-  const [currentTab, setCurrentTab] = useState('swap')
+export default function() {
+  const [currentTab, setCurrentTab] = useState<'swap' | 'pool'>('swap')
 
   return (
-    <>
-      <AppBody>
-        <Tabs currentTab={currentTab} onTabChanged={(tab) => setCurrentTab(tab)} />
-        <div className="relative">
-          <Dropdown />
-        </div>
-      </AppBody>
-    </>
+    <AppBody>
+      <Tabs currentTab={currentTab} onTabChanged={(tab) => setCurrentTab(tab)} />
+      {
+        {
+          'swap': <Swap />,
+          'pool': <Pool />
+        }[currentTab]
+      }
+    </AppBody>
   )
 }

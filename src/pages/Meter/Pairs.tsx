@@ -3,7 +3,12 @@ import styled from 'styled-components'
 import { darken } from 'polished'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
+const Panel = styled.div`
+  position: relative;
+`
+
 const Input = styled.div`
+  cursor: pointer;
   border: 1px solid ${({ theme }) => theme.bg3};
   border-radius: 10px;
   padding: 0.75rem 0.75rem;
@@ -11,6 +16,7 @@ const Input = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
 `
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
@@ -24,6 +30,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 `
 
 const Items = styled.div`
+  z-index: 100;
   background: ${({ theme }) => theme.bg1};
   width: 100%;
   position: absolute;
@@ -49,9 +56,9 @@ export default function() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="relative">
+    <Panel>
       <Input onClick={() => setIsOpen(!isOpen)}>
-        <div>ETH-USDT</div>
+        <div>DAI-USDT</div>
         <StyledDropDown selected={isOpen} />
       </Input>
       {isOpen && (
@@ -62,6 +69,6 @@ export default function() {
           <Item>COMP-USDT</Item>
         </Items>
       )}
-    </div>
+    </Panel>
   )
 }

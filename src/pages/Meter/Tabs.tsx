@@ -9,6 +9,7 @@ const Tabs = styled.div`
   align-items: center;
   border-radius: 3rem;
   justify-content: space-evenly;
+  margin-bottom: 1.5rem;
 `
 
 interface TabProps {
@@ -35,10 +36,10 @@ const Tab = styled.div<TabProps>`
   }
 `
 
-export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: string) => void }) {
+export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: 'swap' | 'pool') => void }) {
   const { t } = useTranslation()
   return (
-    <Tabs style={{ marginBottom: '20px' }}>
+    <Tabs>
       <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => onTabChanged('swap')}>
         {t('swap')}
       </Tab>
