@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next'
 import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
-import useTab from './useTabs'
-
 
 const Tabs = styled.div`
   display: flex;
@@ -37,15 +35,14 @@ const Tab = styled.div<TabProps>`
   }
 `
 
-export default function() {
+export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: string) => void }) {
   const { t } = useTranslation()
-  const [currentTab, setCurrentTab] = useTab()
   return (
     <Tabs style={{ marginBottom: '20px' }}>
-      <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => setCurrentTab('swap')}>
+      <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => onTabChanged('swap')}>
         {t('swap')}
       </Tab>
-      <Tab id={`pool-nav-link`} isActive={currentTab === 'pool'} onClick={() => setCurrentTab('pool')}>
+      <Tab id={`pool-nav-link`} isActive={currentTab === 'pool'} onClick={() => onTabChanged('pool')}>
         {t('pool')}
       </Tab>
     </Tabs>

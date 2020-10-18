@@ -1,0 +1,67 @@
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { darken } from 'polished'
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
+
+const Input = styled.div`
+  border: 1px solid ${({ theme }) => theme.bg3};
+  border-radius: 10px;
+  padding: 0.75rem 0.75rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
+  margin: 0 0.25rem 0 0.5rem;
+  height: 35%;
+
+  path {
+    stroke: ${({ theme }) => theme.text1};
+    stroke-width: 1.5px;
+  }
+`
+
+const Items = styled.div`
+  background: ${({ theme }) => theme.bg1};
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  box-shadow: rgba(0, 0, 0, 0.01) 0px 0px 1px,
+              rgba(0, 0, 0, 0.04) 0px 4px 8px,
+              rgba(0, 0, 0, 0.04) 0px 16px 24px,
+              rgba(0, 0, 0, 0.01) 0px 24px 32px;
+`
+
+const Item = styled.div`
+  width: 100%;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  :hover,
+  :focus {
+    background-color: ${({ theme }) => darken(0.05, theme.bg1)};
+  }
+`
+
+export default function() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="relative">
+      <Input onClick={() => setIsOpen(!isOpen)}>
+        <div>ETH-USDT</div>
+        <StyledDropDown selected={isOpen} />
+      </Input>
+      {isOpen && (
+        <Items>
+          <Item>ETH-USDT</Item>
+          <Item>UNI-USDT</Item>
+          <Item>DODO-USDT</Item>
+          <Item>COMP-USDT</Item>
+        </Items>
+      )}
+    </div>
+  )
+}

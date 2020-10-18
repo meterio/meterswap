@@ -1,8 +1,12 @@
 {
-  "name": "@uniswap/interface",
-  "description": "Uniswap Interface",
-  "homepage": ".",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "build:css": "postcss src/assets/styles/tailwind.css -o src/assets/styles/tailwind.out.css",
+    "watch:css": "postcss src/assets/styles/tailwind.css -o src/assets/styles/tailwind.out.css"
+  },
   "devDependencies": {
     "@ethersproject/experimental": "^5.0.1",
     "@popperjs/core": "^2.4.4",
@@ -91,13 +95,6 @@
   },
   "resolutions": {
     "@walletconnect/web3-provider": "1.1.1-alpha.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'"
   },
   "eslintConfig": {
     "extends": "react-app",

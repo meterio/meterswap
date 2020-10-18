@@ -178,7 +178,6 @@ export const TYPE = {
 export const FixedGlobalStyle = createGlobalStyle`
 html, input, textarea, button {
   font-family: 'Inter', sans-serif;
-  font-display: fallback;
 }
 @supports (font-variation-settings: normal) {
   html, input, textarea, button {
@@ -192,12 +191,12 @@ body {
   padding: 0;
 }
 
- a {
-   color: ${colors(false).blue1}; 
- }
-
 * {
   box-sizing: border-box;
+}
+
+a {
+  color: ${colors(false).blue1};
 }
 
 button {
@@ -211,7 +210,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
-  
+
 }
 `
 
@@ -226,9 +225,9 @@ body {
   background-position: 0 -30vh;
   background-repeat: no-repeat;
   background-image: ${({ theme }) =>
-    `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.9, theme.primary1)} 0%, ${transparentize(
-      1,
-      theme.bg1
-    )} 100%)`};
+  `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.9, theme.primary1)} 0%, ${transparentize(
+    1,
+    theme.bg1
+  )} 100%)`};
 }
 `
