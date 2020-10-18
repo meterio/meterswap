@@ -260,7 +260,6 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
-  [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
 }
 
@@ -298,8 +297,11 @@ export default function Header() {
           </UniIcon>
         </Title>
         <HeaderLinks>
-          <StyledNavLink id={`swap-nav-link`} to={'/swap'}>
+          <StyledNavLink to={'/swap'}>
             {t('swap')}
+          </StyledNavLink>
+          <StyledNavLink to={'/pool'}>
+            {t('pool')}
           </StyledNavLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>

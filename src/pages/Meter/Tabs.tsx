@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
+import { useHistory } from 'react-router-dom'
 
 const Tabs = styled.div`
   display: flex;
@@ -36,14 +37,15 @@ const Tab = styled.div<TabProps>`
   }
 `
 
-export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: 'swap' | 'pool') => void }) {
+export default function({ currentTab }: { currentTab: string }) {
   const { t } = useTranslation()
+  const history = useHistory()
   return (
     <Tabs>
-      <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => onTabChanged('swap')}>
+      <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => history.push('/swap')}>
         {t('swap')}
       </Tab>
-      <Tab id={`pool-nav-link`} isActive={currentTab === 'pool'} onClick={() => onTabChanged('pool')}>
+      <Tab id={`pool-nav-link`} isActive={currentTab === 'pool'} onClick={() => history.push('/pool')}>
         {t('pool')}
       </Tab>
     </Tabs>
