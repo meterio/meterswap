@@ -85,7 +85,7 @@ export default function App() {
           <Header />
         </HeaderWrapper>
         <BodyWrapper>
-          <Popups />
+          {/*<Popups />*/}
           <Polling />
           <TopLevelModals />
           <Web3ReactManager>
