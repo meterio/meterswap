@@ -14,7 +14,7 @@ export default function Swap() {
       <Pairs />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <InputPanel action={currentAction} />
-      <Info />
+      <Info action={currentAction} />
       <ButtonPrimary>Submit</ButtonPrimary>
     </>
   )
