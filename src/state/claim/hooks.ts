@@ -46,6 +46,7 @@ function fetchClaim(account: string, chainId: ChainId): Promise<UserClaimData | 
 // parse distributorContract blob and detect if user has claim data
 // null means we know it does not
 export function useUserClaimData(account: string | null | undefined): UserClaimData | null | undefined {
+  return undefined
   const { chainId } = useActiveWeb3React()
 
   const key = `${chainId}:${account}`

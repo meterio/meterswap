@@ -4,15 +4,16 @@ import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'
 import InputPanel from './InputPanel'
+import { ActionType } from './constants'
 
 export default function Swap() {
-  const [currentAction, setCurrentAction] = useState('buy')
+  const [currentAction, setCurrentAction] = useState(ActionType.Buy)
 
   return (
     <>
       <Pairs />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
-      <InputPanel />
+      <InputPanel action={currentAction} />
       <Info />
       <ButtonPrimary>Submit</ButtonPrimary>
     </>

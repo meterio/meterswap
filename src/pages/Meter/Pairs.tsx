@@ -56,7 +56,7 @@ const Item = styled.div`
 `
 
 export default function() {
-  const [currentPair, setCurrentPair] = useState('ETH-USDT')
+  const [currentPair, setCurrentPair] = useState('DAI-USDT')
   const pairs = ['ETH-USDT', 'UNI-USDT', 'DODO-USDT', 'COMP-USDT']
 
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
