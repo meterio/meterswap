@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { useModalOpen, useToggleModal } from '../../state/application/hooks'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
+import { ApplicationModal } from '../../state/application/actions'
 
 const Panel = styled.div`
   position: relative;
@@ -53,20 +56,33 @@ const Item = styled.div`
 `
 
 export default function() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [currentPair, setCurrentPair] = useState('ETH-USDT')
+  const pairs = ['ETH-USDT', 'UNI-USDT', 'DODO-USDT', 'COMP-USDT']
+
+  const isOpen = useModalOpen(ApplicationModal.PAIRS)
+
+  const onClickItem = (i: string) => {
+    setCurrentPair(i)
+    toggle()
+  }
+
+  const toggle = useToggleModal(ApplicationModal.PAIRS)
+  const node = useRef<HTMLDivElement>()
+  useOnClickOutside(node, isOpen ? toggle : undefined)
 
   return (
-    <Panel>
-      <Input onClick={() => setIsOpen(!isOpen)}>
-        <div>DAI-USDT</div>
+    <Panel ref={node as any}>
+      <Input onClick={toggle}>
+        <div>{currentPair}</div>
         <StyledDropDown selected={isOpen} />
       </Input>
       {isOpen && (
         <Items>
-          <Item>ETH-USDT</Item>
-          <Item>UNI-USDT</Item>
-          <Item>DODO-USDT</Item>
-          <Item>COMP-USDT</Item>
+          {
+            pairs.map(i => {
+              return <Item key={i} onClick={() => onClickItem(i)}>{i}</Item>
+            })
+          }
         </Items>
       )}
     </Panel>
