@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Pairs from '../Pairs'
+import Pairs from '../common/Pairs'
 import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'

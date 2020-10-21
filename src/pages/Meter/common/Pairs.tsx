@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { useModalOpen, useToggleModal } from '../../state/application/hooks'
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
-import { ApplicationModal } from '../../state/application/actions'
+import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
+import { useModalOpen, useToggleModal } from '../../../state/application/hooks'
+import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
+import { ApplicationModal } from '../../../state/application/actions'
 
 const Panel = styled.div`
   position: relative;

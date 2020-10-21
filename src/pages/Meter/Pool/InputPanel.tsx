@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { DAI } from '../../../constants'
-import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
+import CurrencyInputPanel from '../common/CurrencyInputPanel'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -27,7 +27,8 @@ export default function() {
         showMaxButton={true}
         currency={DAI}
         label={''}
-        disableCurrencySelect={true}
+        disableCurrencySelect={false}
+        onCurrencySelect={(i) => console.log(i)}
         customBalanceText={'Available DAI: '}
         id="swap-input"
       />

@@ -1,21 +1,22 @@
-import { Currency, Pair } from '@uniswap/sdk'
+import { Currency, Pair, Token } from '@uniswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
-import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
-import { Input as NumericalInput } from '../NumericalInput'
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
+import { useCurrencyBalance } from '../../../state/wallet/hooks'
+import CurrencyLogo from '../../../components/CurrencyLogo'
+import DoubleCurrencyLogo from '../../../components/DoubleLogo'
+import { RowBetween } from '../../../components/Row'
+import { TYPE } from '../../../theme'
+import { Input as NumericalInput } from '../../../components/NumericalInput'
+import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveWeb3React } from '../../../hooks'
 import { useTranslation } from 'react-i18next'
+import { DAI, USDT } from '../../../constants'
 
 const InputRow = styled.div<{ selected: boolean }>`
-  ${({ theme }) => theme.flexRowNoWrap}
+  display: flex;
+  flex-flow: row nowrap;
   align-items: center;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
@@ -42,7 +43,8 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
 `
 
 const LabelRow = styled.div`
-  ${({ theme }) => theme.flexRowNoWrap}
+  display: flex;
+  flex-flow: row nowrap;
   align-items: center;
   color: ${({ theme }) => theme.text1};
   font-size: 0.75rem;
@@ -87,7 +89,6 @@ const Container = styled.div<{ hideInput: boolean }>`
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.75rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
   font-size:  ${({ active }) => (active ? '20px' : '16px')};
-
 `
 
 const StyledBalanceMax = styled.button`
@@ -133,22 +134,22 @@ interface CurrencyInputPanelProps {
 }
 
 export default function CurrencyInputPanel({
-  value,
-  onUserInput,
-  onMax,
-  showMaxButton,
-  label = 'Input',
-  onCurrencySelect,
-  currency,
-  disableCurrencySelect = false,
-  hideBalance = false,
-  pair = null, // used for double token logo
-  hideInput = false,
-  otherCurrency,
-  id,
-  showCommonBases,
-  customBalanceText
-}: CurrencyInputPanelProps) {
+                                             value,
+                                             onUserInput,
+                                             onMax,
+                                             showMaxButton,
+                                             label = 'Input',
+                                             onCurrencySelect,
+                                             currency,
+                                             disableCurrencySelect = false,
+                                             hideBalance = false,
+                                             pair = null, // used for double token logo
+                                             hideInput = false,
+                                             otherCurrency,
+                                             id,
+                                             showCommonBases,
+                                             customBalanceText
+                                           }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -156,7 +157,10 @@ export default function CurrencyInputPanel({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const theme = useContext(ThemeContext)
 
-  const handleDismissSearch = useCallback(() => {
+  const onClickToken = useCallback((token: Token) => {
+    if (onCurrencySelect) {
+      onCurrencySelect(token)
+    }
     setModalOpen(false)
   }, [setModalOpen])
 
@@ -223,8 +227,8 @@ export default function CurrencyInputPanel({
                 <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
                   {(currency && currency.symbol && currency.symbol.length > 20
                     ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                    '...' +
+                    currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
                     : currency?.symbol) || t('selectToken')}
                 </StyledTokenName>
               )}
@@ -233,16 +237,37 @@ export default function CurrencyInputPanel({
           </CurrencySelect>
         </InputRow>
       </Container>
-      {!disableCurrencySelect && onCurrencySelect && (
-        <CurrencySearchModal
-          isOpen={modalOpen}
-          onDismiss={handleDismissSearch}
-          onCurrencySelect={onCurrencySelect}
-          selectedCurrency={currency}
-          otherSelectedCurrency={otherCurrency}
-          showCommonBases={showCommonBases}
-        />
+      {!disableCurrencySelect && onCurrencySelect && modalOpen && (
+        <Items>
+          <Item onClick={() => onClickToken(DAI)}>DAI</Item>
+          <Item onClick={() => onClickToken(DAI)}>USDT</Item>
+        </Items>
       )}
     </InputPanel>
   )
 }
+
+
+const Items = styled.div`
+  z-index: 100;
+  background: ${({ theme }) => theme.bg1};
+  width: 100px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  box-shadow: rgba(0, 0, 0, 0.01) 0px 0px 1px,
+              rgba(0, 0, 0, 0.04) 0px 4px 8px,
+              rgba(0, 0, 0, 0.04) 0px 16px 24px,
+              rgba(0, 0, 0, 0.01) 0px 24px 32px;
+`
+
+const Item = styled.div`
+  width: 100%;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  :hover,
+  :focus {
+    background-color: ${({ theme }) => darken(0.05, theme.bg1)};
+  }
+`

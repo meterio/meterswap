@@ -21,7 +21,20 @@ const SizePanel = styled(Panel)`
 `
 
 const Section = styled.div`
+  flex: 1;
   text-align: center;
+`
+
+const Title = styled.div`
+  font-size: 0.9rem;
+`
+
+const Value = styled.div`
+  font-size: 1rem;
+`
+
+const Key = styled.span`
+  opacity: 0.6;
 `
 
 export default function() {
@@ -29,16 +42,24 @@ export default function() {
     <>
       <Panel>
         <Section>
-          <div>My Pool</div>
-          <div>0.0000 DODO</div>
-          <div>Staked 0.0000</div>
-          <div>Staked DLP 0.0000</div>
+          <Title>My Pool</Title>
+          <Value>0.0000 DODO</Value>
+          <div>
+            <Key>Staked</Key> 0.0000
+          </div>
+          <div>
+            <Key>Staked DLP</Key> 0.0000
+          </div>
         </Section>
         <Section>
-          <div>Proportion</div>
-          <div>0.00%</div>
-          <div>Now 0.00%</div>
-          <div>Add +0.00%</div>
+          <Title>Proportion</Title>
+          <Value>0.00%</Value>
+          <div>
+            <Key>Now</Key> 0.00%
+          </div>
+          <div>
+            <Key>Add</Key> +0.00%
+          </div>
         </Section>
       </Panel>
       <SizePanel>
