@@ -1,7 +1,8 @@
 import { useChargeFactory } from './useContract'
 import { useSingleCallResult } from '../../../state/multicall/hooks'
 
-export function userGetCharges() {
+export function useGetCharges() {
   const chargeFactoryContract = useChargeFactory()
-  const { result: pairs } = useSingleCallResult(chargeFactoryContract, 'getCharges', [])
+  const { result } = useSingleCallResult(chargeFactoryContract, 'getCharges', [])
+  return result ? result[0] : []
 }
