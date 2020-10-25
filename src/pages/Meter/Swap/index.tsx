@@ -12,17 +12,18 @@ export default function Swap() {
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
 
   const chargeFactoryContract = useChargeFactory()
-  const { result: pairs } = useSingleCallResult(chargeFactoryContract, 'getCharges', [])
+  const { result } = useSingleCallResult(chargeFactoryContract, 'getCharges', [])
+  const pairs = result ? result[0] : []
 
-  const pair = pairs ? pairs[0][0] : undefined
-  console.log(pair)
-  const chargeContract = useCharge(pair)
-  const result = useSingleCallResult(chargeContract, 'getOraclePrice')
-  console.log(result)
+  // const pair =
+  // console.log(pair)
+  // const chargeContract = useCharge(pair)
+  // const result = useSingleCallResult(chargeContract, 'getOraclePrice')
+  // console.log(result)
 
   return (
     <>
-      <Pairs />
+      <Pairs pairs={pairs} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <InputPanel action={currentAction} />
       <Info action={currentAction} />

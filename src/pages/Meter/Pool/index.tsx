@@ -10,7 +10,7 @@ export default function Swap() {
 
   return (
     <>
-      <Pairs />
+      <Pairs pairs={[]} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <InputPanel />
       <Info />

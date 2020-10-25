@@ -1,5 +1,6 @@
+let fs = require('fs')
 let charge_pair = '0x75029090907214Fe8CB9b97c071447829A7DB28c'
-let abi_file = '/home/yang/towanghai/Charge.json'
+let abi_file = 'Charge.json'
 
 // provider
 const Web3 = require('web3')

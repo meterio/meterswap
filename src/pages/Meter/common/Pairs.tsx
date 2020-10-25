@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
@@ -55,9 +55,15 @@ const Item = styled.div`
   }
 `
 
-export default function() {
-  const [currentPair, setCurrentPair] = useState('DAI-USDT')
-  const pairs = ['ETH-USDT', 'UNI-USDT', 'DODO-USDT', 'COMP-USDT']
+export default function({ pairs }: { pairs: string[] }) {
+  console.log(pairs)
+  const [currentPair, setCurrentPair] = useState('')
+
+  useEffect(() => {
+    if (pairs.length > 0 && currentPair === '') {
+      setCurrentPair(pairs[0])
+    }
+  }, [pairs])
 
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
 
