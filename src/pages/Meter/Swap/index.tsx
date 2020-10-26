@@ -12,9 +12,8 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 export default function Swap() {
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
 
-  const chargeFactoryContract = useChargeFactory()
-  const { result } = useSingleCallResult(chargeFactoryContract, 'getCharges', [])
   const pairs = useGetCharges()
+  console.log(useGetCharges)
 
   // const pair =
   // console.log(pair)

@@ -170,11 +170,11 @@ export function useSingleContractMultipleData(
     () =>
       contract && fragment && callInputs && callInputs.length > 0
         ? callInputs.map<Call>(inputs => {
-            return {
-              address: contract.address,
-              callData: contract.interface.encodeFunctionData(fragment, inputs)
-            }
-          })
+          return {
+            address: contract.address,
+            callData: contract.interface.encodeFunctionData(fragment, inputs)
+          }
+        })
         : [],
     [callInputs, contract, fragment]
   )
@@ -208,13 +208,13 @@ export function useMultipleContractSingleData(
     () =>
       fragment && addresses && addresses.length > 0 && callData
         ? addresses.map<Call | undefined>(address => {
-            return address && callData
-              ? {
-                  address,
-                  callData
-                }
-              : undefined
-          })
+          return address && callData
+            ? {
+              address,
+              callData
+            }
+            : undefined
+        })
         : [],
     [addresses, callData, fragment]
   )
@@ -239,11 +239,11 @@ export function useSingleCallResult(
   const calls = useMemo<Call[]>(() => {
     return contract && fragment && isValidMethodArgs(inputs)
       ? [
-          {
-            address: contract.address,
-            callData: contract.interface.encodeFunctionData(fragment, inputs)
-          }
-        ]
+        {
+          address: contract.address,
+          callData: contract.interface.encodeFunctionData(fragment, inputs)
+        }
+      ]
       : []
   }, [contract, fragment, inputs])
 
@@ -254,3 +254,31 @@ export function useSingleCallResult(
     return toCallState(result, contract?.interface, fragment, latestBlockNumber)
   }, [result, contract, fragment, latestBlockNumber])
 }
+
+export function useOnceCallResult(
+  contract: Contract | null | undefined,
+  methodName: string,
+  inputs?: OptionalMethodInputs,
+  options?: ListenerOptions
+): CallState {
+  const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
+
+  const calls = useMemo<Call[]>(() => {
+    return contract && fragment && isValidMethodArgs(inputs)
+      ? [
+        {
+          address: contract.address,
+          callData: contract.interface.encodeFunctionData(fragment, inputs)
+        }
+      ]
+      : []
+  }, [contract, fragment, inputs])
+
+  const result = useCallsData(calls, options)[0]
+  const latestBlockNumber = useBlockNumber()
+
+  return useMemo(() => {
+    return toCallState(result, contract?.interface, fragment, latestBlockNumber)
+  }, [result, contract, fragment])
+}
+

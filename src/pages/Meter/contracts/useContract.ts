@@ -5,6 +5,8 @@ import { getContract } from '../../../utils'
 import ChargeFactoryABI from './abis/ChargeFactory.json'
 import ChargeABI from './abis/Charge.json'
 import { ChainId, Token } from '@uniswap/sdk'
+import { Call, ListenerOptions } from '../../../state/multicall/actions'
+import { useBlockNumber } from '../../../state/application/hooks'
 
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { library, account } = useActiveWeb3React()
