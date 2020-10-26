@@ -6,6 +6,8 @@ import { useModalOpen, useToggleModal } from '../../../state/application/hooks'
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 import { ApplicationModal } from '../../../state/application/actions'
 import { ChargesInfo } from './constants'
+import { useCharge } from '../contracts/useContract'
+import { useOnceCallResult } from '../../../state/multicall/hooks'
 
 const Panel = styled.div`
   position: relative;
@@ -56,25 +58,25 @@ const Item = styled.div`
   }
 `
 
-export default function({ pairs }: { pairs: string[] }) {
+export default function({ pairs, currentIndex, onClick }: { pairs: string[], currentIndex: number, onClick: (index: number) => void }) {
   const titles = pairs.map(i => `${ChargesInfo[i]?.base}-${ChargesInfo[i]?.quote}`)
   console.log(titles)
 
-  const [currentPair, setCurrentPair] = useState(0)
-
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
-  const onClickItem = (i: number) => {
-    setCurrentPair(i)
-    toggle()
-  }
   const toggle = useToggleModal(ApplicationModal.PAIRS)
   const node = useRef<HTMLDivElement>()
+
   useOnClickOutside(node, isOpen ? toggle : undefined)
+
+  const onClickItem = (i: number) => {
+    toggle()
+    onClick(i)
+  }
 
   return (
     <Panel ref={node as any}>
       <Input onClick={toggle}>
-        <div>{titles[currentPair]}</div>
+        <div>{titles[currentIndex]}</div>
         <StyledDropDown selected={isOpen} />
       </Input>
       {isOpen && (

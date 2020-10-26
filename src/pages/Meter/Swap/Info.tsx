@@ -4,6 +4,12 @@ import styled from 'styled-components'
 import { darken } from 'polished'
 import { SectionBreak } from '../../../components/swap/styleds'
 import { ActionType } from './constants'
+import { Contract } from '@ethersproject/contracts'
+import { useOnceCallResult } from '../../../state/multicall/hooks'
+import { useBaseToken, useLpFeeRate, useOraclePrice, useQuoteToken } from '../contracts/useChargePair'
+import { useUserSlippageTolerance } from '../../../state/user/hooks'
+import { BigNumber } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -28,13 +34,25 @@ const Break = styled(SectionBreak)`
   margin-bottom: 1rem;
 `
 
-export default function({ action }: { action: ActionType }) {
-  const { t } = useTranslation()
+export default function({ action, contractAddress }: { action: ActionType, contractAddress: string | undefined }) {
+  if (!contractAddress) {
+    return null
+  }
+
+  const baseToken = useBaseToken(contractAddress)
+  const quoteToken = useQuoteToken(contractAddress)
+  const price = useOraclePrice(contractAddress)
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const feeToken = action === ActionType.Buy ? baseToken : quoteToken
+
+  const lpFeeRate = useLpFeeRate(contractAddress)?.mul(10000).div(BigNumber.from(10).pow(feeToken?.decimals ?? 0))
+
   return (
     <Panel>
       <Row>
-        <div>1 DAI = 1.001 USDT</div>
-        <div>Price Impact: 0.00%</div>
+        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
+        {/*<div>Price Impact: 0.00%</div>*/}
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
@@ -43,19 +61,18 @@ export default function({ action }: { action: ActionType }) {
       <Break />
       <Row>
         <div>Slippage Tolerance:</div>
-        <div>0.50%</div>
+        <div>{allowedSlippage / 100}%</div>
       </Row>
       <Row>
-        <div>Max {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>0.35 USDT</div>
-      </Row>
-      <Row>
-        <div>Liquidity Provider Fee (0.00%):</div>
-        <div>0.0000 {action === ActionType.Buy ? 'DAI' : 'USDT'}</div>
-      </Row>
-      <Row>
-        <div>Maintainer Fee (0.00%):</div>
-        <div>0.0000 {action === ActionType.Buy ? 'DAI' : 'USDT'}</div>
+        {
+          lpFeeRate ?
+            <>
+              <div>Liquidity Provider Fee({formatUnits(lpFeeRate, 2)}%):</div>
+              <div>- {feeToken?.symbol}</div>
+            </>
+            : null
+        }
+
       </Row>
     </Panel>
   )

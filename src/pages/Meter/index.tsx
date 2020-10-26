@@ -16,7 +16,7 @@ export default function() {
       {
         {
           'swap': <Swap />,
-          'pool': <Pool />
+          'pool': <Pool />,
         }[currentTab]
       }
     </AppBody>

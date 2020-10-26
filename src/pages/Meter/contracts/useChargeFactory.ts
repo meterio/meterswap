@@ -3,5 +3,5 @@ import { useOnceCallResult } from '../../../state/multicall/hooks'
 
 export function useGetCharges(): string[] {
   const chargeFactoryContract = useChargeFactory()
-  return useOnceCallResult(chargeFactoryContract, 'getCharges', [])
+  return useOnceCallResult(chargeFactoryContract, 'getCharges', []) ?? []
 }

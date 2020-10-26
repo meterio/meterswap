@@ -280,7 +280,7 @@ export function useOnceCallResult(
   return useMemo(() => {
     console.log('useMemo')
     const { result } = toCallState(callResult, contract?.interface, fragment, latestBlockNumber)
-    return result ? result[0] : []
+    return result ? result[0] : null
   }, [callResult, contract, fragment])
 }
 
