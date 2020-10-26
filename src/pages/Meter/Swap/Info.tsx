@@ -34,14 +34,16 @@ const Break = styled(SectionBreak)`
   margin-bottom: 1rem;
 `
 
-export default function({ action, contractAddress }: { action: ActionType, contractAddress: string | undefined }) {
+export default function({ action, contractAddress, amount }: { action: ActionType, contractAddress: string | undefined, amount: string }) {
   if (!contractAddress) {
     return null
   }
+  amount = isNaN(parseFloat(amount)) ? '0' : amount
 
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
   const price = useOraclePrice(contractAddress)
+
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
@@ -56,7 +58,7 @@ export default function({ action, contractAddress }: { action: ActionType, contr
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>0 USDT</div>
+        <div>{price ? formatUnits(price.mul(parseFloat(amount)), 6) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Break />
       <Row>

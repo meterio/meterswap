@@ -23,12 +23,15 @@ export default function Swap() {
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
 
+  // input panel
+  const [amount, setAmount] = useState('')
+
   return (
     <>
       <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
-      <InputPanel action={currentAction} />
-      <Info action={currentAction} contractAddress={contractAddress} />
+      <InputPanel action={currentAction} amount={amount} setAmount={i => setAmount(i)} contractAddress={contractAddress} />
+      <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
       <ButtonPrimary>Submit</ButtonPrimary>
     </>
   )
