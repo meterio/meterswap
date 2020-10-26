@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
 import { useModalOpen, useToggleModal } from '../../../state/application/hooks'
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 import { ApplicationModal } from '../../../state/application/actions'
+import { useToken } from '../../../hooks/Tokens'
+import { useOnceCallResult } from '../../../state/multicall/hooks'
+import { useCharge } from '../contracts/useContract'
 
 const Panel = styled.div`
   position: relative;
@@ -57,13 +60,14 @@ const Item = styled.div`
 
 export default function({ pairs }: { pairs: string[] }) {
   console.log(pairs)
-  const [currentPair, setCurrentPair] = useState('')
 
-  useEffect(() => {
-    if (pairs.length > 0 && currentPair === '') {
-      setCurrentPair(pairs[0])
-    }
-  }, [pairs])
+  const pair = pairs.length > 0 ? pairs[0] : undefined
+  const pairAddress = useCharge(pair)
+  const baseToken = useOnceCallResult(pairAddress, '_BASE_TOKEN_')
+  const token1 = useToken(baseToken)
+  console.log(token1)
+
+  const [currentPair, setCurrentPair] = useState(token1?.symbol || '')
 
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
 

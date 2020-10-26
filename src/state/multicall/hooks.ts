@@ -260,7 +260,7 @@ export function useOnceCallResult(
   methodName: string,
   inputs?: OptionalMethodInputs,
   options?: ListenerOptions
-): CallState {
+): any {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
   const calls = useMemo<Call[]>(() => {
@@ -274,11 +274,12 @@ export function useOnceCallResult(
       : []
   }, [contract, fragment, inputs])
 
-  const result = useCallsData(calls, options)[0]
+  const callResult = useCallsData(calls, options)[0]
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
-    return toCallState(result, contract?.interface, fragment, latestBlockNumber)
-  }, [result, contract, fragment])
+    const { result } = toCallState(callResult, contract?.interface, fragment, latestBlockNumber)
+    return result ? result[0] : []
+  }, [callResult, contract, fragment])
 }
 
