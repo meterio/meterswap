@@ -5,15 +5,12 @@ import ActionTypes from './ActionTypes'
 import Info from './Info'
 import InputPanel from './InputPanel'
 import { ActionType } from './constants'
-import { useCharge, useChargeFactory } from '../contracts/useContract'
-import { useSingleCallResult } from '../../../state/multicall/hooks'
 import { useGetCharges } from '../contracts/useChargeFactory'
 
 export default function Swap() {
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
 
   const pairs = useGetCharges()
-  console.log(useGetCharges)
 
   // const pair =
   // console.log(pair)
