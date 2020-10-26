@@ -7,7 +7,7 @@ import Pool from './Pool'
 
 export default function() {
   const match = useRouteMatch()
-  console.log(match.path)
+  console.log('useRouteMatch match.path:', match.path)
   const currentTab = match.path.slice(1) === 'swap' ? 'swap' : 'pool'
 
   return (

@@ -278,6 +278,7 @@ export function useOnceCallResult(
   const latestBlockNumber = useBlockNumber()
 
   return useMemo(() => {
+    console.log('useMemo')
     const { result } = toCallState(callResult, contract?.interface, fragment, latestBlockNumber)
     return result ? result[0] : []
   }, [callResult, contract, fragment])

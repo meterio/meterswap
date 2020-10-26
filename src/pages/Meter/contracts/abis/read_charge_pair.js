@@ -1,5 +1,7 @@
+let ERC20_ABI = require('../../../../constants/abis/erc20.json')
+
 let fs = require('fs')
-let charge_pair = '0x75029090907214Fe8CB9b97c071447829A7DB28c'
+let charge_pair = '0x26411A2B52C8f3fD330489047992bde860b1f823'
 let abi_file = 'Charge.json'
 
 // provider
@@ -9,7 +11,7 @@ const web3 = new Web3('wss://winter-blue-bird.rinkeby.quiknode.pro/e34bc2ca553b1
 // read abi file
 let token_abi = fs.readFileSync(abi_file).toString()
 let tokenAbi = JSON.parse(token_abi)
-contractInstance = new web3.eth.Contract(tokenAbi, charge_pair)
+let contractInstance = new web3.eth.Contract(tokenAbi, charge_pair)
 
 // get all event
 contractInstance.events.allEvents({}, (error, result) => {
@@ -22,31 +24,45 @@ contractInstance.events.allEvents({}, (error, result) => {
 
 // call methods
 contractInstance.methods._LP_FEE_RATE_().call({}).then(function(data) {
-  console.log(data)
+  console.log('_LP_FEE_RATE_', data)
 }).catch(function(err) {
   console.log(err)
 })
 
 contractInstance.methods._TARGET_BASE_TOKEN_AMOUNT_().call({}).then(function(data) {
-  console.log(data)
+  console.log('_TARGET_BASE_TOKEN_AMOUNT_', data)
 }).catch(function(err) {
   console.log(err)
 })
 
 contractInstance.methods._TARGET_QUOTE_TOKEN_AMOUNT_().call({}).then(function(data) {
-  console.log(data)
+  console.log('_TARGET_QUOTE_TOKEN_AMOUNT_', data)
+}).catch(function(err) {
+  console.log(err)
+})
+
+contractInstance.methods._BASE_TOKEN_().call({}).then(function(data) {
+  let token = new web3.eth.Contract(ERC20_ABI, data)
+  token.methods.symbol().call({}).then(i => console.log('_BASE_TOKEN_', i))
+}).catch(function(err) {
+  console.log(err)
+})
+
+contractInstance.methods._QUOTE_TOKEN_().call({}).then(function(data) {
+  let token = new web3.eth.Contract(ERC20_ABI, data)
+  token.methods.symbol().call({}).then(i => console.log('_QUOTE_TOKEN_', i))
 }).catch(function(err) {
   console.log(err)
 })
 
 contractInstance.methods.getOraclePrice().call({}).then(function(data) {
-  console.log(data)
+  console.log('getOraclePrice', data)
 }).catch(function(err) {
   console.log(err)
 })
 
 contractInstance.methods.getQuoteCapitalBalanceOf('0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD').call({}).then(function(data) {
-  console.log(data)
+  console.log('getQuoteCapitalBalanceOf', data)
 }).catch(function(err) {
   console.log(err)
 })

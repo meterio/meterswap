@@ -9,14 +9,7 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 
 export default function Swap() {
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
-
-  const pairs = useGetCharges() as string[]
-
-  // const pair =
-  // console.log(pair)
-  // const chargeContract = useCharge(pair)
-  // const result = useSingleCallResult(chargeContract, 'getOraclePrice')
-  // console.log(result)
+  const pairs = useGetCharges()
 
   return (
     <>
