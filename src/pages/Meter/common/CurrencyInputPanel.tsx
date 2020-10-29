@@ -1,17 +1,14 @@
-import { Currency, Pair, Token } from '@uniswap/sdk'
+import { Currency, Token } from '@uniswap/sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
-import CurrencyLogo from '../../../components/CurrencyLogo'
-import DoubleCurrencyLogo from '../../../components/DoubleLogo'
 import { RowBetween } from '../../../components/Row'
 import { TextWrapper, TYPE } from '../../../theme'
 import { Input as NumericalInput } from '../../../components/NumericalInput'
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../../hooks'
-import { useTranslation } from 'react-i18next'
 import { DAI, USDT } from '../../../constants'
 
 const InputRow = styled.div`
@@ -51,12 +48,6 @@ const LabelRow = styled.div`
   }
 `
 
-const Aligner = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
 const StyledDropDown = styled(DropDown)`
   margin: 0 0.25rem 0 0.5rem;
   height: 35%;
@@ -91,13 +82,17 @@ const StyledTokenName = styled.span`
 interface CurrencyInputPanelProps {
   amount: string
   setAmount: (value: string) => void
+  setCurrency?: (value: Currency) => void
   currency: Currency | null
+  currency2?: Currency | null
 }
 
 export default function CurrencyInputPanel({
                                              amount,
                                              setAmount,
-                                             currency
+                                             currency,
+                                             setCurrency,
+                                             currency2
                                            }: CurrencyInputPanelProps) {
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -105,6 +100,9 @@ export default function CurrencyInputPanel({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
 
   const onClickToken = useCallback((token: Token) => {
+    if (setCurrency) {
+      setCurrency(token)
+    }
     setModalOpen(false)
   }, [setModalOpen])
 
@@ -136,19 +134,17 @@ export default function CurrencyInputPanel({
               setModalOpen(!modalOpen)
             }}
           >
-            <Aligner>
-              {
-                currency ?
-                  <>
-                    {/*<CurrencyLogo currency={currency} size={'24px'} />*/}
-                    <StyledTokenName className="token-symbol-container">
-                      {currency.symbol}
-                    </StyledTokenName>
-                    <StyledDropDown />
-                  </>
-                  : null
-              }
-            </Aligner>
+            {
+              currency ?
+                <>
+                  {/*<CurrencyLogo currency={currency} size={'24px'} />*/}
+                  <StyledTokenName className="token-symbol-container">
+                    {currency.symbol}
+                  </StyledTokenName>
+                  <StyledDropDown />
+                </>
+                : null
+            }
           </CurrencySelect>
         </InputRow>
       </Container>

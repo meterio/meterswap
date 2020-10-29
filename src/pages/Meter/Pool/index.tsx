@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Pairs from '../common/Pairs'
 import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
@@ -6,7 +6,8 @@ import Info from './Info'
 import { useGetCharges } from '../contracts/useChargeFactory'
 import { ActionType } from './constants'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
-import { useBaseToken } from '../contracts/useChargePair'
+import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
+import { Currency } from '@uniswap/sdk'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -25,6 +26,13 @@ export default function Swap() {
   // input panel
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(contractAddress)
+  const quoteToken = useQuoteToken(contractAddress)
+  const [currency, setCurrency] = useState<Currency | null>(null)
+  useEffect(() => {
+    if (currency === null && baseToken !== null) {
+      setCurrency(baseToken)
+    }
+  }, [baseToken])
 
   return (
     <>
@@ -32,8 +40,10 @@ export default function Swap() {
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel
         amount={amount}
-        setAmount={(i) => setAmount(i)}
-        currency={baseToken}
+        setAmount={setAmount}
+        currency={currency}
+        setCurrency={setCurrency}
+        currency2={quoteToken}
       />
 
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
