@@ -26,7 +26,7 @@ const Row = styled.div`
 `
 
 const PriceRow = styled(Row)`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin: 1rem 0;
 `
 
