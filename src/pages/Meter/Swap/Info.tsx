@@ -48,13 +48,13 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
 
-  const lpFeeRate = useLpFeeRate(contractAddress)?.mul(10000).div(BigNumber.from(10).pow(feeToken?.decimals ?? 0))
+  const lpFeeRate = useLpFeeRate(contractAddress)
+  const lpFeeRateFormated = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
 
   return (
     <Panel>
       <Row>
         <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
-        {/*<div>Price Impact: 0.00%</div>*/}
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
@@ -69,8 +69,8 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
         {
           lpFeeRate ?
             <>
-              <div>Liquidity Provider Fee({formatUnits(lpFeeRate, 2)}%):</div>
-              <div>- {feeToken?.symbol}</div>
+              <div>Liquidity Provider Fee({lpFeeRateFormated ? parseFloat(lpFeeRateFormated) * 100 : '-'}%):</div>
+              <div>{lpFeeRateFormated ? (parseFloat(lpFeeRateFormated) * parseFloat(amount)).toFixed(2) : '-'} {feeToken?.symbol}</div>
             </>
             : null
         }
