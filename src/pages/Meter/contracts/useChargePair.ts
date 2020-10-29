@@ -19,24 +19,24 @@ export function useTargetQuoteTokenAmount(address: string): BigNumber | null {
   return useOnceCallResult(contract, '_TARGET_QUOTE_TOKEN_AMOUNT_', [])
 }
 
-export function useBaseToken(address: string): Token | null {
+export function useBaseToken(address: string | undefined): Token | null {
   const contract = useCharge(address)
   const tokenAddress = useOnceCallResult(contract, '_BASE_TOKEN_', [])
   return useToken(tokenAddress) ?? null
 }
 
-export function useQuoteToken(address: string): Token | null {
+export function useQuoteToken(address: string | undefined): Token | null {
   const contract = useCharge(address)
   const tokenAddress = useOnceCallResult(contract, '_QUOTE_TOKEN_', [])
   return useToken(tokenAddress) ?? null
 }
 
-export function useOraclePrice(address: string): BigNumber | null {
+export function useOraclePrice(address: string | undefined): BigNumber | null {
   const contract = useCharge(address)
   return useOnceCallResult(contract, 'getOraclePrice', [])
 }
 
-export function useQuoteCapitalBalanceOf(address: string): BigNumber | null {
+export function useQuoteCapitalBalanceOf(address: string | undefined): BigNumber | null {
   const contract = useCharge(address)
   return useOnceCallResult(contract, 'getQuoteCapitalBalanceOf', [])
 }

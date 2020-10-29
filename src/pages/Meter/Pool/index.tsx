@@ -3,9 +3,10 @@ import Pairs from '../common/Pairs'
 import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'
-import InputPanel from './InputPanel'
 import { useGetCharges } from '../contracts/useChargeFactory'
 import { ActionType } from './constants'
+import CurrencyInputPanel from '../common/CurrencyInputPanel'
+import { useBaseToken } from '../contracts/useChargePair'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -23,12 +24,18 @@ export default function Swap() {
 
   // input panel
   const [amount, setAmount] = useState('')
+  const baseToken = useBaseToken(contractAddress)
 
   return (
     <>
       <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
-      <InputPanel action={currentAction} amount={amount} setAmount={i => setAmount(i)} contractAddress={contractAddress} />
+      <CurrencyInputPanel
+        amount={amount}
+        setAmount={(i) => setAmount(i)}
+        currency={baseToken}
+      />
+
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
       <ButtonPrimary>Submit</ButtonPrimary>
     </>
