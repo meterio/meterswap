@@ -60,7 +60,6 @@ const Item = styled.div`
 
 export default function({ pairs, currentIndex, onClick }: { pairs: string[], currentIndex: number, onClick: (index: number) => void }) {
   const titles = pairs.map(i => `${ChargesInfo[i]?.base}-${ChargesInfo[i]?.quote}`)
-  console.log(titles)
 
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
   const toggle = useToggleModal(ApplicationModal.PAIRS)

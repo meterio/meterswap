@@ -69,7 +69,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
         {
           lpFeeRate ?
             <>
-              <div>Liquidity Provider Fee({lpFeeRateFormated ? parseFloat(lpFeeRateFormated) * 100 : '-'}%):</div>
+              <div>Liquidity Provider Fee({lpFeeRateFormated ? (parseFloat(lpFeeRateFormated) * 100).toFixed(2) : '-'}%):</div>
               <div>{lpFeeRateFormated ? (parseFloat(lpFeeRateFormated) * parseFloat(amount)).toFixed(2) : '-'} {feeToken?.symbol}</div>
             </>
             : null

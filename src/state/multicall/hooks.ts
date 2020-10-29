@@ -258,29 +258,9 @@ export function useSingleCallResult(
 export function useOnceCallResult(
   contract: Contract | null | undefined,
   methodName: string,
-  inputs?: OptionalMethodInputs,
-  options?: ListenerOptions
-): any {
-  const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
-
-  const calls = useMemo<Call[]>(() => {
-    return contract && fragment && isValidMethodArgs(inputs)
-      ? [
-        {
-          address: contract.address,
-          callData: contract.interface.encodeFunctionData(fragment, inputs)
-        }
-      ]
-      : []
-  }, [contract, fragment, inputs])
-
-  const callResult = useCallsData(calls, options)[0]
-  const latestBlockNumber = useBlockNumber()
-
-  return useMemo(() => {
-    console.log('useMemo')
-    const { result } = toCallState(callResult, contract?.interface, fragment, latestBlockNumber)
-    return result ? result[0] : null
-  }, [callResult, contract, fragment])
+  inputs?: OptionalMethodInputs
+) {
+  const callState = useSingleCallResult(contract, methodName, inputs, NEVER_RELOAD)
+  return callState.result ? callState.result[0] : null
 }
 
