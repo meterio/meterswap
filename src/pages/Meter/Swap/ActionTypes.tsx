@@ -39,10 +39,10 @@ const Tab = styled.div<TabProps>`
 export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: ActionType) => void }) {
   return (
     <Tabs>
-      <Tab id={`swap-nav-link`} isActive={currentTab === ActionType.Buy} onClick={() => onTabChanged(ActionType.Buy)}>
+      <Tab isActive={currentTab === ActionType.Buy} onClick={() => onTabChanged(ActionType.Buy)}>
         Buy
       </Tab>
-      <Tab id={`pool-nav-link`} isActive={currentTab === ActionType.Sell} onClick={() => onTabChanged(ActionType.Sell)}>
+      <Tab isActive={currentTab === ActionType.Sell} onClick={() => onTabChanged(ActionType.Sell)}>
         Sell
       </Tab>
     </Tabs>

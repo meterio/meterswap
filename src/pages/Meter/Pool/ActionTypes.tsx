@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
+import { ActionType } from './constants'
 
 const Tabs = styled.div`
   display: flex;
@@ -35,13 +36,13 @@ const Tab = styled.div<TabProps>`
    }
 `
 
-export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: 'deposit' | 'withdraw') => void }) {
+export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: ActionType) => void }) {
   return (
     <Tabs>
-      <Tab id={`swap-nav-link`} isActive={currentTab === 'deposit'} onClick={() => onTabChanged('deposit')}>
+      <Tab isActive={currentTab === ActionType.Deposit} onClick={() => onTabChanged(ActionType.Deposit)}>
         Deposit
       </Tab>
-      <Tab id={`pool-nav-link`} isActive={currentTab === 'withdraw'} onClick={() => onTabChanged('withdraw')}>
+      <Tab isActive={currentTab === ActionType.Withdraw} onClick={() => onTabChanged(ActionType.Withdraw)}>
         Withdraw
       </Tab>
     </Tabs>

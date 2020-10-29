@@ -1,7 +1,6 @@
-import { useTranslation } from 'react-i18next'
 import React from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
+import { ActionType } from './constants'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -37,7 +36,11 @@ const Key = styled.span`
   opacity: 0.6;
 `
 
-export default function() {
+export default function({ action, contractAddress, amount }: { action: ActionType, contractAddress: string | undefined, amount: string }) {
+  if (!contractAddress) {
+    return null
+  }
+
   return (
     <>
       <Panel>
