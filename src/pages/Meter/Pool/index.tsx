@@ -43,7 +43,7 @@ export default function Swap() {
         setAmount={setAmount}
         currency={currency}
         setCurrency={setCurrency}
-        currency2={quoteToken}
+        currencies={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
 
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
