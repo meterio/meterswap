@@ -139,7 +139,7 @@ export default function CurrencyInputPanel({
                   <StyledTokenName className="token-symbol-container">
                     {currency.symbol}
                   </StyledTokenName>
-                  <StyledDropDown />
+                  {currencies && <StyledDropDown />}
                 </>
                 : null
             }
