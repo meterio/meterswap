@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ActionType } from './constants'
+import { useBaseBalance, useBaseToken, useMyBaseCapitalBalance, useQuoteBalance, useQuoteToken } from '../contracts/useChargePair'
+import { formatUnits } from 'ethers/lib/utils'
+import { TextWrapper } from '../../../theme'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -15,8 +18,19 @@ const Panel = styled.div`
   border-radius: 10px;
 `
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
 const SizePanel = styled(Panel)`
   flex-direction: column !important;
+`
+const SizeRow = styled.div`
+  flex-grow: 1;
+  width: 80%;
 `
 
 const Section = styled.div`
@@ -24,50 +38,42 @@ const Section = styled.div`
   text-align: center;
 `
 
-const Title = styled.div`
-  font-size: 0.9rem;
-`
-
-const Value = styled.div`
-  font-size: 1rem;
-`
-
-const Key = styled.span`
-  opacity: 0.6;
-`
 
 export default function({ action, contractAddress, amount }: { action: ActionType, contractAddress: string | undefined, amount: string }) {
   if (!contractAddress) {
     return null
   }
 
+  const baseToken = useBaseToken(contractAddress)
+  const quoteToken = useQuoteToken(contractAddress)
+  const baseBalance = useBaseBalance(contractAddress)
+  const quoteBalance = useQuoteBalance(contractAddress)
+
+  const myBaseCapitalBalance = useMyBaseCapitalBalance(contractAddress)
+
   return (
     <>
       <Panel>
         <Section>
-          <Title>My Pool</Title>
-          <Value>0.0000 DODO</Value>
-          <div>
-            <Key>Staked</Key> 0.0000
-          </div>
-          <div>
-            <Key>Staked DLP</Key> 0.0000
-          </div>
+          <TextWrapper fontSize={14} color={'text2'}>My Pool</TextWrapper>
+          <TextWrapper fontSize={16} color={'text2'}>{(myBaseCapitalBalance && baseToken) ? formatUnits(myBaseCapitalBalance, baseToken.decimals) : '-'} {baseToken?.symbol}</TextWrapper>
+          <Row>
+            <TextWrapper color={'text2'} opacity={0.6}>Pool Asset: </TextWrapper>
+            <div>{(myBaseCapitalBalance && baseToken) ? formatUnits(myBaseCapitalBalance, baseToken.decimals) : '-'} {baseToken?.symbol}</div>
+          </Row>
         </Section>
         <Section>
-          <Title>Proportion</Title>
-          <Value>0.00%</Value>
-          <div>
-            <Key>Now</Key> 0.00%
-          </div>
-          <div>
-            <Key>Add</Key> +0.00%
-          </div>
+          <TextWrapper fontSize={14} color={'text2'}>Proportion</TextWrapper>
+          <TextWrapper fontSize={16} color={'text2'}>0.00%</TextWrapper>
+          <Row>
+            <TextWrapper color={'text2'} opacity={0.6}>Now</TextWrapper>
+            <div>+0.00%</div>
+          </Row>
         </Section>
       </Panel>
       <SizePanel>
-        <div>Pool Size(USDT): 0</div>
-        <div>Pool Size(DAI): 0</div>
+        <SizeRow>Pool Size({baseToken?.symbol}): {(baseBalance && baseToken) ? formatUnits(baseBalance, baseToken.decimals) : '-'}</SizeRow>
+        <SizeRow>Pool Size({quoteToken?.symbol}): {(quoteBalance && quoteToken) ? formatUnits(quoteBalance, quoteToken.decimals) : '-'}</SizeRow>
       </SizePanel>
     </>
   )
