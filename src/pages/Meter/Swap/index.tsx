@@ -32,7 +32,7 @@ export default function Swap() {
     <>
       <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
-      <CurrencyInputPanel amount={amount} setAmount={i => setAmount(i)} currency={baseToken} />
+      <CurrencyInputPanel amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
       <ButtonPrimary>Submit</ButtonPrimary>
     </>

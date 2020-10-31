@@ -4,7 +4,7 @@ import { ActionType } from './constants'
 import { useBaseBalance, useBaseToken, useMyBaseCapitalBalance, useMyQuoteCapitalBalance, useQuoteBalance, useQuoteToken } from '../contracts/useChargePair'
 import { formatUnits } from 'ethers/lib/utils'
 import { TextWrapper } from '../../../theme'
-import { Currency, Token } from '@uniswap/sdk'
+import { Token } from '@uniswap/sdk'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -39,7 +39,7 @@ const Section = styled.div`
 `
 
 
-export default function({ contractAddress, currentCurrency }: { contractAddress: string, currentCurrency: Currency }) {
+export default function({ contractAddress, currentToken }: { contractAddress: string, currentToken: Token }) {
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
   const baseBalance = useBaseBalance(contractAddress)
@@ -52,23 +52,23 @@ export default function({ contractAddress, currentCurrency }: { contractAddress:
     return null
   }
 
-  const isBase = currentCurrency.symbol === baseToken.symbol
+  const isBase = currentToken.symbol === baseToken.symbol
 
   const myPoolAmount = isBase ?
-    (myBaseCapitalBalance && formatUnits(myBaseCapitalBalance, baseToken.decimals))
+    (myBaseCapitalBalance && formatUnits(myBaseCapitalBalance, currentToken.decimals))
     :
-    (myQuoteCapitalBalance && formatUnits(myQuoteCapitalBalance, quoteToken.decimals))
+    (myQuoteCapitalBalance && formatUnits(myQuoteCapitalBalance, currentToken.decimals))
 
   return (
     <>
       <Panel>
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>My Pool</TextWrapper>
-          <TextWrapper fontSize={16} color={'text1'}>{myPoolAmount ?? '-'} {currentCurrency.symbol}</TextWrapper>
+          <TextWrapper fontSize={16} color={'text1'}>{myPoolAmount ?? '-'} {currentToken.symbol}</TextWrapper>
         </Section>
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>Proportion</TextWrapper>
-          <TextWrapper fontSize={16} color={'text1'}>0.00%</TextWrapper>
+          <TextWrapper fontSize={16} color={'text1'}>-</TextWrapper>
         </Section>
       </Panel>
       <SizePanel>

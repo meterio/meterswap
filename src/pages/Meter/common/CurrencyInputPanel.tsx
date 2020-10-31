@@ -1,4 +1,4 @@
-import { Currency } from '@uniswap/sdk'
+import { Token } from '@uniswap/sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
@@ -82,26 +82,26 @@ const StyledTokenName = styled.span`
 interface CurrencyInputPanelProps {
   amount: string
   setAmount: (value: string) => void
-  setCurrency?: (value: Currency) => void
-  currency: Currency | null
-  currencies?: Currency[]
+  setToken?: (value: Token) => void
+  token: Token | null
+  tokens?: Token[]
 }
 
 export default function CurrencyInputPanel({
                                              amount,
                                              setAmount,
-                                             currency,
-                                             setCurrency,
-                                             currencies
+                                             token,
+                                             setToken,
+                                             tokens
                                            }: CurrencyInputPanelProps) {
 
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, token ?? undefined)
 
-  const onClickCurrency = useCallback((token: Currency) => {
-    if (setCurrency) {
-      setCurrency(token)
+  const onClickCurrency = useCallback((token: Token) => {
+    if (setToken) {
+      setToken(token)
     }
     setModalOpen(false)
   }, [setModalOpen])
@@ -135,12 +135,12 @@ export default function CurrencyInputPanel({
             }}
           >
             {
-              currency ?
+              token ?
                 <>
                   <StyledTokenName className="token-symbol-container">
-                    {currency.symbol}
+                    {token.symbol}
                   </StyledTokenName>
-                  {currencies && <StyledDropDown />}
+                  {tokens && <StyledDropDown />}
                 </>
                 : null
             }
@@ -150,7 +150,7 @@ export default function CurrencyInputPanel({
       {modalOpen && (
         <Items>
           {
-            currencies && currencies.map(i => (
+            tokens && tokens.map(i => (
               <Item onClick={() => onClickCurrency(i)} key={i.symbol}>{i.symbol}</Item>
             ))
           }

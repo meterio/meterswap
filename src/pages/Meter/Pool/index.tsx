@@ -7,9 +7,17 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 import { ActionType } from './constants'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
-import { Currency } from '@uniswap/sdk'
+import { Token, CurrencyAmount, TokenAmount } from '@uniswap/sdk'
+import { useCharge } from '../contracts/useContract'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { useApproveCallback } from '../../../hooks/useApproveCallback'
+import { Field } from '../../../state/mint/actions'
+import { ROUTER_ADDRESS } from '../../../constants'
+import { BigNumber } from 'ethers'
 
-export default function Swap() {
+export default function Pool() {
+  const addTransaction = useTransactionAdder()
+
   const pairs = useGetCharges()
 
   // pair
@@ -27,12 +35,45 @@ export default function Swap() {
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
-  const [currency, setCurrency] = useState<Currency | null>(null)
+  const [currentToken, setCurrentToken] = useState<Token | null>(null)
   useEffect(() => {
-    if (baseToken !== null) {
-      setCurrency(baseToken)
+    if (currentToken == null && baseToken !== null) {
+      setCurrentToken(baseToken)
     }
   }, [baseToken])
+  useEffect(() => {
+    setCurrentToken(baseToken)
+  }, [currentPairIndex])
+
+
+  // submit
+  const currencyAmount = currentToken ? new TokenAmount(
+    currentToken,
+    BigNumber
+      .from(1000)
+      .mul(
+        BigNumber.from(10).pow(BigNumber.from(currentToken.decimals))
+      )
+      .toString()
+  ) : undefined
+  const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
+  const chargeContract = useCharge(contractAddress, true)
+
+  const submit = async () => {
+    console.log(BigNumber.isBigNumber(amount), amount)
+    if (!chargeContract || !currentToken || !baseToken || !quoteToken) {
+      return
+    }
+    await approveCallback()
+    const method = currentAction === ActionType.Deposit ?
+      (currentToken.symbol === baseToken.symbol ? chargeContract.depositBase : chargeContract.depositQuote)
+      :
+      (currentToken.symbol === baseToken.symbol ? chargeContract.withdrawBase : chargeContract.withdrawQuote)
+    const decimal = BigNumber.from(10).pow(BigNumber.from(currentToken.decimals))
+    const depositAmount = BigNumber.from(amount).mul(decimal).toHexString()
+    const response = await method(depositAmount, { gasLimit: 350000 })
+    addTransaction(response, { summary: 'submit' })
+  }
 
   return (
     <>
@@ -41,12 +82,12 @@ export default function Swap() {
       <CurrencyInputPanel
         amount={amount}
         setAmount={setAmount}
-        currency={currency}
-        setCurrency={setCurrency}
-        currencies={baseToken && quoteToken ? [baseToken, quoteToken] : []}
+        token={currentToken}
+        setToken={setCurrentToken}
+        tokens={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
-      {contractAddress && currency && <Info contractAddress={contractAddress} currentCurrency={currency} />}
-      <ButtonPrimary>Submit</ButtonPrimary>
+      {contractAddress && currentToken && <Info contractAddress={contractAddress} currentToken={currentToken} />}
+      <ButtonPrimary onClick={submit}>Submit</ButtonPrimary>
     </>
   )
 }

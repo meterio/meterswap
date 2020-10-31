@@ -1,10 +1,10 @@
 import { useCharge } from './useContract'
-import { useOnceCallResult } from '../../../state/multicall/hooks'
+import { useOnceCallResult, useWatchCallResult } from '../../../state/multicall/hooks'
 import { BigNumber } from 'ethers'
 import { Token } from '@uniswap/sdk'
 import { useToken } from '../../../hooks/Tokens'
 import { useActiveWeb3React } from '../../../hooks'
-import { useTokenContract } from '../../../hooks/useContract'
+import { TransactionResponse } from '@ethersproject/providers'
 
 /**
  * Swap
@@ -38,22 +38,22 @@ export function useOraclePrice(address: string | undefined): BigNumber | null {
 
 export function useBaseBalance(address: string | undefined): BigNumber | null {
   const contract = useCharge(address)
-  return useOnceCallResult(contract, '_BASE_BALANCE_', [])
+  return useWatchCallResult(contract, '_BASE_BALANCE_', [])
 }
 
 export function useQuoteBalance(address: string | undefined): BigNumber | null {
   const contract = useCharge(address)
-  return useOnceCallResult(contract, '_QUOTE_BALANCE_', [])
+  return useWatchCallResult(contract, '_QUOTE_BALANCE_', [])
 }
 
 export function useMyBaseCapitalBalance(address: string | undefined): BigNumber | null {
   const { account } = useActiveWeb3React()
   const contract = useCharge(address)
-  return useOnceCallResult(contract, 'getBaseCapitalBalanceOf', [account || undefined]) as BigNumber
+  return useWatchCallResult(contract, 'getBaseCapitalBalanceOf', [account || undefined]) as BigNumber
 }
 
 export function useMyQuoteCapitalBalance(address: string | undefined): BigNumber | null {
   const { account } = useActiveWeb3React()
   const contract = useCharge(address)
-  return useOnceCallResult(contract, 'getQuoteCapitalBalanceOf', [account || undefined]) as BigNumber
+  return useWatchCallResult(contract, 'getQuoteCapitalBalanceOf', [account || undefined]) as BigNumber
 }

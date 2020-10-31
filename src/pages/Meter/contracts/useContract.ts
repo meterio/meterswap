@@ -35,6 +35,6 @@ export function useChargeFactory(): Contract | null {
   return useContract(chainId ? ChargeFactoryToken[chainId].address : undefined, ChargeFactoryABI, false)
 }
 
-export function useCharge(address: string | undefined): Contract | null {
-  return useContract(address, ChargeABI, false)
+export function useCharge(address: string | undefined, withSigner: boolean = false): Contract | null {
+  return useContract(address, ChargeABI, withSigner)
 }

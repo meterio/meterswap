@@ -264,3 +264,11 @@ export function useOnceCallResult(
   return callState.result ? callState.result[0] : null
 }
 
+export function useWatchCallResult(
+  contract: Contract | null | undefined,
+  methodName: string,
+  inputs?: OptionalMethodInputs
+) {
+  const callState = useSingleCallResult(contract, methodName, inputs)
+  return callState.result ? callState.result[0] : null
+}
