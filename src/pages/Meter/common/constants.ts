@@ -13,7 +13,7 @@ export const ChargesInfo: { [address: string]: ChargeInfo } = {
     quote: 'eMTRG'
   },
   '0x63DD4a125259EbC30F8eC683AFD6d25a51560A54': {
-    base: 'eMTR',
+    base: 'eMTRG',
     quote: 'NUSDT'
   }
 }

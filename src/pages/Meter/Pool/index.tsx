@@ -29,7 +29,7 @@ export default function Swap() {
   const quoteToken = useQuoteToken(contractAddress)
   const [currency, setCurrency] = useState<Currency | null>(null)
   useEffect(() => {
-    if (currency === null && baseToken !== null) {
+    if (baseToken !== null) {
       setCurrency(baseToken)
     }
   }, [baseToken])
@@ -45,8 +45,7 @@ export default function Swap() {
         setCurrency={setCurrency}
         currencies={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
-
-      <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
+      {contractAddress && currency && <Info contractAddress={contractAddress} currentCurrency={currency} />}
       <ButtonPrimary>Submit</ButtonPrimary>
     </>
   )

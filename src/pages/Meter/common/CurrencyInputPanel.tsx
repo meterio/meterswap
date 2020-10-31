@@ -59,6 +59,7 @@ const StyledDropDown = styled(DropDown)`
 
 const InputPanel = styled.div`
   display: flex;
+  margin-bottom: 1rem;
   flex-flow: column nowrap;
   position: relative;
   border-radius: 20px;

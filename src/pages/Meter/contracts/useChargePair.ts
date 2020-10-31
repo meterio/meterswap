@@ -49,7 +49,11 @@ export function useQuoteBalance(address: string | undefined): BigNumber | null {
 export function useMyBaseCapitalBalance(address: string | undefined): BigNumber | null {
   const { account } = useActiveWeb3React()
   const contract = useCharge(address)
-  const baseCapitalToken = useOnceCallResult(contract, '_BASE_CAPITAL_TOKEN_', []) as string
-  const tokenContract = useTokenContract(baseCapitalToken)
-  return useOnceCallResult(tokenContract, 'balanceOf', [account || undefined])
+  return useOnceCallResult(contract, 'getBaseCapitalBalanceOf', [account || undefined]) as BigNumber
+}
+
+export function useMyQuoteCapitalBalance(address: string | undefined): BigNumber | null {
+  const { account } = useActiveWeb3React()
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'getQuoteCapitalBalanceOf', [account || undefined]) as BigNumber
 }
