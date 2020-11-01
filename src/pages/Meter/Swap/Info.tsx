@@ -1,14 +1,9 @@
-import { useTranslation } from 'react-i18next'
 import React from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
 import { SectionBreak } from '../../../components/swap/styleds'
 import { ActionType } from './constants'
-import { Contract } from '@ethersproject/contracts'
-import { useOnceCallResult } from '../../../state/multicall/hooks'
 import { useBaseToken, useLpFeeRate, useOraclePrice, useQuoteToken } from '../contracts/useChargePair'
 import { useUserSlippageTolerance } from '../../../state/user/hooks'
-import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
@@ -55,16 +50,16 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
   const lpFeeRate = useLpFeeRate(contractAddress)
   const lpFeeRateFormated = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
-  console.log(price)
+
   return (
     <Panel>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
+        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
         <div>Balance: {payTokenBalance?.toSignificant(payToken?.decimals)} {payToken?.symbol}</div>
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{price ? formatUnits(price.mul(parseFloat(amount)), quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
+        <div>{price ? formatUnits(price.mul(parseFloat(amount)), 6) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Break />
       <Row>
