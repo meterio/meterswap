@@ -51,7 +51,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
 
   const lpFeeRate = useLpFeeRate(contractAddress)
-  const lpFeeRateFormatted = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
+  const lpFeeRateFormatted = lpFeeRate ? formatUnits(lpFeeRate, 18) : null
 
   return (
     <Panel>
