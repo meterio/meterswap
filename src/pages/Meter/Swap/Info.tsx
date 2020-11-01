@@ -10,6 +10,8 @@ import { useBaseToken, useLpFeeRate, useOraclePrice, useQuoteToken } from '../co
 import { useUserSlippageTolerance } from '../../../state/user/hooks'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
+import { useCurrencyBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -45,6 +47,8 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const price = useOraclePrice(contractAddress)
 
   const [allowedSlippage] = useUserSlippageTolerance()
+  const { account } = useActiveWeb3React()
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, baseToken ?? undefined)
 
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
 
@@ -55,6 +59,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
     <Panel>
       <Row>
         <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
+        <div>Balance: {selectedCurrencyBalance?.toSignificant(6)} {baseToken?.symbol}</div>
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>

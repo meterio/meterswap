@@ -80,6 +80,7 @@ const StyledTokenName = styled.span`
 
 
 interface CurrencyInputPanelProps {
+  showBalance?: boolean
   amount: string
   setAmount: (value: string) => void
   setToken?: (value: Token) => void
@@ -88,6 +89,7 @@ interface CurrencyInputPanelProps {
 }
 
 export default function CurrencyInputPanel({
+                                             showBalance = true,
                                              amount,
                                              setAmount,
                                              token,
@@ -113,6 +115,7 @@ export default function CurrencyInputPanel({
   return (
     <InputPanel>
       <Container>
+        {showBalance &&
         <LabelRow>
           <RowBetween>
             <TextWrapper color={'text2'} fontWeight={500} fontSize={14}>
@@ -124,6 +127,7 @@ export default function CurrencyInputPanel({
             )}
           </RowBetween>
         </LabelRow>
+        }
         <InputRow>
           <NumericalInput
             value={amount}
