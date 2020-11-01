@@ -9,6 +9,7 @@ import { Input as NumericalInput } from '../../../components/NumericalInput'
 import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../../hooks'
+import { parseUnits } from 'ethers/lib/utils'
 
 const InputRow = styled.div`
   display: flex;
@@ -121,7 +122,8 @@ export default function CurrencyInputPanel({
             <TextWrapper color={'text2'} fontWeight={500} fontSize={14}>
             </TextWrapper>
             {account && (
-              <TextWrapper onClick={onMax} color={'text2'} fontWeight={500} fontSize={14} style={{ display: 'inline', cursor: 'pointer' }}>
+              <TextWrapper onClick={onMax} color={'text2'} fontWeight={500} fontSize={14}
+                           style={{ display: 'inline', cursor: 'pointer' }}>
                 {selectedCurrencyBalance ? 'Balance: ' + selectedCurrencyBalance?.toSignificant(6) : ' -'}
               </TextWrapper>
             )}
@@ -131,7 +133,13 @@ export default function CurrencyInputPanel({
         <InputRow>
           <NumericalInput
             value={amount}
-            onUserInput={setAmount}
+            onUserInput={(value) => {
+              try {
+                parseUnits(value, 10)
+                setAmount(value)
+              } catch (e) {
+              }
+            }}
           />
           <CurrencySelect
             onClick={() => {

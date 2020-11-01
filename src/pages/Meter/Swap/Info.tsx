@@ -4,9 +4,10 @@ import { SectionBreak } from '../../../components/swap/styleds'
 import { ActionType } from './constants'
 import { useBaseToken, useLpFeeRate, useOraclePrice, useQuoteToken } from '../contracts/useChargePair'
 import { useUserSlippageTolerance } from '../../../state/user/hooks'
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
+import { Fraction } from '@uniswap/sdk'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -20,11 +21,12 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
+  word-break: break-word;
 `
 
 const PriceRow = styled(Row)`
   font-size: 1.2rem;
-  margin: 1rem 0;
 `
 
 const Break = styled(SectionBreak)`
@@ -49,18 +51,20 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
 
   const lpFeeRate = useLpFeeRate(contractAddress)
-  const lpFeeRateFormated = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
+  const lpFeeRateFormatted = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
 
   return (
     <Panel>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
-        <div>Balance: {payTokenBalance?.toSignificant(payToken?.decimals)} {payToken?.symbol}</div>
+        <div>Balance: {payTokenBalance?.toSignificant(6)} {payToken?.symbol}</div>
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{price ? formatUnits(price.mul(parseFloat(amount)), 6) : '-'} {quoteToken?.symbol}</div>
+        <div>{price ? formatUnits(price.mul(parseUnits(amount, 10)), 16) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
+      <Row>
+        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
+      </Row>
       <Break />
       <Row>
         <div>Slippage Tolerance:</div>
@@ -70,8 +74,10 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
         {
           lpFeeRate ?
             <>
-              <div>Liquidity Provider Fee({lpFeeRateFormated ? (parseFloat(lpFeeRateFormated) * 100).toFixed(2) : '-'}%):</div>
-              <div>{lpFeeRateFormated ? (parseFloat(lpFeeRateFormated) * parseFloat(amount)).toFixed(2) : '-'} {feeToken?.symbol}</div>
+              <div>Liquidity Provider
+                Fee({lpFeeRateFormatted ? (parseFloat(lpFeeRateFormatted) * 100).toFixed(2) : '-'}%):
+              </div>
+              <div>{lpFeeRateFormatted ? (parseFloat(lpFeeRateFormatted) * parseFloat(amount)).toFixed(2) : '-'} {feeToken?.symbol}</div>
             </>
             : null
         }

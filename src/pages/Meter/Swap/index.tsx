@@ -7,15 +7,20 @@ import { ActionType } from './constants'
 import { useGetCharges } from '../contracts/useChargeFactory'
 import { useCharge } from '../contracts/useContract'
 import { useOnceCallResult } from '../../../state/multicall/hooks'
-import { useBaseToken } from '../contracts/useChargePair'
+import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
 import { TokenAmount } from '@uniswap/sdk'
 import { BigNumber } from 'ethers'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { useCurrencyBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
+import { tryParseBigNumber } from '../common/utils'
 
 export default function Swap() {
   const pairs = useGetCharges()
+  const { account } = useActiveWeb3React()
+
 
   // pair
   const [currentPairIndex, setcurrentPairIndex] = useState(0)
@@ -31,6 +36,17 @@ export default function Swap() {
   // input panel
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(contractAddress)
+  const quoteToken = useQuoteToken(contractAddress)
+  const payToken = currentAction === ActionType.Buy ? quoteToken : baseToken
+  const payTokenBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
+
+  let inputError: string | null = null
+  if (!amount || !payToken || (payTokenBalance && tryParseBigNumber(amount)?.mul(BigNumber.from(10).pow(payToken.decimals))
+    .gt(
+      BigNumber.from(payTokenBalance.raw.toString())
+    ))) {
+    inputError = 'Insufficient balance'
+  }
 
   // submit
   const addTransaction = useTransactionAdder()
@@ -64,7 +80,7 @@ export default function Swap() {
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
-      <ButtonPrimary onClick={submit}>Submit</ButtonPrimary>
+      <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
     </>
   )
 }
