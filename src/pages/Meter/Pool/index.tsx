@@ -7,16 +7,21 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 import { ActionType } from './constants'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
-import { Token, CurrencyAmount, TokenAmount } from '@uniswap/sdk'
+import { Token, CurrencyAmount, TokenAmount, ETHER } from '@uniswap/sdk'
 import { useCharge } from '../contracts/useContract'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
 import { ROUTER_ADDRESS } from '../../../constants'
 import { BigNumber } from 'ethers'
+import { tryParseBigNumber } from '../common/utils'
+import { useCurrencyBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
+import { parseEther } from 'ethers/lib/utils'
 
 export default function Pool() {
   const pairs = useGetCharges()
+  const { account } = useActiveWeb3React()
 
   // pair
   const [currentPairIndex, setcurrentPairIndex] = useState(0)
@@ -43,6 +48,16 @@ export default function Pool() {
     setCurrentToken(baseToken)
   }, [currentPairIndex])
 
+  const currentTokenBalance = useCurrencyBalance(account ?? undefined, currentToken ?? undefined)
+  let inputError: string | null = null
+  if (!amount || !currentToken || (currentTokenBalance &&
+    parseEther(amount)?.mul(BigNumber.from(10).pow(currentToken.decimals))
+      .div(BigNumber.from(10).pow(ETHER.decimals))
+      .gt(
+        BigNumber.from(currentTokenBalance.raw.toString())
+      ))) {
+    inputError = 'Insufficient balance'
+  }
 
   // submit
   const addTransaction = useTransactionAdder()
@@ -67,9 +82,11 @@ export default function Pool() {
       (currentToken.symbol === baseToken.symbol ? chargeContract.depositBase : chargeContract.depositQuote)
       :
       (currentToken.symbol === baseToken.symbol ? chargeContract.withdrawBase : chargeContract.withdrawQuote)
-    const decimal = BigNumber.from(10).pow(BigNumber.from(currentToken.decimals))
-    const depositAmount = BigNumber.from(amount).mul(decimal).toHexString()
-    const response = await method(depositAmount, { gasLimit: 350000 })
+    const submitAmount = parseEther(amount)
+      .mul(BigNumber.from(10).pow(BigNumber.from(currentToken.decimals)))
+      .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
+    console.log(submitAmount.toString())
+    const response = await method(submitAmount, { gasLimit: 350000 })
     addTransaction(response, { summary: 'submit' })
   }
 
@@ -85,7 +102,7 @@ export default function Pool() {
         tokens={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
       {contractAddress && currentToken && <Info contractAddress={contractAddress} currentToken={currentToken} />}
-      <ButtonPrimary onClick={submit}>Submit</ButtonPrimary>
+      <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
     </>
   )
 }

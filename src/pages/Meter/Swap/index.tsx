@@ -9,13 +9,14 @@ import { useCharge } from '../contracts/useContract'
 import { useOnceCallResult } from '../../../state/multicall/hooks'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
-import { TokenAmount } from '@uniswap/sdk'
+import { ETHER, TokenAmount } from '@uniswap/sdk'
 import { BigNumber } from 'ethers'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { tryParseBigNumber } from '../common/utils'
+import { parseEther } from 'ethers/lib/utils'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -41,10 +42,12 @@ export default function Swap() {
   const payTokenBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
   let inputError: string | null = null
-  if (!amount || !payToken || (payTokenBalance && tryParseBigNumber(amount)?.mul(BigNumber.from(10).pow(payToken.decimals))
-    .gt(
-      BigNumber.from(payTokenBalance.raw.toString())
-    ))) {
+  if (!amount || !payToken || (payTokenBalance &&
+    parseEther(amount)?.mul(BigNumber.from(10).pow(payToken.decimals))
+      .div(BigNumber.from(10).pow(ETHER.decimals))
+      .gt(
+        BigNumber.from(payTokenBalance.raw.toString())
+      ))) {
     inputError = 'Insufficient balance'
   }
 
@@ -68,9 +71,11 @@ export default function Swap() {
     }
     await approveCallback()
     const method = currentAction === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
-    const decimal = BigNumber.from(10).pow(BigNumber.from(baseToken.decimals))
-    const depositAmount = BigNumber.from(amount).mul(decimal)
-    const response = await method(depositAmount.toHexString(), depositAmount.mul(1000000).toHexString(), '0x', { gasLimit: 350000 })
+    const submitAmount = parseEther(amount)
+      .mul(BigNumber.from(10).pow(BigNumber.from(baseToken.decimals)))
+      .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
+    console.log(submitAmount.toString())
+    const response = await method(submitAmount.toHexString(), submitAmount.mul(1000000).toHexString(), '0x', { gasLimit: 350000 })
     addTransaction(response, { summary: 'submit' })
   }
 

@@ -134,6 +134,10 @@ export default function CurrencyInputPanel({
           <NumericalInput
             value={amount}
             onUserInput={(value) => {
+              if (!value) {
+                setAmount(value)
+                return
+              }
               try {
                 parseUnits(value, 10)
                 setAmount(value)
