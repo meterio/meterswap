@@ -53,8 +53,8 @@ export default function Swap() {
     await approveCallback()
     const method = currentAction === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
     const decimal = BigNumber.from(10).pow(BigNumber.from(baseToken.decimals))
-    const depositAmount = BigNumber.from(amount).mul(decimal).toHexString()
-    const response = await method(depositAmount, 0, 0, { gasLimit: 350000 })
+    const depositAmount = BigNumber.from(amount).mul(decimal)
+    const response = await method(depositAmount.toHexString(), depositAmount.mul(1000000).toHexString(), '0x', { gasLimit: 350000 })
     addTransaction(response, { summary: 'submit' })
   }
 

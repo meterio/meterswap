@@ -44,26 +44,27 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
+  const feeToken = action === ActionType.Buy ? baseToken : quoteToken
+  const payToken = action === ActionType.Buy ? quoteToken : baseToken
   const price = useOraclePrice(contractAddress)
 
   const [allowedSlippage] = useUserSlippageTolerance()
   const { account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, baseToken ?? undefined)
+  const payTokenBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
-  const feeToken = action === ActionType.Buy ? baseToken : quoteToken
 
   const lpFeeRate = useLpFeeRate(contractAddress)
   const lpFeeRateFormated = lpFeeRate ? formatUnits(lpFeeRate, feeToken?.decimals) : null
-
+  console.log(price)
   return (
     <Panel>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
-        <div>Balance: {selectedCurrencyBalance?.toSignificant(6)} {baseToken?.symbol}</div>
+        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
+        <div>Balance: {payTokenBalance?.toSignificant(payToken?.decimals)} {payToken?.symbol}</div>
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{price ? formatUnits(price.mul(parseFloat(amount)), 6) : '-'} {quoteToken?.symbol}</div>
+        <div>{price ? formatUnits(price.mul(parseFloat(amount)), quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Break />
       <Row>
