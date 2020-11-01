@@ -9,6 +9,10 @@ import { useCharge } from '../contracts/useContract'
 import { useOnceCallResult } from '../../../state/multicall/hooks'
 import { useBaseToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
+import { TokenAmount } from '@uniswap/sdk'
+import { BigNumber } from 'ethers'
+import { useApproveCallback } from '../../../hooks/useApproveCallback'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -28,13 +32,39 @@ export default function Swap() {
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(contractAddress)
 
+  // submit
+  const addTransaction = useTransactionAdder()
+  const currencyAmount = baseToken ? new TokenAmount(
+    baseToken,
+    BigNumber
+      .from(1000)
+      .mul(
+        BigNumber.from(10).pow(BigNumber.from(baseToken.decimals))
+      )
+      .toString()
+  ) : undefined
+  const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
+  const chargeContract = useCharge(contractAddress, true)
+
+  const submit = async () => {
+    if (!chargeContract || !baseToken) {
+      return
+    }
+    await approveCallback()
+    const method = currentAction === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
+    const decimal = BigNumber.from(10).pow(BigNumber.from(baseToken.decimals))
+    const depositAmount = BigNumber.from(amount).mul(decimal).toHexString()
+    const response = await method(depositAmount, 0, 0, { gasLimit: 350000 })
+    addTransaction(response, { summary: 'submit' })
+  }
+
   return (
     <>
       <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
-      <ButtonPrimary>Submit</ButtonPrimary>
+      <ButtonPrimary onClick={submit}>Submit</ButtonPrimary>
     </>
   )
 }

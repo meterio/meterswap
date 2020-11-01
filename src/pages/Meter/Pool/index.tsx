@@ -16,8 +16,6 @@ import { ROUTER_ADDRESS } from '../../../constants'
 import { BigNumber } from 'ethers'
 
 export default function Pool() {
-  const addTransaction = useTransactionAdder()
-
   const pairs = useGetCharges()
 
   // pair
@@ -47,6 +45,7 @@ export default function Pool() {
 
 
   // submit
+  const addTransaction = useTransactionAdder()
   const currencyAmount = currentToken ? new TokenAmount(
     currentToken,
     BigNumber
@@ -60,7 +59,6 @@ export default function Pool() {
   const chargeContract = useCharge(contractAddress, true)
 
   const submit = async () => {
-    console.log(BigNumber.isBigNumber(amount), amount)
     if (!chargeContract || !currentToken || !baseToken || !quoteToken) {
       return
     }
