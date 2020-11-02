@@ -53,6 +53,8 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const lpFeeRate = useLpFeeRate(contractAddress)
   const lpFeeRateFormatted = lpFeeRate ? formatUnits(lpFeeRate, 18) : null
 
+  console.log(price?.toString(), baseToken?.decimals, quoteToken?.decimals)
+
   return (
     <Panel>
       <Row>
@@ -60,10 +62,10 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{price ? formatUnits(price.mul(parseUnits(amount, 10)), 16) : '-'} {quoteToken?.symbol}</div>
+        <div>{price ? formatUnits(price.mul(parseUnits(amount, 10)), 10 + (quoteToken?.decimals ?? 0)) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, 6) : '-'} {quoteToken?.symbol}</div>
+        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
       </Row>
       <Break />
       <Row>

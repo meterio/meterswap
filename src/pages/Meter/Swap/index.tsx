@@ -75,7 +75,7 @@ export default function Swap() {
       .mul(BigNumber.from(10).pow(BigNumber.from(baseToken.decimals)))
       .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
     console.log(submitAmount.toString())
-    const response = await method(submitAmount.toHexString(), submitAmount.mul(1000000).toHexString(), '0x', { gasLimit: 350000 })
+    const response = await method(submitAmount.toHexString(), submitAmount.mul(ActionType.Buy ? 1000000 : 0).toHexString(), '0x', { gasLimit: 350000 })
     addTransaction(response, { summary: 'submit' })
   }
 
