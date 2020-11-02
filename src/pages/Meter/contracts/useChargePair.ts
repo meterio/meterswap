@@ -33,14 +33,17 @@ export function useOraclePrice(address: string | undefined): BigNumber | null {
 }
 
 export function useQueryBuyBaseToken(address: string | undefined, amount: BigNumber): BigNumber | null {
+  return null
   const contract = useCharge(address)
-  console.log('useQueryBuyBaseToken', amount.toString())
-  return useOnceCallResult(contract, 'queryBuyBaseToken', [amount])
+  console.log('queryBuyBaseToken', amount.toString())
+  return useOnceCallResult(contract, 'queryBuyBaseToken', [amount.toHexString()])
 }
 
 export function useQuerySellBaseToken(address: string | undefined, amount: BigNumber): BigNumber | null {
+  return null
   const contract = useCharge(address)
-  return useOnceCallResult(contract, 'querySellBaseToken', [amount])
+  console.log('querySellBaseToken', amount.toString())
+  return useOnceCallResult(contract, 'querySellBaseToken', [amount.toHexString()])
 }
 
 /**

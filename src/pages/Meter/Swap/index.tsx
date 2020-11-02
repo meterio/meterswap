@@ -16,7 +16,7 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { tryParseBigNumber } from '../common/utils'
-import { parseEther } from 'ethers/lib/utils'
+import { parseEther, parseUnits } from 'ethers/lib/utils'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -52,15 +52,11 @@ export default function Swap() {
   }
 
   // submit
+  console.log(parseUnits(amount || '0', payToken?.decimals).toString())
   const addTransaction = useTransactionAdder()
-  const currencyAmount = baseToken ? new TokenAmount(
-    baseToken,
-    BigNumber
-      .from(1000)
-      .mul(
-        BigNumber.from(10).pow(BigNumber.from(baseToken.decimals))
-      )
-      .toString()
+  const currencyAmount = payToken ? new TokenAmount(
+    payToken,
+    parseUnits(amount || '0', payToken.decimals).toString()
   ) : undefined
   const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
   const chargeContract = useCharge(contractAddress, true)
