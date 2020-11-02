@@ -54,7 +54,7 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
     <>
       <Panel>
         <Section>
-          <TextWrapper fontSize={14} color={'text2'}>My Pool</TextWrapper>
+          <TextWrapper fontSize={14} color={'text2'}>My Liquidity</TextWrapper>
           <Row fontSize={16} color={'text1'} active={isBase}>
             {baseToken.symbol}: {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
           </Row>

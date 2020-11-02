@@ -32,6 +32,17 @@ export function useOraclePrice(address: string | undefined): BigNumber | null {
   return useOnceCallResult(contract, 'getOraclePrice', [])
 }
 
+export function useQueryBuyBaseToken(address: string | undefined, amount: BigNumber): BigNumber | null {
+  const contract = useCharge(address)
+  console.log('useQueryBuyBaseToken', amount.toString())
+  return useOnceCallResult(contract, 'queryBuyBaseToken', [amount])
+}
+
+export function useQuerySellBaseToken(address: string | undefined, amount: BigNumber): BigNumber | null {
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'querySellBaseToken', [amount])
+}
+
 /**
  * Pool
  */

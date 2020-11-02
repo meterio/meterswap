@@ -261,6 +261,7 @@ export function useOnceCallResult(
   inputs?: OptionalMethodInputs
 ) {
   const callState = useSingleCallResult(contract, methodName, inputs, NEVER_RELOAD)
+  console.log('useOnceCallResult', methodName, callState)
   return callState.result ? callState.result[0] : null
 }
 

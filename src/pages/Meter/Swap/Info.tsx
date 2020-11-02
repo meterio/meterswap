@@ -2,7 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { SectionBreak } from '../../../components/swap/styleds'
 import { ActionType } from './constants'
-import { useBaseToken, useLpFeeRate, useOraclePrice, useQuoteToken } from '../contracts/useChargePair'
+import {
+  useBaseToken,
+  useLpFeeRate,
+  useOraclePrice,
+  useQueryBuyBaseToken, useQuerySellBaseToken,
+  useQuoteToken
+} from '../contracts/useChargePair'
 import { useUserSlippageTolerance } from '../../../state/user/hooks'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
@@ -43,6 +49,9 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const quoteToken = useQuoteToken(contractAddress)
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
   const payToken = action === ActionType.Buy ? quoteToken : baseToken
+  const buyPayQuoteAmount = useQueryBuyBaseToken(contractAddress, parseUnits(amount, baseToken?.decimals))
+  const sellReceiveQuoteAmount = useQuerySellBaseToken(contractAddress, parseUnits(amount, baseToken?.decimals))
+  const expectedResult = action === ActionType.Buy ? buyPayQuoteAmount : sellReceiveQuoteAmount
   const price = useOraclePrice(contractAddress)
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -62,7 +71,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{price ? formatUnits(price.mul(parseUnits(amount, 10)), 10 + (quoteToken?.decimals ?? 0)) : '-'} {quoteToken?.symbol}</div>
+        <div>{expectedResult ? formatUnits(expectedResult, baseToken?.decimals) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Row>
         <div>1 {baseToken?.symbol} = {price ? formatUnits(price, quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
