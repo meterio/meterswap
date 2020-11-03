@@ -15,5 +15,9 @@ export const ChargesInfo: { [address: string]: ChargeInfo } = {
   '0x63DD4a125259EbC30F8eC683AFD6d25a51560A54': {
     base: 'eMTRG',
     quote: 'NUSDT'
+  },
+  '0xef0A0D7CA3dc2e8B2689d2ed95A3E1d57C0ffe38': {
+    base: 'WETH',
+    quote: 'DAI'
   }
 }
