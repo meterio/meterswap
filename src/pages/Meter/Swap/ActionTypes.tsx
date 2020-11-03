@@ -9,6 +9,8 @@ const Tabs = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  background-color: ${({ theme }) => theme.bg3};
+  border-radius: 10px;
 `
 
 interface TabProps {
@@ -18,7 +20,7 @@ interface TabProps {
 const Tab = styled.div<TabProps>`
   display: flex;
   flex-flow: row nowrap;
-  width: 45%;
+  flex: 1;
   align-items: center;
   justify-content: center;
   height: 3rem;
@@ -36,15 +38,23 @@ const Tab = styled.div<TabProps>`
    }
 `
 
+const LeftTab = styled(Tab)`
+  border-radius: 10px 0 0 10px;
+`
+const RightTab = styled(Tab)`
+  border-radius: 0 10px 10px 0;
+`
+
+
 export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: ActionType) => void }) {
   return (
     <Tabs>
-      <Tab isActive={currentTab === ActionType.Buy} onClick={() => onTabChanged(ActionType.Buy)}>
+      <LeftTab isActive={currentTab === ActionType.Buy} onClick={() => onTabChanged(ActionType.Buy)}>
         Buy
-      </Tab>
-      <Tab isActive={currentTab === ActionType.Sell} onClick={() => onTabChanged(ActionType.Sell)}>
+      </LeftTab>
+      <RightTab isActive={currentTab === ActionType.Sell} onClick={() => onTabChanged(ActionType.Sell)}>
         Sell
-      </Tab>
+      </RightTab>
     </Tabs>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
 import { ActionType } from './constants'
 
 const Tabs = styled.div`
@@ -9,6 +9,8 @@ const Tabs = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  background-color: ${({ theme }) => theme.bg3};
+  border-radius: 10px;
 `
 
 interface TabProps {
@@ -18,33 +20,33 @@ interface TabProps {
 const Tab = styled.div<TabProps>`
   display: flex;
   flex-flow: row nowrap;
-  width: 45%;
+  flex: 1;
   align-items: center;
   justify-content: center;
   height: 3rem;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.bg3};
   outline: none;
   cursor: pointer;
   text-decoration: none;
   background-color: ${({ isActive, theme }) => isActive && theme.primary1};
   color: ${({ isActive, theme }) => (isActive ? theme.white : theme.text1)};
+`
 
-  :hover,
-  :focus {
-    //color: ${({ theme }) => darken(0.1, theme.text1)};
-   }
+const LeftTab = styled(Tab)`
+  border-radius: 10px 0 0 10px;
+`
+const RightTab = styled(Tab)`
+  border-radius: 0 10px 10px 0;
 `
 
 export default function({ currentTab, onTabChanged }: { currentTab: string, onTabChanged: (tab: ActionType) => void }) {
   return (
     <Tabs>
-      <Tab isActive={currentTab === ActionType.Deposit} onClick={() => onTabChanged(ActionType.Deposit)}>
+      <LeftTab isActive={currentTab === ActionType.Deposit} onClick={() => onTabChanged(ActionType.Deposit)}>
         Deposit
-      </Tab>
-      <Tab isActive={currentTab === ActionType.Withdraw} onClick={() => onTabChanged(ActionType.Withdraw)}>
+      </LeftTab>
+      <RightTab isActive={currentTab === ActionType.Withdraw} onClick={() => onTabChanged(ActionType.Withdraw)}>
         Withdraw
-      </Tab>
+      </RightTab>
     </Tabs>
   )
 }
