@@ -24,7 +24,7 @@ export default function Swap() {
 
 
   // pair
-  const [currentPairIndex, setcurrentPairIndex] = useState(0)
+  const [currentPairIndex, setcurrentPairIndex] = useState(1)
   const contractAddress = pairs ? pairs[currentPairIndex] : undefined
 
   const onClickPair = useCallback((index: number) => {

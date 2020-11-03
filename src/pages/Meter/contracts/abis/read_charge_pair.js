@@ -1,7 +1,7 @@
 let ERC20_ABI = require('../../../../constants/abis/erc20.json')
 
 let fs = require('fs')
-let charge_pair = '0x75029090907214Fe8CB9b97c071447829A7DB28c'
+let charge_pair = '0x26411A2B52C8f3fD330489047992bde860b1f823'
 let abi_file = 'Charge.json'
 
 // provider
@@ -67,7 +67,7 @@ contractInstance.methods.getQuoteCapitalBalanceOf('0x205532D70FffcfBBDA46b9559D8
   console.log(err)
 })
 
-contractInstance.methods.queryBuyBaseToken('1000000000000000000').call({}).then(function(data) {
+contractInstance.methods.queryBuyBaseToken('0x00').call({}).then(function(data) {
   console.log('queryBuyBaseToken', data)
 }).catch(function(err) {
   console.log(err)
