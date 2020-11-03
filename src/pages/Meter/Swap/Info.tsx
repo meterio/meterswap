@@ -75,8 +75,8 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
         <div>Balance: {payTokenBalance?.toSignificant(6)} {payToken?.symbol}</div>
       </Row>
       <PriceRow>
-        <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{expectedResult ? formatBigNumber(expectedResult, baseToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
+        <div>Expect to {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
+        <div>{expectedResult ? formatBigNumber(expectedResult, quoteToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Row>
         <div>1 {baseToken?.symbol} = {price ? formatBigNumber(price, quoteToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>

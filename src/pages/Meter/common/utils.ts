@@ -28,3 +28,11 @@ export function displaySymbol(token: Token | null | undefined): string {
   }
   return token.symbol ?? ''
 }
+
+export function isValidNumber(str: string | undefined | null): boolean {
+  if (!str) {
+    return false
+  }
+  console.log('isvalid number', parseFloat(str))
+  return !isNaN(parseFloat(str))
+}

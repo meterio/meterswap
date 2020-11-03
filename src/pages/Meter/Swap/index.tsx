@@ -15,7 +15,7 @@ import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
-import { tryParseBigNumber } from '../common/utils'
+import { isValidNumber, tryParseBigNumber } from '../common/utils'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 
 export default function Swap() {
@@ -79,7 +79,8 @@ export default function Swap() {
       <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
-      <Info action={currentAction} contractAddress={contractAddress} amount={amount} />
+      {(isValidNumber(amount) && parseFloat(amount) > 0) ?
+        <Info action={currentAction} contractAddress={contractAddress} amount={amount} /> : null}
       <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
     </>
   )
