@@ -44,9 +44,9 @@ export function useChargeFactory(): Contract | null {
   return useContract(chainId ? ChargeFactoryAddress[chainId] : undefined, ChargeFactoryABI, false)
 }
 
-export function useChargeEthProxy(): Contract | null {
+export function useChargeEthProxy(withSigner: boolean = false): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId ? ChargeEthProxyAddress[chainId] : undefined, EthProxyABI, false)
+  return useContract(chainId ? ChargeEthProxyAddress[chainId] : undefined, EthProxyABI, withSigner)
 }
 
 export function useCharge(address: string | undefined, withSigner: boolean = false): Contract | null {

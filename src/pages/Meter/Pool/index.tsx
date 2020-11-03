@@ -7,8 +7,8 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 import { ActionType } from './constants'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
-import { Token, CurrencyAmount, TokenAmount, ETHER } from '@uniswap/sdk'
-import { useCharge } from '../contracts/useContract'
+import { Token, CurrencyAmount, TokenAmount, ETHER, Currency } from '@uniswap/sdk'
+import { useCharge, useChargeEthProxy } from '../contracts/useContract'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
@@ -39,6 +39,7 @@ export default function Pool() {
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
+  const isCurrentEther = currentToken?.symbol === 'WETH'
   useEffect(() => {
     if (currentToken == null && baseToken !== null) {
       setCurrentToken(baseToken)
@@ -61,7 +62,7 @@ export default function Pool() {
 
   // submit
   const addTransaction = useTransactionAdder()
-  const currencyAmount = currentToken ? new TokenAmount(
+  const currencyAmount = (currentToken && !isCurrentEther) ? new TokenAmount(
     currentToken,
     BigNumber
       .from(1000)
@@ -72,22 +73,48 @@ export default function Pool() {
   ) : undefined
   const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
   const chargeContract = useCharge(contractAddress, true)
+  const chargeEthProxyContract = useChargeEthProxy(true)
 
   const submit = async () => {
-    if (!chargeContract || !currentToken || !baseToken || !quoteToken) {
+    if (!currentToken || !baseToken || !quoteToken) {
       return
     }
     await approveCallback()
-    const method = currentAction === ActionType.Deposit ?
-      (currentToken.symbol === baseToken.symbol ? chargeContract.depositBase : chargeContract.depositQuote)
-      :
-      (currentToken.symbol === baseToken.symbol ? chargeContract.withdrawBase : chargeContract.withdrawQuote)
+
+    const isDeposit = currentAction === ActionType.Deposit
+    const isBase = currentToken.symbol === baseToken.symbol
     const submitAmount = parseEther(amount)
       .mul(BigNumber.from(10).pow(BigNumber.from(currentToken.decimals)))
       .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
-    console.log(submitAmount.toString())
-    const response = await method(submitAmount, { gasLimit: 350000 })
-    addTransaction(response, { summary: 'submit' })
+    console.log(`Pool submit: ${currentAction} ${currentToken.symbol}`, submitAmount.toString())
+
+    if (isCurrentEther) {
+      if (!chargeEthProxyContract) {
+        return
+      }
+      const method = isDeposit ?
+        (isBase ? chargeEthProxyContract.depositEthAsBase : chargeEthProxyContract.depositEthAsQuote)
+        :
+        (isBase ? chargeEthProxyContract.withdrawEthAsBase : chargeEthProxyContract.withdrawEthAsQuote)
+      const response = await method(
+        submitAmount,
+        isBase ? quoteToken.address : baseToken.address,
+        {
+          value: submitAmount,
+          gasLimit: 350000
+        })
+      addTransaction(response, { summary: 'submit' })
+    } else {
+      if (!chargeContract) {
+        return
+      }
+      const method = isDeposit ?
+        (isBase ? chargeContract.depositBase : chargeContract.depositQuote)
+        :
+        (isBase ? chargeContract.withdrawBase : chargeContract.withdrawQuote)
+      const response = await method(submitAmount, { gasLimit: 350000 })
+      addTransaction(response, { summary: 'submit' })
+    }
   }
 
   return (

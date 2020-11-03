@@ -10,6 +10,7 @@ import { ReactComponent as DropDown } from '../../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../../hooks'
 import { parseUnits } from 'ethers/lib/utils'
+import { displaySymbol } from './utils'
 
 const InputRow = styled.div`
   display: flex;
@@ -154,7 +155,7 @@ export default function CurrencyInputPanel({
               token ?
                 <>
                   <StyledTokenName className="token-symbol-container">
-                    {token.symbol}
+                    {displaySymbol(token)}
                   </StyledTokenName>
                   {tokens && <StyledDropDown />}
                 </>

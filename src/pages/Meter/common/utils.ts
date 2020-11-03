@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
+import { Token } from '@uniswap/sdk'
 
 export function tryParseBigNumber(value: any): BigNumber | null {
   try {
@@ -16,4 +17,14 @@ export function formatBigNumber(value: BigNumber, decimals: number, digits: numb
     return result
   }
   return parts[0] + '.' + parts[1].slice(0, digits)
+}
+
+export function displaySymbol(token: Token | null | undefined): string {
+  if (!token) {
+    return ''
+  }
+  if (token.symbol === 'WETH') {
+    return 'ETH'
+  }
+  return token.symbol ?? ''
 }

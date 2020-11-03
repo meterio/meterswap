@@ -12,7 +12,7 @@ import {
 import { formatUnits } from 'ethers/lib/utils'
 import { TextWrapper } from '../../../theme'
 import { Token } from '@uniswap/sdk'
-import { formatBigNumber } from '../common/utils'
+import { displaySymbol, formatBigNumber } from '../common/utils'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -56,19 +56,19 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>My Liquidity</TextWrapper>
           <Row fontSize={16} color={'text1'} active={isBase}>
-            {baseToken.symbol}: {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
+            {displaySymbol(baseToken)}: {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
           </Row>
           <Row fontSize={16} color={'text1'} active={!isBase}>
-            {quoteToken.symbol}: {myQuoteCapitalBalance ? formatBigNumber(myQuoteCapitalBalance, quoteToken.decimals) : '-'}
+            {displaySymbol(quoteToken)}: {myQuoteCapitalBalance ? formatBigNumber(myQuoteCapitalBalance, quoteToken.decimals) : '-'}
           </Row>
         </Section>
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>Pool Size</TextWrapper>
           <Row fontSize={16} color={'text1'} active={isBase}>
-            {baseToken.symbol}: {baseBalance ? formatBigNumber(baseBalance, baseToken.decimals) : '-'}
+            {displaySymbol(baseToken)}: {baseBalance ? formatBigNumber(baseBalance, baseToken.decimals) : '-'}
           </Row>
           <Row fontSize={16} color={'text1'} active={!isBase}>
-            {quoteToken.symbol}: {quoteBalance ? formatBigNumber(quoteBalance, quoteToken.decimals) : '-'}
+            {displaySymbol(quoteToken)}: {quoteBalance ? formatBigNumber(quoteBalance, quoteToken.decimals) : '-'}
           </Row>
         </Section>
       </Panel>

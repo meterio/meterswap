@@ -5,7 +5,7 @@ interface ChargeInfo {
 
 export const ChargesInfo: { [address: string]: ChargeInfo } = {
   '0x75029090907214Fe8CB9b97c071447829A7DB28c': {
-    base: 'WETH',
+    base: 'ETH',
     quote: 'USDC'
   },
   '0x26411A2B52C8f3fD330489047992bde860b1f823': {
@@ -17,7 +17,7 @@ export const ChargesInfo: { [address: string]: ChargeInfo } = {
     quote: 'NUSDT'
   },
   '0xef0A0D7CA3dc2e8B2689d2ed95A3E1d57C0ffe38': {
-    base: 'WETH',
+    base: 'ETH',
     quote: 'DAI'
   }
 }
