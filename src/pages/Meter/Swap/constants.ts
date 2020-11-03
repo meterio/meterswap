@@ -1,4 +1,4 @@
 export enum ActionType {
-  Buy = 'buy',
-  Sell = 'sell',
+  Buy = 'Buy',
+  Sell = 'Sell',
 }
