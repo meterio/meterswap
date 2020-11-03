@@ -66,3 +66,9 @@ contractInstance.methods.getQuoteCapitalBalanceOf('0x205532D70FffcfBBDA46b9559D8
 }).catch(function(err) {
   console.log(err)
 })
+
+contractInstance.methods.queryBuyBaseToken('1000000000000000000').call({}).then(function(data) {
+  console.log('queryBuyBaseToken', data)
+}).catch(function(err) {
+  console.log(err)
+})
