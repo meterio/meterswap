@@ -14,6 +14,7 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { Fraction } from '@uniswap/sdk'
+import { formatBigNumber } from '../common/utils'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -62,7 +63,11 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const lpFeeRate = useLpFeeRate(contractAddress)
   const lpFeeRateFormatted = lpFeeRate ? formatUnits(lpFeeRate, 18) : null
 
-  console.log(price?.toString(), baseToken?.decimals, quoteToken?.decimals)
+  if (!baseToken || !quoteToken) {
+    return null
+  }
+
+  console.log(price?.toString(), baseToken.decimals, quoteToken.decimals)
 
   return (
     <Panel>
@@ -71,10 +76,10 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
       </Row>
       <PriceRow>
         <div>Expected {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{expectedResult ? formatUnits(expectedResult, baseToken?.decimals) : '-'} {quoteToken?.symbol}</div>
+        <div>{expectedResult ? formatBigNumber(expectedResult, baseToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
       </PriceRow>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatUnits(price, quoteToken?.decimals) : '-'} {quoteToken?.symbol}</div>
+        <div>1 {baseToken?.symbol} = {price ? formatBigNumber(price, quoteToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
       </Row>
       <Break />
       <Row>
