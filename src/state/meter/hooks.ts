@@ -13,8 +13,6 @@ export function useMeterActionHandlers(): {
   const dispatch = useDispatch<AppDispatch>()
   const onPairSelected = useCallback(
     (selectedPair: string | undefined) => {
-      console.log('dispatch(\n' +
-        '        selectPair({')
       dispatch(
         selectPair({
           selectedPair
