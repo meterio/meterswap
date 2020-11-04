@@ -33,6 +33,5 @@ export function isValidNumber(str: string | undefined | null): boolean {
   if (!str) {
     return false
   }
-  console.log('isvalid number', parseFloat(str))
   return !isNaN(parseFloat(str))
 }

@@ -19,15 +19,16 @@ import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { parseEther } from 'ethers/lib/utils'
 import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
+import { useInputError } from '../common/hooks'
+import { useWalletModalToggle } from '../../../state/application/hooks'
+import { CONNECT_WALLET } from '../common/strings'
 
 export default function Pool() {
   const pairs = useGetCharges()
-  const { account } = useActiveWeb3React()
 
   // pair
   const { selectedPair } = useMeterState()
   const { onPairSelected } = useMeterActionHandlers()
-  const contractAddress = selectedPair
 
   const onClickPair = useCallback((index: number) => {
     onPairSelected(pairs ? pairs[index] : undefined)
@@ -43,8 +44,8 @@ export default function Pool() {
 
   // input panel
   const [amount, setAmount] = useState('')
-  const baseToken = useBaseToken(contractAddress)
-  const quoteToken = useQuoteToken(contractAddress)
+  const baseToken = useBaseToken(selectedPair)
+  const quoteToken = useQuoteToken(selectedPair)
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
   const isCurrentEther = currentToken?.symbol === 'WETH'
   useEffect(() => {
@@ -53,18 +54,10 @@ export default function Pool() {
     }
   }, [baseToken])
 
-  const currentTokenBalance = useCurrencyBalance(account ?? undefined, currentToken ?? undefined)
-  let inputError: string | null = null
-  if (!amount || !currentToken || (currentTokenBalance &&
-    parseEther(amount)?.mul(BigNumber.from(10).pow(currentToken.decimals))
-      .div(BigNumber.from(10).pow(ETHER.decimals))
-      .gt(
-        BigNumber.from(currentTokenBalance.raw.toString())
-      ))) {
-    inputError = 'Insufficient balance'
-  }
+  const inputError = useInputError(amount, currentToken)
 
   // submit
+  const toggleWalletModal = useWalletModalToggle()
   const addTransaction = useTransactionAdder()
   const currencyAmount = (currentToken && !isCurrentEther) ? new TokenAmount(
     currentToken,
@@ -75,11 +68,15 @@ export default function Pool() {
       )
       .toString()
   ) : undefined
-  const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
-  const chargeContract = useCharge(contractAddress, true)
+  const [approval, approveCallback] = useApproveCallback(currencyAmount, selectedPair)
+  const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
 
   const submit = async () => {
+    if (inputError === CONNECT_WALLET) {
+      toggleWalletModal()
+      return
+    }
     if (!currentToken || !baseToken || !quoteToken) {
       return
     }
@@ -136,8 +133,10 @@ export default function Pool() {
         setToken={setCurrentToken}
         tokens={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
-      {contractAddress && currentToken && <Info contractAddress={contractAddress} currentToken={currentToken} />}
-      <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
+      {selectedPair && currentToken && <Info contractAddress={selectedPair} currentToken={currentToken} />}
+      <ButtonPrimary disabled={inputError !== null && inputError !== CONNECT_WALLET} onClick={submit}>
+        {inputError ?? 'Submit'}
+      </ButtonPrimary>
     </>
   )
 }

@@ -8,26 +8,23 @@ import { useGetCharges } from '../contracts/useChargeFactory'
 import { useCharge } from '../contracts/useContract'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
-import { ChainId, ETHER, TokenAmount } from '@uniswap/sdk'
+import { ETHER, TokenAmount } from '@uniswap/sdk'
 import { BigNumber } from 'ethers'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useCurrencyBalance } from '../../../state/wallet/hooks'
-import { useActiveWeb3React } from '../../../hooks'
 import { isValidNumber } from '../common/utils'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
+import { useInputError } from '../common/hooks'
+import { CONNECT_WALLET } from '../common/strings'
 
 export default function Swap() {
   const pairs = useGetCharges()
-  const { account, chainId } = useActiveWeb3React()
-
 
   // pair
   const { selectedPair } = useMeterState()
   const { onPairSelected } = useMeterActionHandlers()
-  const contractAddress = selectedPair
 
   const onClickPair = useCallback((index: number) => {
     onPairSelected(pairs ? pairs[index] : undefined)
@@ -44,26 +41,11 @@ export default function Swap() {
 
   // input panel
   const [amount, setAmount] = useState('')
-  const baseToken = useBaseToken(contractAddress)
-  const quoteToken = useQuoteToken(contractAddress)
+  const baseToken = useBaseToken(selectedPair)
+  const quoteToken = useQuoteToken(selectedPair)
   const payToken = currentAction === ActionType.Buy ? quoteToken : baseToken
-  const payTokenBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
-  let inputError: string | null = null
-  if (!isValidNumber(amount) || parseFloat(amount) <= 0) {
-    inputError = 'Enter a number'
-  } else if (!payToken || (payTokenBalance &&
-    parseEther(amount)?.mul(BigNumber.from(10).pow(payToken.decimals))
-      .div(BigNumber.from(10).pow(ETHER.decimals))
-      .gt(
-        BigNumber.from(payTokenBalance.raw.toString())
-      ))) {
-    inputError = 'Insufficient balance'
-  }
-
-  if (!(chainId === ChainId.RINKEBY)) {
-    inputError = 'Wrong network'
-  }
+  const inputError = useInputError(amount, payToken)
 
   // submit
   const toggleWalletModal = useWalletModalToggle()
@@ -72,10 +54,14 @@ export default function Swap() {
     payToken,
     parseUnits(amount || '0', payToken.decimals).toString()
   ) : undefined
-  const [approval, approveCallback] = useApproveCallback(currencyAmount, contractAddress)
-  const chargeContract = useCharge(contractAddress, true)
+  const [approval, approveCallback] = useApproveCallback(currencyAmount, selectedPair)
+  const chargeContract = useCharge(selectedPair, true)
 
   const submit = async () => {
+    if (inputError === CONNECT_WALLET) {
+      toggleWalletModal()
+      return
+    }
     if (!chargeContract || !baseToken) {
       return
     }
@@ -84,6 +70,7 @@ export default function Swap() {
     const submitAmount = parseEther(amount)
       .mul(BigNumber.from(10).pow(BigNumber.from(baseToken.decimals)))
       .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
+    console.log(`Swap submit: ${currentAction} ${baseToken.symbol}`, submitAmount.toString())
     const response = await method(submitAmount.toHexString(), currentAction === ActionType.Buy ? submitAmount.mul(1000000).toHexString() : '0x0', '0x', { gasLimit: 350000 })
     addTransaction(response, { summary: 'submit' })
   }
@@ -98,12 +85,10 @@ export default function Swap() {
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       {(isValidNumber(amount) && parseFloat(amount) > 0) ?
-        <Info action={currentAction} contractAddress={contractAddress} amount={amount} /> : null}
-      {account ?
-        <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
-        :
-        <ButtonPrimary onClick={toggleWalletModal}>Connect to a wallet</ButtonPrimary>
-      }
+        <Info action={currentAction} contractAddress={selectedPair} amount={amount} /> : null}
+      <ButtonPrimary disabled={inputError !== null && inputError !== CONNECT_WALLET} onClick={submit}>
+        {inputError ?? 'Submit'}
+      </ButtonPrimary>
     </>
   )
 }
