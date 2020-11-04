@@ -30,7 +30,7 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
       toggleWalletModal()
       return
     }
-    if (!approval && !isWETH(payToken)) {
+    if (!isWETH(payToken)) {
       await approveCallback()
     }
 
@@ -64,7 +64,7 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
       const method = action === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
       const response = await method(
         baseAmountBI,
-        action === ActionType.Buy ? baseAmountBI.mul(2) : '0x00',
+        action === ActionType.Buy ? baseAmountBI.mul(10000) : '0x00',
         '0x',
         { gasLimit: 350000 })
       addTransaction(response, { summary: `${action} ${displaySymbol(baseToken)}` })

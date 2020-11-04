@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Pairs from '../common/components/Pairs'
 import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'
 import { ActionType } from './constants'
-import { useCharge } from '../contracts/useContract'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/components/CurrencyInputPanel'
-import { ETHER, TokenAmount } from '@uniswap/sdk'
 import { BigNumber } from 'ethers'
-import { useApproveCallback } from '../../../hooks/useApproveCallback'
-import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { isValidNumber } from '../common/utils'
-import { parseEther, parseUnits } from 'ethers/lib/utils'
-import { useWalletModalToggle } from '../../../state/application/hooks'
 import useInputError from '../common/hooks/useInputError'
 import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'
@@ -39,15 +33,6 @@ export default function Swap() {
   const inputError = useInputError(payToken, balance ? BigNumber.from(balance.raw.toString()) : null, amount)
 
   // submit
-  const toggleWalletModal = useWalletModalToggle()
-  const addTransaction = useTransactionAdder()
-  const currencyAmount = payToken ? new TokenAmount(
-    payToken,
-    parseUnits(amount || '0', payToken.decimals).toString()
-  ) : undefined
-  const [approval, approveCallback] = useApproveCallback(currencyAmount, selectedPair)
-  const chargeContract = useCharge(selectedPair, true)
-
   const submit = useSubmitSwap(currentAction, amount, inputError === CONNECT_WALLET)
 
   if (!selectedPair) {

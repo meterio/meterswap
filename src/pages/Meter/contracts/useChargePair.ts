@@ -67,3 +67,16 @@ export function useMyQuoteCapitalBalance(address: string | undefined): BigNumber
   const contract = useCharge(address)
   return useWatchCallResult(contract, 'getQuoteCapitalBalanceOf', [account || undefined]) as BigNumber
 }
+
+
+export function useBaseCapitalToken(address: string | undefined): Token | null {
+  const contract = useCharge(address)
+  const tokenAddress = useOnceCallResult(contract, '_BASE_CAPITAL_TOKEN_', [])
+  return useToken(tokenAddress) ?? null
+}
+
+export function useQuoteCapitalToken(address: string | undefined): Token | null {
+  const contract = useCharge(address)
+  const tokenAddress = useOnceCallResult(contract, '_QUOTE_CAPITAL_TOKEN_', [])
+  return useToken(tokenAddress) ?? null
+}
