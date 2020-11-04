@@ -35,3 +35,10 @@ export function isValidNumber(str: string | undefined | null): boolean {
   }
   return !isNaN(parseFloat(str))
 }
+
+export function isWETH(token: Token | undefined | null): boolean {
+  if (!token) {
+    return false
+  }
+  return token.symbol === 'WETH'
+}

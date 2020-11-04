@@ -4,7 +4,6 @@ import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'
 import { ActionType } from './constants'
-import { useGetCharges } from '../contracts/useChargeFactory'
 import { useCharge } from '../contracts/useContract'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/components/CurrencyInputPanel'
@@ -15,10 +14,11 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { isValidNumber } from '../common/utils'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 import { useWalletModalToggle } from '../../../state/application/hooks'
-import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
 import useInputError from '../common/hooks/useInputError'
 import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'
+import { useCurrencyBalance } from '../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../hooks'
 
 export default function Swap() {
   // pair
@@ -33,7 +33,9 @@ export default function Swap() {
   const quoteToken = useQuoteToken(selectedPair)
   const payToken = currentAction === ActionType.Buy ? quoteToken : baseToken
 
-  const inputError = useInputError(amount, payToken)
+  const { account } = useActiveWeb3React()
+  const balance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
+  const inputError = useInputError(payToken, balance ? BigNumber.from(balance.raw.toString()) : null, amount)
 
   // submit
   const toggleWalletModal = useWalletModalToggle()
