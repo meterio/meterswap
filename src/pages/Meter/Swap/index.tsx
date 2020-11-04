@@ -42,7 +42,9 @@ export default function Swap() {
   const payTokenBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
   let inputError: string | null = null
-  if (!amount || !payToken || (payTokenBalance &&
+  if (!isValidNumber(amount) || parseFloat(amount) <= 0) {
+    inputError = 'Enter a number'
+  } else if (!payToken || (payTokenBalance &&
     parseEther(amount)?.mul(BigNumber.from(10).pow(payToken.decimals))
       .div(BigNumber.from(10).pow(ETHER.decimals))
       .gt(
