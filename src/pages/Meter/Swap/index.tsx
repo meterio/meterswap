@@ -6,21 +6,21 @@ import Info from './Info'
 import { ActionType } from './constants'
 import { useGetCharges } from '../contracts/useChargeFactory'
 import { useCharge } from '../contracts/useContract'
-import { useOnceCallResult } from '../../../state/multicall/hooks'
 import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/CurrencyInputPanel'
-import { ETHER, TokenAmount } from '@uniswap/sdk'
+import { ChainId, ETHER, TokenAmount } from '@uniswap/sdk'
 import { BigNumber } from 'ethers'
 import { useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
-import { isValidNumber, tryParseBigNumber } from '../common/utils'
+import { isValidNumber } from '../common/utils'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
+import { useWalletModalToggle } from '../../../state/application/hooks'
 
 export default function Swap() {
   const pairs = useGetCharges()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
 
   // pair
@@ -53,7 +53,12 @@ export default function Swap() {
     inputError = 'Insufficient balance'
   }
 
+  if (!(chainId === ChainId.RINKEBY)) {
+    inputError = 'Wrong network'
+  }
+
   // submit
+  const toggleWalletModal = useWalletModalToggle()
   console.log(parseUnits(amount || '0', payToken?.decimals).toString())
   const addTransaction = useTransactionAdder()
   const currencyAmount = payToken ? new TokenAmount(
@@ -83,7 +88,11 @@ export default function Swap() {
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       {(isValidNumber(amount) && parseFloat(amount) > 0) ?
         <Info action={currentAction} contractAddress={contractAddress} amount={amount} /> : null}
-      <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
+      {account ?
+        <ButtonPrimary disabled={inputError !== null} onClick={submit}>{inputError ?? 'Submit'}</ButtonPrimary>
+        :
+        <ButtonPrimary onClick={toggleWalletModal}>Connect to a wallet</ButtonPrimary>
+      }
     </>
   )
 }
