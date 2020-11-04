@@ -18,23 +18,11 @@ import { useWalletModalToggle } from '../../../state/application/hooks'
 import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
 import useInputError from '../common/hooks/useInputError'
 import { CONNECT_WALLET } from '../common/strings'
+import usePairs from '../common/hooks/usePairs'
 
 export default function Swap() {
-  const pairs = useGetCharges()
-
   // pair
-  const { selectedPair } = useMeterState()
-  const { onPairSelected } = useMeterActionHandlers()
-
-  const onClickPair = useCallback((index: number) => {
-    onPairSelected(pairs ? pairs[index] : undefined)
-  }, [pairs])
-  useEffect(() => {
-    if (pairs && pairs.length > 0 && (!selectedPair || !pairs.includes(selectedPair))) {
-      console.log('onPairSelected')
-      onPairSelected(pairs[0])
-    }
-  }, [pairs])
+  const { pairs, selectedPair, onSelectPair } = usePairs()
 
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
@@ -81,7 +69,7 @@ export default function Swap() {
 
   return (
     <>
-      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onClickPair} />
+      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onSelectPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       {(isValidNumber(amount) && parseFloat(amount) > 0) ?

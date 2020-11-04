@@ -22,22 +22,11 @@ import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hook
 import useInputError from '../common/hooks/useInputError'
 import { useWalletModalToggle } from '../../../state/application/hooks'
 import { CONNECT_WALLET } from '../common/strings'
+import usePairs from '../common/hooks/usePairs'
 
 export default function Pool() {
-  const pairs = useGetCharges()
-
   // pair
-  const { selectedPair } = useMeterState()
-  const { onPairSelected } = useMeterActionHandlers()
-
-  const onClickPair = useCallback((index: number) => {
-    onPairSelected(pairs ? pairs[index] : undefined)
-  }, [pairs])
-  useEffect(() => {
-    if (selectedPair === undefined && pairs && pairs.length > 0) {
-      onPairSelected(pairs[0])
-    }
-  }, [pairs])
+  const { pairs, selectedPair, onSelectPair } = usePairs()
 
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Deposit)
@@ -124,7 +113,7 @@ export default function Pool() {
 
   return (
     <>
-      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onClickPair} />
+      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onSelectPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel
         amount={amount}
