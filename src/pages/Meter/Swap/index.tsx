@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Pairs from '../common/Pairs'
 import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
@@ -17,6 +17,7 @@ import { useActiveWeb3React } from '../../../hooks'
 import { isValidNumber } from '../common/utils'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 import { useWalletModalToggle } from '../../../state/application/hooks'
+import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
 
 export default function Swap() {
   const pairs = useGetCharges()
@@ -24,12 +25,19 @@ export default function Swap() {
 
 
   // pair
-  const [currentPairIndex, setcurrentPairIndex] = useState(1)
-  const contractAddress = pairs ? pairs[currentPairIndex] : undefined
+  const { selectedPair } = useMeterState()
+  const { onPairSelected } = useMeterActionHandlers()
+  const contractAddress = selectedPair
 
   const onClickPair = useCallback((index: number) => {
-    setcurrentPairIndex(index)
-  }, [setcurrentPairIndex])
+    onPairSelected(pairs ? pairs[index] : undefined)
+  }, [pairs])
+  useEffect(() => {
+    if (pairs && pairs.length > 0 && (!selectedPair || !pairs.includes(selectedPair))) {
+      console.log('onPairSelected')
+      onPairSelected(pairs[0])
+    }
+  }, [pairs])
 
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
@@ -59,7 +67,6 @@ export default function Swap() {
 
   // submit
   const toggleWalletModal = useWalletModalToggle()
-  console.log(parseUnits(amount || '0', payToken?.decimals).toString())
   const addTransaction = useTransactionAdder()
   const currencyAmount = payToken ? new TokenAmount(
     payToken,
@@ -81,9 +88,13 @@ export default function Swap() {
     addTransaction(response, { summary: 'submit' })
   }
 
+  if (!selectedPair) {
+    return null
+  }
+
   return (
     <>
-      <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
+      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel showBalance={false} amount={amount} setAmount={i => setAmount(i)} token={baseToken} />
       {(isValidNumber(amount) && parseFloat(amount) > 0) ?

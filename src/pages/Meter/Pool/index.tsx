@@ -18,18 +18,25 @@ import { tryParseBigNumber } from '../common/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { parseEther } from 'ethers/lib/utils'
+import { useMeterActionHandlers, useMeterState } from '../../../state/meter/hooks'
 
 export default function Pool() {
   const pairs = useGetCharges()
   const { account } = useActiveWeb3React()
 
   // pair
-  const [currentPairIndex, setcurrentPairIndex] = useState(0)
-  const contractAddress = pairs ? pairs[currentPairIndex] : undefined
+  const { selectedPair } = useMeterState()
+  const { onPairSelected } = useMeterActionHandlers()
+  const contractAddress = selectedPair
 
   const onClickPair = useCallback((index: number) => {
-    setcurrentPairIndex(index)
-  }, [setcurrentPairIndex])
+    onPairSelected(pairs ? pairs[index] : undefined)
+  }, [pairs])
+  useEffect(() => {
+    if (selectedPair === undefined && pairs && pairs.length > 0) {
+      onPairSelected(pairs[0])
+    }
+  }, [pairs])
 
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Deposit)
@@ -45,9 +52,6 @@ export default function Pool() {
       setCurrentToken(baseToken)
     }
   }, [baseToken])
-  useEffect(() => {
-    setCurrentToken(baseToken)
-  }, [currentPairIndex])
 
   const currentTokenBalance = useCurrencyBalance(account ?? undefined, currentToken ?? undefined)
   let inputError: string | null = null
@@ -117,9 +121,13 @@ export default function Pool() {
     }
   }
 
+  if (!selectedPair) {
+    return null
+  }
+
   return (
     <>
-      <Pairs pairs={pairs} currentIndex={currentPairIndex} onClick={onClickPair} />
+      <Pairs pairs={pairs} selectedPair={selectedPair} onClick={onClickPair} />
       <ActionTypes currentTab={currentAction} onTabChanged={(action) => setCurrentAction(action)} />
       <CurrencyInputPanel
         amount={amount}

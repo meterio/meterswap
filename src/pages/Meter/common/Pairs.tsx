@@ -58,8 +58,9 @@ const Item = styled.div`
   }
 `
 
-export default function({ pairs, currentIndex, onClick }: { pairs: string[], currentIndex: number, onClick: (index: number) => void }) {
+export default function({ pairs, selectedPair, onClick }: { pairs: string[], selectedPair: string, onClick: (index: number) => void }) {
   const titles = pairs.map(i => `${ChargesInfo[i]?.base}-${ChargesInfo[i]?.quote}`)
+  const index = pairs.indexOf(selectedPair)
 
   const isOpen = useModalOpen(ApplicationModal.PAIRS)
   const toggle = useToggleModal(ApplicationModal.PAIRS)
@@ -72,10 +73,14 @@ export default function({ pairs, currentIndex, onClick }: { pairs: string[], cur
     onClick(i)
   }
 
+  if (index < 0) {
+    return null
+  }
+
   return (
     <Panel ref={node as any}>
       <Input onClick={toggle}>
-        <div>{titles[currentIndex]}</div>
+        <div>{titles[index]}</div>
         <StyledDropDown selected={isOpen} />
       </Input>
       {isOpen && (
