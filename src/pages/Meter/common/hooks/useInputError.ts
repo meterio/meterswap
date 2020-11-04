@@ -1,12 +1,12 @@
 import { ChainId, Token } from '@uniswap/sdk'
-import { useActiveWeb3React } from '../../../hooks'
+import { useActiveWeb3React } from '../../../../hooks'
 import { parseEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
-import { isValidNumber } from './utils'
-import { useCurrencyBalance } from '../../../state/wallet/hooks'
-import { CONNECT_WALLET } from './strings'
+import { isValidNumber } from '../utils'
+import { useCurrencyBalance } from '../../../../state/wallet/hooks'
+import { CONNECT_WALLET } from '../strings'
 
-export function useInputError(amount: string, token: Token | null): string | null {
+export default function useInputError(amount: string, token: Token | null): string | null {
   const { account, chainId } = useActiveWeb3React()
   const balance = useCurrencyBalance(account ?? undefined, token ?? undefined)
 
