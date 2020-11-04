@@ -19,6 +19,7 @@ import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
+import useSubmitSwap from '../common/hooks/useSubmitSwap'
 
 export default function Swap() {
   // pair
@@ -47,23 +48,7 @@ export default function Swap() {
   const [approval, approveCallback] = useApproveCallback(currencyAmount, selectedPair)
   const chargeContract = useCharge(selectedPair, true)
 
-  const submit = async () => {
-    if (inputError === CONNECT_WALLET) {
-      toggleWalletModal()
-      return
-    }
-    if (!chargeContract || !baseToken) {
-      return
-    }
-    await approveCallback()
-    const method = currentAction === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
-    const submitAmount = parseEther(amount)
-      .mul(BigNumber.from(10).pow(BigNumber.from(baseToken.decimals)))
-      .div(BigNumber.from(10).pow(BigNumber.from(ETHER.decimals)))
-    console.log(`Swap submit: ${currentAction} ${baseToken.symbol}`, submitAmount.toString())
-    const response = await method(submitAmount.toHexString(), currentAction === ActionType.Buy ? submitAmount.mul(1000000).toHexString() : '0x0', '0x', { gasLimit: 350000 })
-    addTransaction(response, { summary: 'submit' })
-  }
+  const submit = useSubmitSwap(currentAction, amount, inputError === CONNECT_WALLET)
 
   if (!selectedPair) {
     return null
