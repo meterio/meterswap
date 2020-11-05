@@ -14,8 +14,9 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { Fraction } from '@uniswap/sdk'
-import { displaySymbol, formatBigNumber } from '../common/utils'
+import { displaySymbol, formatBigNumber, isValidNumber } from '../common/utils'
 import { BigNumber } from 'ethers'
+import useExpectedQuoteAmount from '../common/hooks/useExpectedQuoteAmount'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -45,17 +46,13 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   if (!contractAddress) {
     return null
   }
-  amount = isNaN(parseFloat(amount)) ? '0' : amount
 
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
   const payToken = action === ActionType.Buy ? quoteToken : baseToken
-  const inputBaseAmountBI = parseUnits(amount, baseToken?.decimals)
-  const buyPayQuoteAmount = useQueryBuyBaseToken(contractAddress, inputBaseAmountBI)
-  const sellReceiveQuoteAmount = useQuerySellBaseToken(contractAddress, inputBaseAmountBI)
-  const expectedQuoteAmount = action === ActionType.Buy ? buyPayQuoteAmount : sellReceiveQuoteAmount
-  const price = useOraclePrice(contractAddress)
+  const inputBaseAmountBI = isValidNumber(amount) ? parseUnits(amount, baseToken?.decimals) : BigNumber.from(0)
+  const expectedQuoteAmount = useExpectedQuoteAmount(contractAddress, action, inputBaseAmountBI)
 
   const [allowedSlippage] = useUserSlippageTolerance()
   const { account } = useActiveWeb3React()
