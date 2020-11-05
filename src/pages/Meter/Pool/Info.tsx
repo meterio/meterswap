@@ -56,10 +56,10 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>My Liquidity</TextWrapper>
           <Row fontSize={16} color={'text1'} active={isBase}>
-            {displaySymbol(baseToken)}: {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
+            {displaySymbol(baseToken)}(LP): {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
           </Row>
           <Row fontSize={16} color={'text1'} active={!isBase}>
-            {displaySymbol(quoteToken)}: {myQuoteCapitalBalance ? formatBigNumber(myQuoteCapitalBalance, quoteToken.decimals) : '-'}
+            {displaySymbol(quoteToken)}(LP): {myQuoteCapitalBalance ? formatBigNumber(myQuoteCapitalBalance, quoteToken.decimals) : '-'}
           </Row>
         </Section>
         <Section>

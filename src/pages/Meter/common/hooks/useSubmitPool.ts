@@ -1,10 +1,16 @@
 import { ActionType } from '../../Pool/constants'
 import { parseUnits } from 'ethers/lib/utils'
-import { Token, TokenAmount } from '@uniswap/sdk'
+import { CurrencyAmount, Token, TokenAmount } from '@uniswap/sdk'
 import { displaySymbol, isValidNumber, isWETH } from '../utils'
 import { useWalletModalToggle } from '../../../../state/application/hooks'
 import { useTransactionAdder } from '../../../../state/transactions/hooks'
-import { useBaseCapitalToken, useBaseToken, useQuoteCapitalToken, useQuoteToken } from '../../contracts/useChargePair'
+import {
+  useBaseCapitalToken,
+  useBaseToken,
+  useMyBaseCapitalBalance, useMyQuoteCapitalBalance,
+  useQuoteCapitalToken,
+  useQuoteToken
+} from '../../contracts/useChargePair'
 import { useApproveCallback } from '../../../../hooks/useApproveCallback'
 import { useCharge, useChargeEthProxy } from '../../contracts/useContract'
 import usePairs from './usePairs'
@@ -17,19 +23,34 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
   const quoteToken = useQuoteToken(selectedPair)
   const baseCapitalToken = useBaseCapitalToken(selectedPair)
   const quoteCapitalToken = useQuoteCapitalToken(selectedPair)
+  const myBaseCapitalBalance = useMyBaseCapitalBalance(selectedPair)
+  const myQuoteCapitalBalance = useMyQuoteCapitalBalance(selectedPair)
 
   const isDeposit = action === ActionType.Deposit
   const isBase = token?.symbol === baseToken?.symbol
-  const isEther = isWETH(token)
 
   const capitalToken = isBase ? baseCapitalToken : quoteCapitalToken
   const payToken = isDeposit ? token : capitalToken
-  const inputAmountBI = isValidNumber(inputAmount) ? parseUnits(inputAmount, token?.decimals) : undefined
-  const approvalAmount = (payToken && inputAmountBI) ? new TokenAmount(payToken, inputAmountBI.mul(100).toString()) : undefined
+  const inputAmountBI = isValidNumber(inputAmount) ? parseUnits(inputAmount, payToken?.decimals) : undefined
 
-  const [approval, approveCallback] = useApproveCallback(approvalAmount, selectedPair)
+  let approvalAmount: CurrencyAmount | undefined = undefined
+  if (payToken && inputAmountBI) {
+    if (isDeposit) {
+      approvalAmount = new TokenAmount(payToken, inputAmountBI.mul(100).toString())
+    } else {
+      const capitalBalance = isBase ? myBaseCapitalBalance : myQuoteCapitalBalance
+      if (capitalBalance) {
+        approvalAmount = new TokenAmount(payToken, capitalBalance.toString())
+      }
+    }
+  }
+
   const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
+  const [approval, approveCallback] = useApproveCallback(
+    approvalAmount,
+    (!isDeposit && (isWETH(baseToken) || isWETH(quoteToken))) ? chargeEthProxyContract?.address : selectedPair
+  )
 
 
   return async () => {
@@ -41,13 +62,13 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
       console.error({ token, baseToken, quoteToken, amountBI: inputAmountBI })
       return
     }
-    if (!(isDeposit && isEther)) {
+    if (!(isDeposit && isWETH(token))) {
       await approveCallback()
     }
 
     console.log('Pool submit', action, inputAmountBI.toString(), displaySymbol(token))
 
-    if (isEther) {
+    if (isWETH(baseToken) || isWETH(quoteToken)) {
       if (!chargeEthProxyContract) {
         return
       }
