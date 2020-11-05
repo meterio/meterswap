@@ -4,7 +4,6 @@ import { BigNumber } from 'ethers'
 import { Token } from '@uniswap/sdk'
 import { useToken } from '../../../hooks/Tokens'
 import { useActiveWeb3React } from '../../../hooks'
-import { TransactionResponse } from '@ethersproject/providers'
 
 /**
  * Swap
@@ -34,12 +33,22 @@ export function useOraclePrice(address: string | undefined): BigNumber | null {
 
 export function useQueryBuyBaseToken(address?: string, amount?: BigNumber | null): BigNumber | null {
   const contract = useCharge(address)
-  return useOnceCallResult(amount ? contract : undefined, 'queryBuyBaseToken', [amount?.toHexString()])
+  const validAmount = amount && amount.gt(0)
+  return useOnceCallResult(
+    validAmount ? contract : undefined,
+    'queryBuyBaseToken',
+    [amount?.toHexString()]
+  )
 }
 
 export function useQuerySellBaseToken(address?: string, amount?: BigNumber | null): BigNumber | null {
   const contract = useCharge(address)
-  return useOnceCallResult(amount ? contract : undefined, 'querySellBaseToken', [amount?.toHexString()])
+  const validAmount = amount && amount.gt(0)
+  return useOnceCallResult(
+    validAmount ? contract : undefined,
+    'querySellBaseToken',
+    [amount?.toHexString()]
+  )
 }
 
 /**

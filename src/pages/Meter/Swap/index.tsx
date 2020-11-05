@@ -4,7 +4,7 @@ import { ButtonPrimary } from '../../../components/Button'
 import ActionTypes from './ActionTypes'
 import Info from './Info'
 import { ActionType } from './constants'
-import { useBaseToken, useQuoteToken } from '../contracts/useChargePair'
+import { useBaseToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/components/CurrencyInputPanel'
 import { BigNumber } from 'ethers'
 import { isValidNumber, tryParseAmount } from '../common/utils'
@@ -26,9 +26,7 @@ export default function Swap() {
   // input panel
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(selectedPair)
-  const quoteToken = useQuoteToken(selectedPair)
-  const { payToken, payAmount } = useExpectedPay(selectedPair, currentAction, tryParseAmount(amount))
-
+  const { payToken, payAmount } = useExpectedPay(selectedPair, currentAction, tryParseAmount(amount, baseToken))
   const { account } = useActiveWeb3React()
   const balance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
   const balanceBI = balance ? BigNumber.from(balance.raw.toString()) : null

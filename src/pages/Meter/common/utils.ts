@@ -10,7 +10,7 @@ export function tryParseBigNumber(value: any): BigNumber | null {
   }
 }
 
-export function tryParseAmount(amount: string, token?: Token | null): BigNumber | null {
+export function tryParseAmount(amount: string, token: Token | null): BigNumber | null {
   return (isValidNumber(amount) && token) ? parseUnits(amount, token.decimals) : null
 }
 

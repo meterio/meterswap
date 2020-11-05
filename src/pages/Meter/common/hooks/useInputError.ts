@@ -20,7 +20,7 @@ export default function(
     return 'Wrong network'
   }
 
-  if (!isValidNumber(inputAmount) || parseFloat(inputAmount) <= 0) {
+  if (!payAmount || payAmount.lte(0)) {
     return 'Enter a number'
   }
 
@@ -28,7 +28,7 @@ export default function(
     return 'Loading...'
   }
 
-  if (!payAmount || payAmount.gt(balance)) {
+  if (payAmount.gt(balance)) {
     return 'Insufficient balance'
   }
 
