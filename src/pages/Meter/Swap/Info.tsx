@@ -74,8 +74,6 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
     actualPrice = expectedQuoteAmount.div(inputBaseAmountBI).mul(BigNumber.from(10).pow(quoteToken.decimals))
   }
 
-  console.log(actualPrice?.toString(), baseToken.decimals, quoteToken.decimals)
-
   return (
     <Panel>
       <Row>
