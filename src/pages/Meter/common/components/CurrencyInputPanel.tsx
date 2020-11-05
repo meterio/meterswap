@@ -168,7 +168,7 @@ export default function CurrencyInputPanel({
         <Items>
           {
             tokens && tokens.map(i => (
-              <Item onClick={() => onClickCurrency(i)} key={i.symbol}>{i.symbol}</Item>
+              <Item onClick={() => onClickCurrency(i)} key={i.symbol}>{displaySymbol(i)}</Item>
             ))
           }
         </Items>

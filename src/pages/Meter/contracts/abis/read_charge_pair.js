@@ -1,7 +1,7 @@
 let ERC20_ABI = require('../../../../constants/abis/erc20.json')
 
 let fs = require('fs')
-let charge_pair = '0xef0A0D7CA3dc2e8B2689d2ed95A3E1d57C0ffe38'
+let charge_pair = '0x26411A2B52C8f3fD330489047992bde860b1f823'
 let abi_file = 'Charge.json'
 
 // provider
@@ -57,6 +57,12 @@ contractInstance.methods._QUOTE_TOKEN_().call({}).then(function(data) {
 
 contractInstance.methods.getOraclePrice().call({}).then(function(data) {
   console.log('getOraclePrice', data)
+}).catch(function(err) {
+  console.log(err)
+})
+
+contractInstance.methods.getWithdrawBasePenalty('500000000000000000').call({}).then(function(data) {
+  console.log('getWithdrawBasePenalty', data)
 }).catch(function(err) {
   console.log(err)
 })

@@ -14,7 +14,8 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { Fraction } from '@uniswap/sdk'
-import { formatBigNumber } from '../common/utils'
+import { displaySymbol, formatBigNumber } from '../common/utils'
+import { BigNumber } from 'ethers'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -50,9 +51,10 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const quoteToken = useQuoteToken(contractAddress)
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
   const payToken = action === ActionType.Buy ? quoteToken : baseToken
-  const buyPayQuoteAmount = useQueryBuyBaseToken(contractAddress, parseUnits(amount, baseToken?.decimals))
-  const sellReceiveQuoteAmount = useQuerySellBaseToken(contractAddress, parseUnits(amount, baseToken?.decimals))
-  const expectedResult = action === ActionType.Buy ? buyPayQuoteAmount : sellReceiveQuoteAmount
+  const inputBaseAmountBI = parseUnits(amount, baseToken?.decimals)
+  const buyPayQuoteAmount = useQueryBuyBaseToken(contractAddress, inputBaseAmountBI)
+  const sellReceiveQuoteAmount = useQuerySellBaseToken(contractAddress, inputBaseAmountBI)
+  const expectedQuoteAmount = action === ActionType.Buy ? buyPayQuoteAmount : sellReceiveQuoteAmount
   const price = useOraclePrice(contractAddress)
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -67,19 +69,24 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
     return null
   }
 
-  console.log(price?.toString(), baseToken.decimals, quoteToken.decimals)
+  let actualPrice = null
+  if (expectedQuoteAmount) {
+    actualPrice = expectedQuoteAmount.div(inputBaseAmountBI).mul(BigNumber.from(10).pow(quoteToken.decimals))
+  }
+
+  console.log(actualPrice?.toString(), baseToken.decimals, quoteToken.decimals)
 
   return (
     <Panel>
       <Row>
-        <div>Balance: {payTokenBalance?.toSignificant(6)} {payToken?.symbol}</div>
+        <div>Balance: {payTokenBalance?.toSignificant(6)} {displaySymbol(payToken)}</div>
       </Row>
       <PriceRow>
         <div>Expect to {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
-        <div>{expectedResult ? formatBigNumber(expectedResult, quoteToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
+        <div>{expectedQuoteAmount ? formatBigNumber(expectedQuoteAmount, quoteToken.decimals, 2) : '-'} {displaySymbol(quoteToken)}</div>
       </PriceRow>
       <Row>
-        <div>1 {baseToken?.symbol} = {price ? formatBigNumber(price, quoteToken.decimals, 2) : '-'} {quoteToken?.symbol}</div>
+        <div>1 {displaySymbol(baseToken)} = {actualPrice ? formatBigNumber(actualPrice, quoteToken.decimals, 2) : '-'} {displaySymbol(quoteToken)}</div>
       </Row>
       <Break />
       <Row>
@@ -93,7 +100,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
               <div>Liquidity Provider
                 Fee({lpFeeRateFormatted ? (parseFloat(lpFeeRateFormatted) * 100).toFixed(2) : '-'}%):
               </div>
-              <div>{lpFeeRateFormatted ? (parseFloat(lpFeeRateFormatted) * parseFloat(amount)).toFixed(2) : '-'} {feeToken?.symbol}</div>
+              <div>{lpFeeRateFormatted ? (parseFloat(lpFeeRateFormatted) * parseFloat(amount)).toFixed(2) : '-'} {displaySymbol(feeToken)}</div>
             </>
             : null
         }
