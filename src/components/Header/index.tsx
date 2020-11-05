@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Logo from '../../assets/svg/logo.svg'
+import Logo2 from '../../assets/images/logo2.png'
 import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
@@ -191,6 +192,9 @@ const Title = styled.a`
 `
 
 const UniIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
@@ -293,7 +297,8 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img width={'24px'} src={isDark ? LogoDark : Logo} alt="logo" />
+            <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{marginRight: '5px'}}/>
+            <img width={'24px'} src={Logo2} alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
