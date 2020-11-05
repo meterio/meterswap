@@ -1,7 +1,6 @@
 import { ActionType } from '../../Pool/constants'
-import { parseUnits } from 'ethers/lib/utils'
 import { CurrencyAmount, Token, TokenAmount } from '@uniswap/sdk'
-import { displaySymbol, isValidNumber, isWETH } from '../utils'
+import { displaySymbol, isWETH, tryParseAmount } from '../utils'
 import { useWalletModalToggle } from '../../../../state/application/hooks'
 import { useTransactionAdder } from '../../../../state/transactions/hooks'
 import {
@@ -31,7 +30,7 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
 
   const capitalToken = isBase ? baseCapitalToken : quoteCapitalToken
   const payToken = isDeposit ? token : capitalToken
-  const inputAmountBI = isValidNumber(inputAmount) ? parseUnits(inputAmount, payToken?.decimals) : undefined
+  const inputAmountBI = tryParseAmount(inputAmount, payToken)
 
   let approvalAmount: CurrencyAmount | undefined = undefined
   if (payToken && inputAmountBI) {

@@ -5,7 +5,11 @@ import { BigNumber } from 'ethers'
 import { isValidNumber } from '../utils'
 import { CONNECT_WALLET } from '../strings'
 
-export default function(token: Token | null, balance: BigNumber | null, inputAmount: string): string | null {
+export default function(
+  token: Token | null,
+  balance: BigNumber | null,
+  inputAmount: string,
+  payAmount: BigNumber | null): string | null {
   const { account, chainId } = useActiveWeb3React()
 
   if (!account) {
@@ -24,8 +28,7 @@ export default function(token: Token | null, balance: BigNumber | null, inputAmo
     return 'Loading...'
   }
 
-  const isInsufficient = parseUnits(inputAmount, token.decimals).gt(balance)
-  if (isInsufficient) {
+  if (!payAmount || payAmount.gt(balance)) {
     return 'Insufficient balance'
   }
 

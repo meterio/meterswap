@@ -32,12 +32,12 @@ export function useOraclePrice(address: string | undefined): BigNumber | null {
   return useOnceCallResult(contract, 'getOraclePrice', [])
 }
 
-export function useQueryBuyBaseToken(address: string | undefined, amount: BigNumber | undefined): BigNumber | null {
+export function useQueryBuyBaseToken(address?: string, amount?: BigNumber | null): BigNumber | null {
   const contract = useCharge(address)
   return useOnceCallResult(amount ? contract : undefined, 'queryBuyBaseToken', [amount?.toHexString()])
 }
 
-export function useQuerySellBaseToken(address: string | undefined, amount: BigNumber | undefined): BigNumber | null {
+export function useQuerySellBaseToken(address?: string, amount?: BigNumber | null): BigNumber | null {
   const contract = useCharge(address)
   return useOnceCallResult(amount ? contract : undefined, 'querySellBaseToken', [amount?.toHexString()])
 }

@@ -1,15 +1,13 @@
 import { ActionType } from '../../Swap/constants'
-import { parseUnits } from 'ethers/lib/utils'
 import { TokenAmount } from '@uniswap/sdk'
-import { displaySymbol, isValidNumber, isWETH } from '../utils'
+import { displaySymbol, isWETH, tryParseAmount } from '../utils'
 import { useWalletModalToggle } from '../../../../state/application/hooks'
 import { useTransactionAdder } from '../../../../state/transactions/hooks'
 import { useBaseToken, useQuoteToken } from '../../contracts/useChargePair'
 import { useApproveCallback } from '../../../../hooks/useApproveCallback'
 import { useCharge, useChargeEthProxy } from '../../contracts/useContract'
 import usePairs from './usePairs'
-import { BigNumber } from 'ethers'
-import useExpectedQuoteAmount from './useExpectedQuoteAmount'
+import { useExpectedPay } from './useSwap'
 
 export default function(action: ActionType, baseAmount: string, isConnectWallet: boolean) {
   const { selectedPair } = usePairs()
@@ -17,21 +15,12 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
   const addTransaction = useTransactionAdder()
   const baseToken = useBaseToken(selectedPair)
   const quoteToken = useQuoteToken(selectedPair)
-  const payToken = action === ActionType.Buy ? quoteToken : baseToken
 
-  const baseAmountBI = isValidNumber(baseAmount) ? parseUnits(baseAmount, baseToken?.decimals) : undefined
-  const expectedQuoteAmount = useExpectedQuoteAmount(selectedPair, action, baseAmountBI)
-  let approveAmount: TokenAmount | undefined = undefined
-  if (payToken) {
-    if (payToken === quoteToken && expectedQuoteAmount) {
-      approveAmount = new TokenAmount(payToken, expectedQuoteAmount.toString())
-    }
-    if (payToken === baseToken && baseAmountBI) {
-      approveAmount = new TokenAmount(payToken, baseAmountBI.toString())
-    }
-  }
+  const baseAmountBI = tryParseAmount(baseAmount, baseToken)
+  const { payToken, payAmount } = useExpectedPay(selectedPair, action, baseAmountBI)
+  const approveTokenAmount = (payToken && payAmount) ? new TokenAmount(payToken, payAmount.toString()) : undefined
 
-  const [approval, approveCallback] = useApproveCallback(approveAmount, selectedPair)
+  const [approval, approveCallback] = useApproveCallback(approveTokenAmount, selectedPair)
   const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
 

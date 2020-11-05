@@ -19,6 +19,7 @@ import useSubmitPool from '../common/hooks/useSubmitPool'
 import { useActiveWeb3React } from '../../../hooks'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { BigNumber } from 'ethers'
+import { tryParseAmount } from '../common/utils'
 
 export default function Pool() {
   const { pairs, selectedPair, onSelectPair } = usePairs()
@@ -45,7 +46,7 @@ export default function Pool() {
     (balance ? BigNumber.from(balance.raw.toString()) : null)
     :
     (isBase ? myBaseCapitalBalance : myQuoteCapitalBalance)
-  const inputError = useInputError(currentToken, limitBalance, amount)
+  const inputError = useInputError(currentToken, limitBalance, amount, tryParseAmount(amount))
 
   // submit
   const submit = useSubmitPool(currentAction, amount, currentToken, inputError === CONNECT_WALLET)

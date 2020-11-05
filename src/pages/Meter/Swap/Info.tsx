@@ -16,7 +16,7 @@ import { useActiveWeb3React } from '../../../hooks'
 import { Fraction } from '@uniswap/sdk'
 import { displaySymbol, formatBigNumber, isValidNumber } from '../common/utils'
 import { BigNumber } from 'ethers'
-import useExpectedQuoteAmount from '../common/hooks/useExpectedQuoteAmount'
+import { useExpectedQuoteAmount } from '../common/hooks/useSwap'
 
 const Panel = styled.div`
   margin-bottom: 1rem;

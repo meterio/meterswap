@@ -1,5 +1,5 @@
-import { BigNumber } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { BigNumber, BigNumberish } from 'ethers'
+import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { Token } from '@uniswap/sdk'
 
 export function tryParseBigNumber(value: any): BigNumber | null {
@@ -8,6 +8,10 @@ export function tryParseBigNumber(value: any): BigNumber | null {
   } catch (e) {
     return null
   }
+}
+
+export function tryParseAmount(amount: string, token?: Token | null): BigNumber | null {
+  return (isValidNumber(amount) && token) ? parseUnits(amount, token.decimals) : null
 }
 
 export function formatBigNumber(value: BigNumber, decimals: number, digits: number = 4): string {
