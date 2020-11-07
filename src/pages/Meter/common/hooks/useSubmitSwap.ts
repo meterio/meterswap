@@ -8,19 +8,22 @@ import { useApproveCallback } from '../../../../hooks/useApproveCallback'
 import { useCharge, useChargeEthProxy } from '../../contracts/useContract'
 import usePairs from './usePairs'
 import { useExpectedPay } from './useSwap'
+import { useCurrencyBalance } from '../../../../state/wallet/hooks'
+import { useActiveWeb3React } from '../../../../hooks'
 
 export default function(action: ActionType, baseAmount: string, isConnectWallet: boolean) {
   const { selectedPair } = usePairs()
+  const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const addTransaction = useTransactionAdder()
   const baseToken = useBaseToken(selectedPair)
   const quoteToken = useQuoteToken(selectedPair)
 
   const baseAmountBI = tryParseAmount(baseAmount, baseToken)
-  const { payToken, payAmount } = useExpectedPay(selectedPair, action, baseAmountBI)
-  const approveTokenAmount = (payToken && payAmount) ? new TokenAmount(payToken, payAmount.toString()) : undefined
+  const { payToken } = useExpectedPay(selectedPair, action, baseAmountBI)
+  const totalBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
-  const [approval, approveCallback] = useApproveCallback(approveTokenAmount, selectedPair)
+  const [approval, approveCallback] = useApproveCallback(totalBalance, selectedPair)
   const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
 
@@ -30,6 +33,7 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
       return
     }
     if (!isWETH(payToken)) {
+      console.log('approve', totalBalance?.raw.toString(), payToken?.symbol)
       await approveCallback()
     }
 
