@@ -1,0 +1,48 @@
+import { ChainId, Token } from '@uniswap/sdk'
+import { BigNumber } from 'ethers'
+import { useActiveWeb3React } from '../../../../hooks'
+import { CONNECT_WALLET } from '../strings'
+import { ActionType } from '../../Pool/constants'
+import { useCurrencyBalance } from '../../../../state/wallet/hooks'
+import { isValidNumber, tryParseAmount } from '../utils'
+import { parseEther } from 'ethers/lib/utils'
+
+export function useInputError(
+  contractAddress: string | undefined,
+  currentAction: ActionType,
+  currentToken: Token | null,
+  inputTokenAmount: string): string | null {
+
+  const { account, chainId } = useActiveWeb3React()
+  // const baseToken = useBaseToken(contractAddress)
+  const balance = useCurrencyBalance(account ?? undefined, currentToken ?? undefined)
+  const balanceBI = balance ? BigNumber.from(balance.raw.toString()) : null
+  // const myBaseCapitalBalance = useMyBaseCapitalBalance(contractAddress)
+  // const myQuoteCapitalBalance = useMyQuoteCapitalBalance(contractAddress)
+  // const isBase = currentToken?.symbol === baseToken?.symbol
+  const inputTokenAmountBI = tryParseAmount(inputTokenAmount, currentToken?.decimals)
+
+  // TODO: Withdraw should compare with token amount instead of LP amount
+
+  if (!account) {
+    return CONNECT_WALLET
+  }
+
+  if (chainId !== ChainId.RINKEBY) {
+    return 'Wrong network'
+  }
+
+  if (!isValidNumber(inputTokenAmount) || parseEther(inputTokenAmount).lte(0)) {
+    return 'Enter a number'
+  }
+
+  if (!balanceBI || !inputTokenAmountBI) {
+    return 'Loading...'
+  }
+
+  if (currentAction === ActionType.Deposit && inputTokenAmountBI.gt(balanceBI)) {
+    return 'Insufficient balance'
+  }
+
+  return null
+}

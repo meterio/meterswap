@@ -12,7 +12,7 @@ import {
   useQuoteToken
 } from '../contracts/useChargePair'
 import { Token } from '@uniswap/sdk'
-import useInputError from '../common/hooks/useInputError'
+import { useInputError } from '../common/hooks/usePool'
 import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'
 import useSubmitPool from '../common/hooks/useSubmitPool'
@@ -36,17 +36,7 @@ export default function Pool() {
     setCurrentToken(baseToken)
   }, [baseToken?.symbol])
 
-  const isBase = currentToken?.symbol === baseToken?.symbol
-
-  const { account } = useActiveWeb3React()
-  const balance = useCurrencyBalance(account ?? undefined, currentToken ?? undefined)
-  const myBaseCapitalBalance = useMyBaseCapitalBalance(selectedPair)
-  const myQuoteCapitalBalance = useMyQuoteCapitalBalance(selectedPair)
-  const limitBalance = currentAction === ActionType.Deposit ?
-    (balance ? BigNumber.from(balance.raw.toString()) : null)
-    :
-    (isBase ? myBaseCapitalBalance : myQuoteCapitalBalance)
-  const inputError = useInputError(currentToken, limitBalance, amount, tryParseAmount(amount, currentToken?.decimals))
+  const inputError = useInputError(selectedPair, currentAction, currentToken, amount)
 
   // submit
   const submit = useSubmitPool(currentAction, amount, currentToken, inputError === CONNECT_WALLET)
