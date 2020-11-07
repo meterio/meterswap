@@ -297,16 +297,22 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{marginRight: '5px'}}/>
+            <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{ marginRight: '5px' }} />
             <img width={'24px'} src={Logo2} alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
+          <StyledNavLink to={'/meter/swap'}>
+            Meter{t('swap')}
+          </StyledNavLink>
+          <StyledNavLink to={'/meter/pool'}>
+            Meter{t('pool')}
+          </StyledNavLink>
           <StyledNavLink to={'/swap'}>
-            {t('swap')}
+            Uni{t('swap')}
           </StyledNavLink>
           <StyledNavLink to={'/pool'}>
-            {t('pool')}
+            Uni{t('pool')}
           </StyledNavLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>

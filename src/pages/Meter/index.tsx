@@ -8,7 +8,7 @@ import Pool from './Pool'
 export default function() {
   const match = useRouteMatch()
   console.log('useRouteMatch match.path:', match.path)
-  const currentTab = match.path.slice(1) === 'swap' ? 'swap' : 'pool'
+  const currentTab = match.path.includes('swap') ? 'swap' : 'pool'
 
   return (
     <AppBody>
@@ -16,7 +16,7 @@ export default function() {
       {
         {
           'swap': <Swap />,
-          'pool': <Pool />,
+          'pool': <Pool />
         }[currentTab]
       }
     </AppBody>
