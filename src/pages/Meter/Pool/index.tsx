@@ -34,7 +34,7 @@ export default function Pool() {
   const [currentToken, setCurrentToken] = useState<Token | null>(null)
   useEffect(() => {
     setCurrentToken(baseToken)
-  }, [baseToken])
+  }, [baseToken?.symbol])
 
   const isBase = currentToken?.symbol === baseToken?.symbol
 

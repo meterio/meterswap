@@ -67,7 +67,7 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
 
     console.log('Pool submit', action, inputAmountBI.toString(), displaySymbol(token))
 
-    if (isWETH(baseToken) || isWETH(quoteToken)) {
+    if (isWETH(token)) {
       if (!chargeEthProxyContract) {
         return
       }
@@ -77,7 +77,7 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
       const response = await method(
         inputAmountBI,
         isBase ? quoteToken.address : baseToken.address,
-        { value: isDeposit ? inputAmountBI : undefined, gasLimit: 350000 })
+        { value: (isDeposit && isWETH(payToken)) ? inputAmountBI : undefined, gasLimit: 350000 })
       addTransaction(response, { summary: `${action} ${displaySymbol(token)}` })
     } else {
       if (!chargeContract) {
