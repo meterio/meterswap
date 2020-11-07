@@ -1,7 +1,7 @@
 let ERC20_ABI = require('../../../../constants/abis/erc20.json')
 
 let fs = require('fs')
-let charge_pair = '0x26411A2B52C8f3fD330489047992bde860b1f823'
+let charge_pair = '0x2f4ED8Fa1BDD125651a7a9032E73C17BfB0e1C05'
 let abi_file = 'Charge.json'
 
 // provider
