@@ -30,7 +30,7 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
 
   const capitalToken = isBase ? baseCapitalToken : quoteCapitalToken
   const payToken = isDeposit ? token : capitalToken
-  const inputAmountBI = tryParseAmount(inputAmount, payToken)
+  const inputAmountBI = tryParseAmount(inputAmount, payToken?.decimals)
 
   let approvalAmount: CurrencyAmount | undefined = undefined
   if (payToken && inputAmountBI) {

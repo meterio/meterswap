@@ -2,7 +2,7 @@ import { BigNumber, BigNumberish } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { Token } from '@uniswap/sdk'
 
-export function tryParseBigNumber(value: any): BigNumber | null {
+export function tryParseToBigNumber(value: any): BigNumber | null {
   try {
     return BigNumber.from(value)
   } catch (e) {
@@ -10,8 +10,8 @@ export function tryParseBigNumber(value: any): BigNumber | null {
   }
 }
 
-export function tryParseAmount(amount: string, token: Token | null): BigNumber | null {
-  return (isValidNumber(amount) && token) ? parseUnits(amount, token.decimals) : null
+export function tryParseAmount(amount: string, decimals?: number): BigNumber | null {
+  return isValidNumber(amount) ? parseUnits(amount, decimals) : null
 }
 
 export function formatBigNumber(value: BigNumber, decimals: number, digits: number = 4): string {

@@ -1,8 +1,6 @@
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, ETHER, Token } from '@uniswap/sdk'
 import { useActiveWeb3React } from '../../../../hooks'
-import { parseEther, parseUnits } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
-import { isValidNumber } from '../utils'
 import { CONNECT_WALLET } from '../strings'
 
 export default function(
@@ -34,3 +32,4 @@ export default function(
 
   return null
 }
+

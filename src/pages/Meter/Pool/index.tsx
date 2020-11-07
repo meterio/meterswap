@@ -46,7 +46,7 @@ export default function Pool() {
     (balance ? BigNumber.from(balance.raw.toString()) : null)
     :
     (isBase ? myBaseCapitalBalance : myQuoteCapitalBalance)
-  const inputError = useInputError(currentToken, limitBalance, amount, tryParseAmount(amount, currentToken))
+  const inputError = useInputError(currentToken, limitBalance, amount, tryParseAmount(amount, currentToken?.decimals))
 
   // submit
   const submit = useSubmitPool(currentAction, amount, currentToken, inputError === CONNECT_WALLET)

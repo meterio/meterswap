@@ -14,9 +14,9 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import { Fraction } from '@uniswap/sdk'
-import { displaySymbol, formatBigNumber, isValidNumber } from '../common/utils'
+import { displaySymbol, formatBigNumber, isValidNumber, tryParseAmount, tryParseToBigNumber } from '../common/utils'
 import { BigNumber } from 'ethers'
-import { useExpectedQuoteAmount } from '../common/hooks/useSwap'
+import { useExpectedQuoteAmount, useInputError } from '../common/hooks/useSwap'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -51,7 +51,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const quoteToken = useQuoteToken(contractAddress)
   const feeToken = action === ActionType.Buy ? baseToken : quoteToken
   const payToken = action === ActionType.Buy ? quoteToken : baseToken
-  const inputBaseAmountBI = isValidNumber(amount) ? parseUnits(amount, baseToken?.decimals) : BigNumber.from(0)
+  const inputBaseAmountBI = tryParseAmount(amount, baseToken?.decimals)
   const expectedQuoteAmount = useExpectedQuoteAmount(contractAddress, action, inputBaseAmountBI)
 
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -67,7 +67,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   }
 
   let actualPrice = null
-  if (expectedQuoteAmount) {
+  if (expectedQuoteAmount && inputBaseAmountBI) {
     actualPrice = expectedQuoteAmount.div(inputBaseAmountBI).mul(BigNumber.from(10).pow(quoteToken.decimals))
   }
 

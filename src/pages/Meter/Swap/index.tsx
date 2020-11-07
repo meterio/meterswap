@@ -8,13 +8,12 @@ import { useBaseToken } from '../contracts/useChargePair'
 import CurrencyInputPanel from '../common/components/CurrencyInputPanel'
 import { BigNumber } from 'ethers'
 import { isValidNumber, tryParseAmount } from '../common/utils'
-import useInputError from '../common/hooks/useInputError'
 import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'
 import { useCurrencyBalance } from '../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../hooks'
 import useSubmitSwap from '../common/hooks/useSubmitSwap'
-import { useExpectedPay } from '../common/hooks/useSwap'
+import { useInputError } from '../common/hooks/useSwap'
 
 export default function Swap() {
   // pair
@@ -26,11 +25,7 @@ export default function Swap() {
   // input panel
   const [amount, setAmount] = useState('')
   const baseToken = useBaseToken(selectedPair)
-  const { payToken, payAmount } = useExpectedPay(selectedPair, currentAction, tryParseAmount(amount, baseToken))
-  const { account } = useActiveWeb3React()
-  const balance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
-  const balanceBI = balance ? BigNumber.from(balance.raw.toString()) : null
-  const inputError = useInputError(payToken, balanceBI, amount, payAmount)
+  const inputError = useInputError(selectedPair, currentAction, amount)
 
   // submit
   const submit = useSubmitSwap(currentAction, amount, inputError === CONNECT_WALLET)

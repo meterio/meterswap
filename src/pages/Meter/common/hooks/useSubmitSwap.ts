@@ -7,7 +7,7 @@ import { useBaseToken, useQuoteToken } from '../../contracts/useChargePair'
 import { useApproveCallback } from '../../../../hooks/useApproveCallback'
 import { useCharge, useChargeEthProxy } from '../../contracts/useContract'
 import usePairs from './usePairs'
-import { useExpectedPay } from './useSwap'
+import { useExpected } from './useSwap'
 import { useCurrencyBalance } from '../../../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../../../hooks'
 
@@ -19,8 +19,8 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
   const baseToken = useBaseToken(selectedPair)
   const quoteToken = useQuoteToken(selectedPair)
 
-  const baseAmountBI = tryParseAmount(baseAmount, baseToken)
-  const { payToken } = useExpectedPay(selectedPair, action, baseAmountBI)
+  const baseAmountBI = tryParseAmount(baseAmount, baseToken?.decimals)
+  const { payToken } = useExpected(selectedPair, action, baseAmountBI)
   const totalBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
   const [approval, approveCallback] = useApproveCallback(totalBalance, selectedPair)
