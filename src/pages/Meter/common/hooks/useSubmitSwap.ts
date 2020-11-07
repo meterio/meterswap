@@ -37,39 +37,36 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
       await approveCallback()
     }
 
-    if (!baseToken || !quoteToken) {
+    if (!baseToken || !quoteToken || !baseAmountBI) {
       return
     }
+    console.log(`Swap submit: ${action} ${baseToken.symbol}`, baseAmountBI.toString())
+
 
     if (isWETH(baseToken) || isWETH(quoteToken)) {
-      if (!chargeEthProxyContract || !baseAmountBI) {
+      if (!chargeEthProxyContract) {
         return
       }
-
-      console.log(`Swap submit: ${action} ${baseToken.symbol}`, baseAmountBI.toString())
-
       const method = action === ActionType.Buy ?
         (isWETH(baseToken) ? chargeEthProxyContract.buyEthWithToken : chargeEthProxyContract.buyTokenWithEth) :
         (isWETH(baseToken) ? chargeEthProxyContract.sellEthToToken : chargeEthProxyContract.sellTokenToEth)
-      const response = await method(
-        isWETH(baseToken) ? quoteToken.address : baseToken,
-        baseAmountBI,
-        action === ActionType.Buy ? baseAmountBI.mul(2) : '0x00',
-        { value: isWETH(payToken) ? baseAmountBI : undefined, gasLimit: 350000 })
+
+      const address = isWETH(baseToken) ? quoteToken.address : baseToken
+      const ethAmount = baseAmountBI
+      const limitAmount = action === ActionType.Buy ? baseAmountBI.mul(2) : '0x00'
+      const options = { value: isWETH(payToken) ? baseAmountBI : undefined, gasLimit: 350000 }
+      const response = await method(address, ethAmount, limitAmount, options)
       addTransaction(response, { summary: `${action} ${displaySymbol(baseToken)}` })
     } else {
-      if (!chargeContract || !baseAmountBI) {
+      if (!chargeContract) {
         return
       }
-
-      console.log(`Swap submit: ${action} ${baseToken.symbol}`, baseAmountBI.toString())
-
       const method = action === ActionType.Buy ? chargeContract.buyBaseToken : chargeContract.sellBaseToken
-      const response = await method(
-        baseAmountBI,
-        action === ActionType.Buy ? baseAmountBI.mul(10000) : '0x00',
-        '0x',
-        { gasLimit: 350000 })
+      const baseAmount = baseAmountBI
+      const limitQuoteAmount = action === ActionType.Buy ? baseAmountBI.mul(10000) : '0x00'
+      const data = '0x'
+      const options = { gasLimit: 350000 }
+      const response = await method(baseAmount, limitQuoteAmount, data, options)
       addTransaction(response, { summary: `${action} ${displaySymbol(baseToken)}` })
     }
   }
