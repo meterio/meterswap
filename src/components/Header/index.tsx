@@ -311,9 +311,9 @@ export default function Header() {
           <StyledNavLink to={'/swap'}>
             Uni{t('swap')}
           </StyledNavLink>
-          <StyledNavLink to={'/pool'}>
-            Uni{t('pool')}
-          </StyledNavLink>
+          <StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>
+            Uni{t('pool')} <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
           <StyledExternalLink id={`stake-nav-link`} href={'https://happy-grass-0af584900.azurestaticapps.net/'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
