@@ -42,10 +42,10 @@ export default function({ currentTab }: { currentTab: string }) {
   const history = useHistory()
   return (
     <Tabs>
-      <Tab id={`swap-nav-link`} isActive={currentTab === 'swap'} onClick={() => history.push('/swap')}>
+      <Tab isActive={currentTab === 'swap'} onClick={() => history.push('/meter/swap')}>
         {t('swap')}
       </Tab>
-      <Tab id={`pool-nav-link`} isActive={currentTab === 'pool'} onClick={() => history.push('/pool')}>
+      <Tab isActive={currentTab === 'pool'} onClick={() => history.push('/meter/pool')}>
         {t('pool')}
       </Tab>
     </Tabs>

@@ -6,18 +6,18 @@ import Swap from './Swap'
 import Pool from './Pool'
 
 export default function() {
-  const match = useRouteMatch()
-  console.log('useRouteMatch match.path:', match.path)
-  const currentTab = match.path.includes('swap') ? 'swap' : 'pool'
+  const match = useRouteMatch<{ tab: string }>()
+  console.log('useRouteMatch match', match)
+  const currentTab: string = match.params['tab'] ?? 'swap'
 
   return (
     <AppBody>
       <Tabs currentTab={currentTab} />
       {
-        {
-          'swap': <Swap />,
-          'pool': <Pool />
-        }[currentTab]
+        currentTab === 'swap' && <Swap />
+      }
+      {
+        currentTab === 'pool' && <Pool />
       }
     </AppBody>
   )
