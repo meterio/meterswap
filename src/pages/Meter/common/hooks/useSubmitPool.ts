@@ -47,8 +47,7 @@ export default function(action: ActionType, inputAmount: string, token: Token | 
   const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
   const [approval, approveCallback] = useApproveCallback(
-    approvalAmount,
-    (!isDeposit && (isWETH(baseToken) || isWETH(quoteToken))) ? chargeEthProxyContract?.address : selectedPair
+    approvalAmount, isWETH(token) ? chargeEthProxyContract?.address : selectedPair
   )
 
 
