@@ -24,9 +24,10 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
   const { payToken, receiveToken, payAmount, receiveAmount } = useExpected(selectedPair, action, baseAmountBI)
   const totalBalance = useCurrencyBalance(account ?? undefined, payToken ?? undefined)
 
-  const [approval, approveCallback] = useApproveCallback(totalBalance, selectedPair)
-  const chargeContract = useCharge(selectedPair, true)
   const chargeEthProxyContract = useChargeEthProxy(true)
+  const isEthProxy = isWETH(baseToken) || isWETH(quoteToken)
+  const [approval, approveCallback] = useApproveCallback(totalBalance, isEthProxy ? chargeEthProxyContract?.address : selectedPair)
+  const chargeContract = useCharge(selectedPair, true)
 
   const [allowedSlippage] = useUserSlippageTolerance()
   const maxPayQuoteAmount = payAmount?.mul(10000 + allowedSlippage).div(10000)
@@ -49,7 +50,7 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
     console.log('approve', totalBalance?.raw.toString(), payToken?.symbol)
     await approveCallback()
 
-    if (isWETH(baseToken) || isWETH(quoteToken)) {
+    if (isEthProxy) {
       if (!chargeEthProxyContract) {
         return
       }
