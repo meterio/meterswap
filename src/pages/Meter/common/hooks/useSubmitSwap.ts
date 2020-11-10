@@ -60,9 +60,8 @@ export default function(action: ActionType, baseAmount: string, isConnectWallet:
 
       const address = isWETH(baseToken) ? quoteToken.address : baseToken
       const ethAmount = baseAmountBI
-      const limitAmount = action === ActionType.Buy ? baseAmountBI.mul(100) : '0x00'
       const options = { value: isWETH(payToken) ? baseAmountBI : undefined, gasLimit: 350000 }
-      const response = await method(address, ethAmount, limitAmount, options)
+      const response = await method(address, ethAmount, limitQuoteAmount, options)
       addTransaction(response, { summary: `${action} ${displaySymbol(baseToken)}` })
     } else {
       if (!chargeContract) {
