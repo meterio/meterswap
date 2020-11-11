@@ -53,7 +53,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const payToken = action === ActionType.Buy ? quoteToken : baseToken
   const inputBaseAmountBI = tryParseAmount(amount, baseToken?.decimals)
   const expectedQuoteAmount = useExpectedQuoteAmount(contractAddress, action, inputBaseAmountBI)
-  const oraclePrice = useOraclePrice(contractAddress)
+  const oracleQuoteAmount = useExpectedQuoteAmount(contractAddress, action, BigNumber.from(1))
 
   const [allowedSlippage] = useUserSlippageTolerance()
   const { account } = useActiveWeb3React()
@@ -68,10 +68,13 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   }
 
   let actualPrice = null
-  if (expectedQuoteAmount && inputBaseAmountBI) {
-    actualPrice = expectedQuoteAmount.mul(BigNumber.from(10).pow(quoteToken.decimals)).div(inputBaseAmountBI)
+  let oraclePrice = null
+  if (expectedQuoteAmount && oracleQuoteAmount && inputBaseAmountBI) {
+    actualPrice = expectedQuoteAmount.mul(BigNumber.from(10).pow(baseToken.decimals)).div(inputBaseAmountBI)
+    oraclePrice = oracleQuoteAmount.mul(BigNumber.from(10).pow(quoteToken.decimals))
+    console.log(actualPrice.toString(), oraclePrice.toString())
   }
-  const priceImpact = (actualPrice && oraclePrice) ?
+  const priceImpact = (actualPrice && oraclePrice && oracleQuoteAmount) ?
     actualPrice.sub(oraclePrice).mul(10000).div(oraclePrice) : null
 
   return (
