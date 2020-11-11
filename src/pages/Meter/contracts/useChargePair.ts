@@ -89,3 +89,23 @@ export function useQuoteCapitalToken(address: string | undefined): Token | null 
   const tokenAddress = useOnceCallResult(contract, '_QUOTE_CAPITAL_TOKEN_', [])
   return useToken(tokenAddress) ?? null
 }
+
+export function useTotalBaseCapital(address: string | undefined): BigNumber | null {
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'getTotalBaseCapital', [])
+}
+
+export function useTotalQuoteCapital(address: string | undefined): BigNumber | null {
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'getTotalQuoteCapital', [])
+}
+
+
+export function useExpectedTarget(address: string | undefined): { baseTarget: BigNumber | null, quoteTarget: BigNumber | null } {
+  const contract = useCharge(address)
+  const result = useOnceCallResult(contract, 'getExpectedTarget', [])
+  return {
+    baseTarget: result ? result.baseTarget : null,
+    quoteTarget: result ? result.quoteTarget : null
+  }
+}

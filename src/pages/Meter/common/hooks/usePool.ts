@@ -6,6 +6,7 @@ import { ActionType } from '../../Pool/constants'
 import { useCurrencyBalance } from '../../../../state/wallet/hooks'
 import { isValidNumber, tryParseAmount } from '../utils'
 import { parseEther } from 'ethers/lib/utils'
+import { useExpectedTarget, useTotalBaseCapital, useTotalQuoteCapital } from '../../contracts/useChargePair'
 
 export function useInputError(
   contractAddress: string | undefined,
@@ -45,4 +46,19 @@ export function useInputError(
   }
 
   return null
+}
+
+export function useEstimateTokenAmount(
+  contractAddress: string | undefined,
+  baseCapitalAmount: BigNumber | null,
+  quoteCapitalAmount: BigNumber | null)
+  : { base: BigNumber | null, quote: BigNumber | null } {
+  // requireBaseCapital / totalBaseCapital  * baseTarget
+  const totalBaseCapital = useTotalBaseCapital(contractAddress)
+  const totalQuoteCapital = useTotalQuoteCapital(contractAddress)
+  const { baseTarget, quoteTarget } = useExpectedTarget(contractAddress)
+  return {
+    base: totalBaseCapital && baseCapitalAmount && baseTarget && baseCapitalAmount.mul(baseTarget).div(totalBaseCapital),
+    quote: totalQuoteCapital && quoteCapitalAmount && quoteTarget && quoteCapitalAmount.mul(quoteTarget).div(totalQuoteCapital)
+  }
 }

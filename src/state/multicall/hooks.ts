@@ -262,7 +262,10 @@ export function useOnceCallResult(
 ) {
   const callState = useSingleCallResult(contract, methodName, inputs, NEVER_RELOAD)
   console.debug('useOnceCallResult', methodName, callState)
-  return callState.result ? callState.result[0] : null
+  if (!callState.result) {
+    return null
+  }
+  return callState.result.length === 1 ? callState.result[0] : callState.result
 }
 
 export function useWatchCallResult(

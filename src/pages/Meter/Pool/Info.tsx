@@ -13,6 +13,7 @@ import { formatUnits } from 'ethers/lib/utils'
 import { TextWrapper } from '../../../theme'
 import { Token } from '@uniswap/sdk'
 import { displaySymbol, formatBigNumber } from '../common/utils'
+import { useEstimateTokenAmount } from '../common/hooks/usePool'
 
 const Panel = styled.div`
   margin-bottom: 1rem;
@@ -43,6 +44,7 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
   const quoteBalance = useQuoteBalance(contractAddress)
   const myBaseCapitalBalance = useMyBaseCapitalBalance(contractAddress)
   const myQuoteCapitalBalance = useMyQuoteCapitalBalance(contractAddress)
+  const { base, quote } = useEstimateTokenAmount(contractAddress, myBaseCapitalBalance, myQuoteCapitalBalance)
 
   if (!baseToken || !quoteToken) {
     return null
@@ -56,10 +58,10 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>My Liquidity</TextWrapper>
           <Row fontSize={16} color={'text1'} active={isBase}>
-            {displaySymbol(baseToken)}(LP): {myBaseCapitalBalance ? formatBigNumber(myBaseCapitalBalance, baseToken.decimals) : '-'}
+            {displaySymbol(baseToken)}: {base ? formatBigNumber(base, baseToken.decimals) : '-'}
           </Row>
           <Row fontSize={16} color={'text1'} active={!isBase}>
-            {displaySymbol(quoteToken)}(LP): {myQuoteCapitalBalance ? formatBigNumber(myQuoteCapitalBalance, quoteToken.decimals) : '-'}
+            {displaySymbol(quoteToken)}: {quote ? formatBigNumber(quote, quoteToken.decimals) : '-'}
           </Row>
         </Section>
         <Section>
