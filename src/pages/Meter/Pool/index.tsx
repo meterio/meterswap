@@ -56,7 +56,12 @@ export default function Pool() {
         setToken={setCurrentToken}
         tokens={baseToken && quoteToken ? [baseToken, quoteToken] : []}
       />
-      {selectedPair && currentToken && <Info contractAddress={selectedPair} currentToken={currentToken} />}
+      {selectedPair && currentToken &&
+      <Info
+        action={currentAction}
+        contractAddress={selectedPair}
+        currentToken={currentToken}
+        amount={tryParseAmount(amount, currentToken.decimals)} />}
       <ButtonPrimary disabled={inputError !== null && inputError !== CONNECT_WALLET} onClick={submit}>
         {inputError ?? 'Submit'}
       </ButtonPrimary>

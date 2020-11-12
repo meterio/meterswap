@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { BigNumber } from 'ethers'
 import { ActionType } from './constants'
 import {
   useBaseBalance,
@@ -7,9 +8,10 @@ import {
   useMyBaseCapitalBalance,
   useMyQuoteCapitalBalance,
   useQuoteBalance,
-  useQuoteToken
+  useQuoteToken,
+  useWithdrawBasePenalty,
+  useWithdrawQuotePenalty
 } from '../contracts/useChargePair'
-import { formatUnits } from 'ethers/lib/utils'
 import { TextWrapper } from '../../../theme'
 import { Token } from '@uniswap/sdk'
 import { displaySymbol, formatBigNumber } from '../common/utils'
@@ -37,7 +39,13 @@ const Row = styled(TextWrapper)<{ active: Boolean }>`
   font-weight: ${({ active }) => active ? 'bold' : 'normal'};
 `
 
-export default function({ contractAddress, currentToken }: { contractAddress: string, currentToken: Token }) {
+const FeeText = styled(TextWrapper)`
+  text-align: right;
+  display: block;
+  margin-bottom: 0.5rem !important;
+`
+
+export default function({ action, contractAddress, currentToken, amount }: { action: ActionType, contractAddress: string, currentToken: Token, amount: BigNumber | null }) {
   const baseToken = useBaseToken(contractAddress)
   const quoteToken = useQuoteToken(contractAddress)
   const baseBalance = useBaseBalance(contractAddress)
@@ -45,6 +53,9 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
   const myBaseCapitalBalance = useMyBaseCapitalBalance(contractAddress)
   const myQuoteCapitalBalance = useMyQuoteCapitalBalance(contractAddress)
   const { base, quote } = useEstimateTokenAmount(contractAddress, myBaseCapitalBalance, myQuoteCapitalBalance)
+  const basePenalty = useWithdrawBasePenalty(contractAddress, amount)
+  const quotePenalty = useWithdrawQuotePenalty(contractAddress, amount)
+  console.log(basePenalty, quotePenalty)
 
   if (!baseToken || !quoteToken) {
     return null
@@ -54,6 +65,15 @@ export default function({ contractAddress, currentToken }: { contractAddress: st
 
   return (
     <>
+      {action === ActionType.Withdraw && basePenalty && quotePenalty &&
+      <FeeText fontSize={14} color={'text2'}>
+        Withdraw fee:&nbsp;
+        {
+          formatBigNumber(isBase ? basePenalty : quotePenalty, currentToken.decimals, 4)
+        }
+        &nbsp;{currentToken.symbol}
+      </FeeText>
+      }
       <Panel>
         <Section>
           <TextWrapper fontSize={14} color={'text2'}>My Liquidity</TextWrapper>

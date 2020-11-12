@@ -77,7 +77,6 @@ export function useMyQuoteCapitalBalance(address: string | undefined): BigNumber
   return useWatchCallResult(contract, 'getQuoteCapitalBalanceOf', [account || undefined]) as BigNumber
 }
 
-
 export function useBaseCapitalToken(address: string | undefined): Token | null {
   const contract = useCharge(address)
   const tokenAddress = useOnceCallResult(contract, '_BASE_CAPITAL_TOKEN_', [])
@@ -108,4 +107,14 @@ export function useExpectedTarget(address: string | undefined): { baseTarget: Bi
     baseTarget: result ? result.baseTarget : null,
     quoteTarget: result ? result.quoteTarget : null
   }
+}
+
+export function useWithdrawBasePenalty(address: string | undefined, amount: BigNumber | null): BigNumber | null {
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'getWithdrawBasePenalty', [amount?.toHexString()])
+}
+
+export function useWithdrawQuotePenalty(address: string | undefined, amount: BigNumber | null): BigNumber | null {
+  const contract = useCharge(address)
+  return useOnceCallResult(contract, 'getWithdrawQuotePenalty', [amount?.toHexString()])
 }
