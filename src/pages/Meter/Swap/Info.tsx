@@ -54,6 +54,7 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
   const inputBaseAmountBI = tryParseAmount(amount, baseToken?.decimals)
   const expectedQuoteAmount = useExpectedQuoteAmount(contractAddress, action, inputBaseAmountBI)
   const oracleQuoteAmount = useExpectedQuoteAmount(contractAddress, action, BigNumber.from(1))
+  const targetPrice = useOraclePrice(contractAddress)
 
   const [allowedSlippage] = useUserSlippageTolerance()
   const { account } = useActiveWeb3React()
@@ -79,15 +80,16 @@ export default function({ action, contractAddress, amount }: { action: ActionTyp
 
   return (
     <Panel>
-      <Row>
-        <div>Balance: {payTokenBalance?.toSignificant(6)} {displaySymbol(payToken)}</div>
-      </Row>
       <PriceRow>
         <div>Expect to {action === ActionType.Buy ? 'Pay' : 'Receive'}:</div>
         <div>{expectedQuoteAmount ? formatBigNumber(expectedQuoteAmount, quoteToken.decimals, 2) : '-'} {displaySymbol(quoteToken)}</div>
       </PriceRow>
       <Row>
         <div>1 {displaySymbol(baseToken)} = {actualPrice ? formatBigNumber(actualPrice, quoteToken.decimals, 2) : '-'} {displaySymbol(quoteToken)}</div>
+        <div>Balance: {payTokenBalance?.toSignificant(6)} {displaySymbol(payToken)}</div>
+      </Row>
+      <Row>
+        <div>Target Price: 1 {displaySymbol(baseToken)} = {targetPrice && payToken ? formatBigNumber(targetPrice, payToken.decimals) : '-'} {displaySymbol(quoteToken)}</div>
         <div>Price Impact: {priceImpact ? formatBigNumber(priceImpact, 2) : '-'}%</div>
       </Row>
       <Break />
