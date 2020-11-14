@@ -204,40 +204,40 @@ export default function SettingsTab() {
               deadline={ttl}
               setDeadline={setTtl}
             />
-            <Text fontWeight={600} fontSize={14}>
-              Interface Settings
-            </Text>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Toggle Expert Mode
-                </TYPE.black>
-                <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
-              </RowFixed>
-              <Toggle
-                id="toggle-expert-mode-button"
-                isActive={expertMode}
-                toggle={
-                  expertMode
-                    ? () => {
-                        toggleExpertMode()
-                        setShowConfirmation(false)
-                      }
-                    : () => {
-                        toggle()
-                        setShowConfirmation(true)
-                      }
-                }
-              />
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Toggle Dark Mode
-                </TYPE.black>
-              </RowFixed>
-              <Toggle isActive={darkMode} toggle={toggleDarkMode} />
-            </RowBetween>
+            {/*<Text fontWeight={600} fontSize={14}>*/}
+            {/*  Interface Settings*/}
+            {/*</Text>*/}
+            {/*<RowBetween>*/}
+            {/*  <RowFixed>*/}
+            {/*    <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>*/}
+            {/*      Toggle Expert Mode*/}
+            {/*    </TYPE.black>*/}
+            {/*    <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />*/}
+            {/*  </RowFixed>*/}
+            {/*  <Toggle*/}
+            {/*    id="toggle-expert-mode-button"*/}
+            {/*    isActive={expertMode}*/}
+            {/*    toggle={*/}
+            {/*      expertMode*/}
+            {/*        ? () => {*/}
+            {/*            toggleExpertMode()*/}
+            {/*            setShowConfirmation(false)*/}
+            {/*          }*/}
+            {/*        : () => {*/}
+            {/*            toggle()*/}
+            {/*            setShowConfirmation(true)*/}
+            {/*          }*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*</RowBetween>*/}
+            {/*<RowBetween>*/}
+            {/*  <RowFixed>*/}
+            {/*    <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>*/}
+            {/*      Toggle Dark Mode*/}
+            {/*    </TYPE.black>*/}
+            {/*  </RowFixed>*/}
+            {/*  <Toggle isActive={darkMode} toggle={toggleDarkMode} />*/}
+            {/*</RowBetween>*/}
           </AutoColumn>
         </MenuFlyout>
       )}

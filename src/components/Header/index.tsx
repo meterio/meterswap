@@ -298,7 +298,7 @@ export default function Header() {
         <Title href=".">
           <UniIcon>
             <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{ marginRight: '5px' }} />
-            <img width={'24px'} src={Logo2} alt="logo" />
+            <img height={'24px'} width={'24px'} src={Logo2} alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -334,7 +334,7 @@ export default function Header() {
         </HeaderElement>
         <HeaderElementWrap>
           <Settings />
-          <Menu />
+          {/*<Menu />*/}
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>
