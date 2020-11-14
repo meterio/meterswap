@@ -8,28 +8,30 @@ import { isAddress } from '../utils'
 
 import { useActiveWeb3React } from './index'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
+import { MeterTokens } from '../constants/tokens'
 
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
-  const userAddedTokens = useUserAddedTokens()
-  const allTokens = useSelectedTokenList()
-
-  return useMemo(() => {
-    if (!chainId) return {}
-    return (
-      userAddedTokens
-        // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
-          (tokenMap, token) => {
-            tokenMap[token.address] = token
-            return tokenMap
-          },
-          // must make a copy because reduce modifies the map, and we do not
-          // want to make a copy in every iteration
-          { ...allTokens[chainId] }
-        )
-    )
-  }, [chainId, userAddedTokens, allTokens])
+  return chainId ? MeterTokens[chainId] : {}
+  // const userAddedTokens = useUserAddedTokens()
+  // const allTokens = useSelectedTokenList()
+  //
+  // return useMemo(() => {
+  //   if (!chainId) return {}
+  //   return (
+  //     userAddedTokens
+  //       // reduce into all ALL_TOKENS filtered by the current chain
+  //       .reduce<{ [address: string]: Token }>(
+  //         (tokenMap, token) => {
+  //           tokenMap[token.address] = token
+  //           return tokenMap
+  //         },
+  //         // must make a copy because reduce modifies the map, and we do not
+  //         // want to make a copy in every iteration
+  //         { ...allTokens[chainId] }
+  //       )
+  //   )
+  // }, [chainId, userAddedTokens, allTokens])
 }
 
 // Check if currency is included in custom list from user storage
@@ -40,12 +42,13 @@ export function useIsUserAddedToken(currency: Currency): boolean {
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
+
 function parseStringOrBytes32(str: string | undefined, bytes32: string | undefined, defaultValue: string): string {
   return str && str.length > 0
     ? str
     : bytes32 && BYTES32_REGEX.test(bytes32)
-    ? parseBytes32String(bytes32)
-    : defaultValue
+      ? parseBytes32String(bytes32)
+      : defaultValue
 }
 
 // undefined if invalid or does not exist
