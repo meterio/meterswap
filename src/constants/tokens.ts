@@ -8,7 +8,13 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       '0xBeE85b7b676f9306803B6DFC09F024c30a7A2a1e',
       18,
       'EMTR',
-      'EMTR')
+      'EMTR'),
+    '0x4f6d94accf73713968f6d1b3d191a05762bfd2c1': new Token(
+      ChainId.RINKEBY,
+      '0x4f6d94accf73713968f6d1b3d191a05762bfd2c1',
+      18,
+      'EMTRG',
+      'EMTRG')
 
   },
   [ChainId.ROPSTEN]: {},
