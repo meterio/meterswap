@@ -11,7 +11,7 @@ import {
   useMyQuoteCapitalBalance,
   useQuoteToken
 } from '../contracts/useChargePair'
-import { Token } from '@uniswap/sdk'
+import { Token } from 'meterswap-sdk'
 import { useInputError } from '../common/hooks/usePool'
 import { CONNECT_WALLET } from '../common/strings'
 import usePairs from '../common/hooks/usePairs'

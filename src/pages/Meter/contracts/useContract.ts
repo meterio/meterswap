@@ -5,7 +5,7 @@ import { getContract } from '../../../utils'
 import ChargeFactoryABI from './abis/ChargeFactory.json'
 import ChargeABI from './abis/Charge.json'
 import EthProxyABI from './abis/ChargeEthProxy.json'
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, Token } from 'meterswap-sdk'
 import { Call, ListenerOptions } from '../../../state/multicall/actions'
 import { useBlockNumber } from '../../../state/application/hooks'
 

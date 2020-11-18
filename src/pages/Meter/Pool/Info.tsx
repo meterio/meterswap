@@ -13,7 +13,7 @@ import {
   useWithdrawQuotePenalty
 } from '../contracts/useChargePair'
 import { TextWrapper } from '../../../theme'
-import { Token } from '@uniswap/sdk'
+import { Token } from 'meterswap-sdk'
 import { displaySymbol, formatBigNumber } from '../common/utils'
 import { useEstimateTokenAmount } from '../common/hooks/usePool'
 

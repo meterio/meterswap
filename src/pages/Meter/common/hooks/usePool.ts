@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, Token } from 'meterswap-sdk'
 import { BigNumber } from 'ethers'
 import { useActiveWeb3React } from '../../../../hooks'
 import { CONNECT_WALLET } from '../strings'

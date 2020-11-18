@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@uniswap/sdk'
+import { ChainId, Token } from 'meterswap-sdk'
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
   [ChainId.MAINNET]: {},
