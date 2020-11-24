@@ -59,7 +59,7 @@
     "jazzicon": "^1.5.0",
     "lodash.flatmap": "^4.5.0",
     "luxon": "^1.25.0",
-    "meterswap-sdk": "^3.0.3",
+    "meterswap-sdk": "3.0.4",
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
     "node-vibrant": "^3.1.5",
