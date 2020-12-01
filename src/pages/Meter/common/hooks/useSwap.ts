@@ -84,9 +84,9 @@ export function useInputError(
     return CONNECT_WALLET
   }
 
-  if (chainId !== ChainId.RINKEBY) {
-    return 'Wrong network'
-  }
+  // if (chainId !== ChainId.RINKEBY) {
+  //   return 'Wrong network'
+  // }
 
   if (!isValidNumber(inputBaseAmount) || parseEther(inputBaseAmount).lte(0)) {
     return 'Enter a number'
