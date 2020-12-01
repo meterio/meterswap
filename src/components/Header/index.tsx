@@ -302,9 +302,9 @@ export default function Header() {
           </UniIcon>
         </Title>
         <HeaderLinks>
-          <StyledNavLink to={'/meter'}>
-            SmartAMM
-          </StyledNavLink>
+          {/*<StyledNavLink to={'/meter'}>*/}
+          {/*  SmartAMM*/}
+          {/*</StyledNavLink>*/}
           <StyledNavLink to={'/swap'}>
             AMM
           </StyledNavLink>

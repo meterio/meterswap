@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { AppState } from '../index'
 
 type TagDetails = Tags[keyof Tags]
+
 export interface TagInfo extends TagDetails {
   id: string
 }
@@ -15,11 +16,13 @@ export interface TagInfo extends TagDetails {
 export class WrappedTokenInfo extends Token {
   public readonly tokenInfo: TokenInfo
   public readonly tags: TagInfo[]
+
   constructor(tokenInfo: TokenInfo, tags: TagInfo[]) {
     super(tokenInfo.chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
     this.tokenInfo = tokenInfo
     this.tags = tags
   }
+
   public get logoURI(): string | undefined {
     return this.tokenInfo.logoURI
   }
@@ -35,7 +38,8 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.RINKEBY]: {},
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
-  [ChainId.MAINNET]: {}
+  [ChainId.MAINNET]: {},
+  [ChainId.METER]: {}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
