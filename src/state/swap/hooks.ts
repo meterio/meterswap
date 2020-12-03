@@ -119,13 +119,17 @@ export function useDerivedSwapInfo(): {
 
   const toggledVersion = useToggledVersion()
 
-  const {
+  let {
     independentField,
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient
   } = useSwapState()
+
+  if (inputCurrencyId === 'ETH') {
+    inputCurrencyId = undefined
+  }
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
@@ -196,8 +200,8 @@ export function useDerivedSwapInfo(): {
     currencyBalances[Field.INPUT],
     toggledVersion === Version.v1
       ? slippageAdjustedAmountsV1
-        ? slippageAdjustedAmountsV1[Field.INPUT]
-        : null
+      ? slippageAdjustedAmountsV1[Field.INPUT]
+      : null
       : slippageAdjustedAmounts
       ? slippageAdjustedAmounts[Field.INPUT]
       : null
@@ -237,6 +241,7 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
 
 const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
+
 function validatedRecipient(recipient: any): string | null {
   if (typeof recipient !== 'string') return null
   const address = isAddress(recipient)
@@ -279,9 +284,7 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [result, setResult] = useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
 
   useEffect(() => {
     if (!chainId) return
