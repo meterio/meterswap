@@ -1,7 +1,14 @@
 import { ChainId, Token } from 'meterswap-sdk'
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
-  [ChainId.METER]: {},
+  [ChainId.METER]: {
+    '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3': new Token(
+      ChainId.METER,
+      '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3',
+      18,
+      'MTRG',
+      'MTRG')
+  },
   [ChainId.MAINNET]: {},
   [ChainId.RINKEBY]: {
     '0xBeE85b7b676f9306803B6DFC09F024c30a7A2a1e': new Token(
