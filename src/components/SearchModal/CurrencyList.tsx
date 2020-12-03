@@ -114,8 +114,8 @@ function CurrencyRow({
     >
       {/*<CurrencyLogo currency={currency} size={'24px'} />*/}
       <Column>
-        <Text title={currency.name === 'Ether' ? 'MTR' : currency.name} fontWeight={500}>
-          {currency.symbol === 'ETH' ? 'MTR' : currency.symbol}
+        <Text title={currency.name} fontWeight={500}>
+          {currency.symbol}
         </Text>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (

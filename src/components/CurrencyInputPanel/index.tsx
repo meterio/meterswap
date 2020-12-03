@@ -221,7 +221,7 @@ export default function CurrencyInputPanel({
                 </StyledTokenName>
               ) : (
                 <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency?.symbol === 'ETH' ? 'MTR' : currency?.symbol) || t('selectToken')}
+                  {(currency?.symbol) || t('selectToken')}
                 </StyledTokenName>
               )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
