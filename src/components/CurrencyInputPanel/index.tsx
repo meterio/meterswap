@@ -133,22 +133,22 @@ interface CurrencyInputPanelProps {
 }
 
 export default function CurrencyInputPanel({
-  value,
-  onUserInput,
-  onMax,
-  showMaxButton,
-  label = 'Input',
-  onCurrencySelect,
-  currency,
-  disableCurrencySelect = false,
-  hideBalance = false,
-  pair = null, // used for double token logo
-  hideInput = false,
-  otherCurrency,
-  id,
-  showCommonBases,
-  customBalanceText
-}: CurrencyInputPanelProps) {
+                                             value,
+                                             onUserInput,
+                                             onMax,
+                                             showMaxButton,
+                                             label = 'Input',
+                                             onCurrencySelect,
+                                             currency,
+                                             disableCurrencySelect = false,
+                                             hideBalance = false,
+                                             pair = null, // used for double token logo
+                                             hideInput = false,
+                                             otherCurrency,
+                                             id,
+                                             showCommonBases,
+                                             customBalanceText
+                                           }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -210,22 +210,18 @@ export default function CurrencyInputPanel({
             }}
           >
             <Aligner>
-              {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size={'24px'} />
-              ) : null}
+              {/*{pair ? (*/}
+              {/*  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />*/}
+              {/*) : currency ? (*/}
+              {/*  <CurrencyLogo currency={currency} size={'24px'} />*/}
+              {/*) : null}*/}
               {pair ? (
                 <StyledTokenName className="pair-name-container">
                   {pair?.token0.symbol}:{pair?.token1.symbol}
                 </StyledTokenName>
               ) : (
                 <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('selectToken')}
+                  {(currency?.symbol === 'ETH' ? 'MTR' : currency?.symbol) || t('selectToken')}
                 </StyledTokenName>
               )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}

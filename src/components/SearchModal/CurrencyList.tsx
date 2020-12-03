@@ -81,12 +81,12 @@ function TokenTags({ currency }: { currency: Currency }) {
 }
 
 function CurrencyRow({
-  currency,
-  onSelect,
-  isSelected,
-  otherSelected,
-  style
-}: {
+                       currency,
+                       onSelect,
+                       isSelected,
+                       otherSelected,
+                       style
+                     }: {
   currency: Currency
   onSelect: () => void
   isSelected: boolean
@@ -112,10 +112,10 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size={'24px'} />
+      {/*<CurrencyLogo currency={currency} size={'24px'} />*/}
       <Column>
-        <Text title={currency.name} fontWeight={500}>
-          {currency.symbol}
+        <Text title={currency.name === 'Ether' ? 'MTR' : currency.name} fontWeight={500}>
+          {currency.symbol === 'ETH' ? 'MTR' : currency.symbol}
         </Text>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
@@ -155,14 +155,14 @@ function CurrencyRow({
 }
 
 export default function CurrencyList({
-  height,
-  currencies,
-  selectedCurrency,
-  onCurrencySelect,
-  otherCurrency,
-  fixedListRef,
-  showETH
-}: {
+                                       height,
+                                       currencies,
+                                       selectedCurrency,
+                                       onCurrencySelect,
+                                       otherCurrency,
+                                       fixedListRef,
+                                       showETH
+                                     }: {
   height: number
   currencies: Currency[]
   selectedCurrency?: Currency | null
