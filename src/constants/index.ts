@@ -20,6 +20,9 @@ export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589
 export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 18, 'WBTC', 'Wrapped BTC')
 
+export const MTR = new Token(ChainId.METER, '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2', 18, 'MTR', 'MTR')
+export const MTRG = new Token(ChainId.METER, '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3', 18, 'MTRG', 'MTRG')
+
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
 
@@ -49,18 +52,18 @@ export const MERKLE_DISTRIBUTOR_ADDRESS: { [chainId in ChainId]?: string } = {
 }
 
 const WETH_ONLY: ChainTokenList = {
-  [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
-  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
-  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
-  [ChainId.KOVAN]: [WETH[ChainId.KOVAN]],
-  [ChainId.METER]: [WETH[ChainId.METER]]
+  [ChainId.MAINNET]: [MTR],
+  [ChainId.ROPSTEN]: [MTR],
+  [ChainId.RINKEBY]: [MTR],
+  [ChainId.GÖRLI]: [MTR],
+  [ChainId.KOVAN]: [MTR],
+  [ChainId.METER]: [MTR]
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT, COMP, MKR]
+  [ChainId.METER]: [MTR, MTRG]
 }
 
 /**
@@ -68,9 +71,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * tokens.
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.MAINNET]: {
-    [AMPL.address]: [DAI, WETH[ChainId.MAINNET]]
-  }
+  [ChainId.MAINNET]: {}
 }
 
 // used for display in the default list when adding liquidity
@@ -86,9 +87,8 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.MAINNET]: [
-    [USDC, USDT],
-    [DAI, USDT]
+  [ChainId.METER]: [
+    [MTRG, MTR]
   ]
 }
 
@@ -121,50 +121,6 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Easy-to-use browser extension.',
     href: null,
     color: '#E8831D'
-  },
-  WALLET_CONNECT: {
-    connector: walletconnect,
-    name: 'WalletConnect',
-    iconName: 'walletConnectIcon.svg',
-    description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
-    href: null,
-    color: '#4196FC',
-    mobile: true
-  },
-  WALLET_LINK: {
-    connector: walletlink,
-    name: 'Coinbase Wallet',
-    iconName: 'coinbaseWalletIcon.svg',
-    description: 'Use Coinbase Wallet app on mobile device',
-    href: null,
-    color: '#315CF5'
-  },
-  COINBASE_LINK: {
-    name: 'Open in Coinbase Wallet',
-    iconName: 'coinbaseWalletIcon.svg',
-    description: 'Open in Coinbase Wallet app.',
-    href: 'https://go.cb-w.com/mtUDhEZPy1',
-    color: '#315CF5',
-    mobile: true,
-    mobileOnly: true
-  },
-  FORTMATIC: {
-    connector: fortmatic,
-    name: 'Fortmatic',
-    iconName: 'fortmaticIcon.png',
-    description: 'Login using Fortmatic hosted wallet',
-    href: null,
-    color: '#6748FF',
-    mobile: true
-  },
-  Portis: {
-    connector: portis,
-    name: 'Portis',
-    iconName: 'portisIcon.png',
-    description: 'Login using Portis hosted wallet',
-    href: null,
-    color: '#4A6C9B',
-    mobile: true
   }
 }
 
