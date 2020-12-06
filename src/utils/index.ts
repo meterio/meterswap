@@ -31,7 +31,7 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
+  const prefix = `https://scan.meter.io`
 
   switch (type) {
     case 'transaction': {
@@ -45,7 +45,7 @@ export function getEtherscanLink(
     }
     case 'address':
     default: {
-      return `${prefix}/address/${data}`
+      return `${prefix}/account/${data}`
     }
   }
 }

@@ -8,8 +8,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Logo from '../../assets/svg/logo.svg'
-import Logo2 from '../../assets/images/logo2.png'
-import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
@@ -298,7 +296,6 @@ export default function Header() {
         <Title href=".">
           <UniIcon>
             <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{ marginRight: '5px' }} />
-            <img height={'24px'} width={'24px'} src={Logo2} alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -308,12 +305,12 @@ export default function Header() {
           <StyledNavLink to={'/swap'}>
             AMM
           </StyledNavLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>
-            Farms <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-          <StyledExternalLink id={`stake-nav-link`} href={'https://happy-grass-0af584900.azurestaticapps.net/'}>
-            Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
+          {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
+          {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
+          {/*</StyledExternalLink>*/}
+          {/*<StyledExternalLink id={`stake-nav-link`} href={'https://happy-grass-0af584900.azurestaticapps.net/'}>*/}
+          {/*  Charts <span style={{ fontSize: '11px' }}>↗</span>*/}
+          {/*</StyledExternalLink>*/}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
@@ -326,7 +323,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} ETH
+                {userEthBalance?.toSignificant(4)} MTR
               </BalanceText>
             ) : null}
             <Web3Status />
