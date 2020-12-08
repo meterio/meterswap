@@ -38,7 +38,7 @@ export const HoverCard = styled(Card)`
 const StyledPositionCard = styled(LightCard)<{ bgColor: any }>`
   border: none;
   background: ${({ theme, bgColor }) =>
-    `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
+  `radial-gradient(91.85% 100% at 1.84% 0%, ${transparentize(0.8, bgColor)} 0%, ${theme.bg3} 100%) `};
   position: relative;
   overflow: hidden;
 `
@@ -72,9 +72,9 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
     // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
     JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? [
-          pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
-        ]
+        pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
+        pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
+      ]
       : [undefined, undefined]
 
   return (
@@ -180,9 +180,9 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
     // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
     JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
       ? [
-          pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
-        ]
+        pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
+        pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false)
+      ]
       : [undefined, undefined]
 
   const backgroundColor = useColor(pair?.token0)
@@ -277,14 +277,14 @@ export default function FullPositionCard({ pair, border }: PositionCardProps) {
               </Text>
             </FixedHeightRow>
 
-            <ButtonSecondary padding="8px" borderRadius="8px">
-              <ExternalLink
-                style={{ width: '100%', textAlign: 'center' }}
-                href={`https://uniswap.info/account/${account}`}
-              >
-                View accrued fees and analytics<span style={{ fontSize: '11px' }}>↗</span>
-              </ExternalLink>
-            </ButtonSecondary>
+            {/*<ButtonSecondary padding="8px" borderRadius="8px">*/}
+            {/*  <ExternalLink*/}
+            {/*    style={{ width: '100%', textAlign: 'center' }}*/}
+            {/*    href={`https://uniswap.info/account/${account}`}*/}
+            {/*  >*/}
+            {/*    View accrued fees and analytics<span style={{ fontSize: '11px' }}>↗</span>*/}
+            {/*  </ExternalLink>*/}
+            {/*</ButtonSecondary>*/}
             <RowBetween marginTop="10px">
               <ButtonPrimary
                 padding="8px"

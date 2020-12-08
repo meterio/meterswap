@@ -303,7 +303,7 @@ export default function Header() {
           {/*  SmartAMM*/}
           {/*</StyledNavLink>*/}
           <StyledNavLink to={'/swap'}>
-            AMM
+            MeterSwap
           </StyledNavLink>
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
           {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
