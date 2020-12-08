@@ -42,9 +42,9 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             <TYPE.black color={theme.text1} fontSize={14}>
               {isExactIn
                 ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                  '-'
+                '-'
                 : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ??
-                  '-'}
+                '-'}
             </TYPE.black>
           </RowFixed>
         </RowBetween>
@@ -104,11 +104,11 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
               </AutoColumn>
             </>
           )}
-          <AutoColumn style={{ padding: '0 24px' }}>
-            <InfoLink href={'https://uniswap.info/pair/' + trade.route.pairs[0].liquidityToken.address} target="_blank">
-              View pair analytics ↗
-            </InfoLink>
-          </AutoColumn>
+          {/*<AutoColumn style={{ padding: '0 24px' }}>*/}
+          {/*  <InfoLink href={'https://uniswap.info/pair/' + trade.route.pairs[0].liquidityToken.address} target="_blank">*/}
+          {/*    View pair analytics ↗*/}
+          {/*  </InfoLink>*/}
+          {/*</AutoColumn>*/}
         </>
       )}
     </AutoColumn>
