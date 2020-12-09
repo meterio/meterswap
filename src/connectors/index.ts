@@ -22,12 +22,13 @@ export const network = new NetworkConnector({
 })
 
 let networkLibrary: Web3Provider | undefined
+
 export function getNetworkLibrary(): Web3Provider {
   return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 82]
+  supportedChainIds: [82]
 })
 
 // mainnet only
