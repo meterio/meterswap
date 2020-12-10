@@ -19,5 +19,6 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
   },
   [ChainId.ROPSTEN]: {},
   [ChainId.KOVAN]: {},
-  [ChainId.GÖRLI]: {}
+  [ChainId.GÖRLI]: {},
+  [ChainId.METER]: {}
 }
