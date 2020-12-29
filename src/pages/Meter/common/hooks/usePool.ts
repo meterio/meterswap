@@ -29,7 +29,7 @@ export function useInputError(
     return CONNECT_WALLET
   }
 
-  if (chainId !== ChainId.RINKEBY) {
+  if (chainId !== ChainId.RINKEBY && chainId !== ChainId.MAINNET) {
     return 'Wrong network'
   }
 

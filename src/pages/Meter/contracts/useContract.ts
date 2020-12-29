@@ -24,7 +24,7 @@ function useContract(address: string | undefined, ABI: any, withSignerIfPossible
 }
 
 export const ChargeFactoryAddress: { [key in ChainId]: string } = {
-  [ChainId.MAINNET]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
+  [ChainId.MAINNET]: '0xd269Fbc1002e7b87fDFb13C33d454ffe927b7af9',
   [ChainId.ROPSTEN]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.RINKEBY]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.GÖRLI]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
@@ -33,7 +33,7 @@ export const ChargeFactoryAddress: { [key in ChainId]: string } = {
 }
 
 export const ChargeEthProxyAddress: { [key in ChainId]: string } = {
-  [ChainId.MAINNET]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
+  [ChainId.MAINNET]: '0x00f87bc192783234ee1e09B44bCeF1B3080df41C',
   [ChainId.ROPSTEN]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.RINKEBY]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.GÖRLI]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',

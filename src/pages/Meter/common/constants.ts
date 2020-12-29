@@ -4,6 +4,16 @@ interface ChargeInfo {
 }
 
 export const ChargesInfo: { [address: string]: ChargeInfo } = {
+  // MAINNET
+  '0xa69dD80DD411d3cA35C4DFBB5711a5590A8Bb300': {
+    base: 'ETH',
+    quote: 'USDC'
+  },
+  '0xF9f432E00a2a70C3B16A3c8F15cfEB39047de0F4': {
+    base: 'BTC',
+    quote: 'ETH'
+  },
+  // RINKEBY
   '0x75029090907214Fe8CB9b97c071447829A7DB28c': {
     base: 'ETH',
     quote: 'USDC'

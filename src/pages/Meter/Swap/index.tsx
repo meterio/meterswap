@@ -18,6 +18,7 @@ import { useInputError } from '../common/hooks/useSwap'
 export default function Swap() {
   // pair
   const { pairs, selectedPair, onSelectPair } = usePairs()
+  console.log(pairs)
 
   // action type
   const [currentAction, setCurrentAction] = useState(ActionType.Buy)
