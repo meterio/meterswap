@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from 'meterswap-sdk'
+import { Currency, CurrencyAmount, Fraction, Percent } from 'my-meter-swap-sdk'
 import React from 'react'
 import { Text } from 'rebass'
 import { ButtonPrimary } from '../../components/Button'

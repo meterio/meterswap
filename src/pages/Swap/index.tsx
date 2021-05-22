@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from 'meterswap-sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from 'my-meter-swap-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -37,6 +37,11 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
+import {
+
+  useUserDeadline,
+  
+} from '../../state/user/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -72,6 +77,7 @@ export default function Swap() {
   const toggleSettings = useToggleSettingsMenu()
   const [isExpertMode] = useExpertModeManager()
 
+  const [deadline] = useUserDeadline()
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -179,7 +185,7 @@ export default function Swap() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage,deadline, recipient)
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 

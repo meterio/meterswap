@@ -1,4 +1,4 @@
-import { ChainId, TokenAmount } from 'meterswap-sdk'
+import { ChainId, TokenAmount } from 'my-meter-swap-sdk'
 import React, { useState } from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'

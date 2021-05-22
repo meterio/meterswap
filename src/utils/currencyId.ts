@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from 'meterswap-sdk'
+import { Currency, ETHER, Token } from 'my-meter-swap-sdk'
 
 export function currencyId(currency: Currency): string {
   if (currency === ETHER) return 'ETH'

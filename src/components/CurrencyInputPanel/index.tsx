@@ -1,4 +1,4 @@
-import { Currency, Pair } from 'meterswap-sdk'
+import { Currency, Pair } from 'my-meter-swap-sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'

@@ -1,5 +1,5 @@
 import { ActionType } from '../../Swap/constants'
-import { TokenAmount } from 'meterswap-sdk'
+import { TokenAmount } from 'my-meter-swap-sdk'
 import { displaySymbol, formatBigNumber, isWETH, tryParseAmount } from '../utils'
 import { useWalletModalToggle } from '../../../../state/application/hooks'
 import { useTransactionAdder } from '../../../../state/transactions/hooks'

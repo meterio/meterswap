@@ -1,4 +1,4 @@
-import { CurrencyAmount, ETHER, JSBI } from 'meterswap-sdk'
+import { CurrencyAmount, ETHER, JSBI } from 'my-meter-swap-sdk'
 import { MIN_ETH } from '../constants'
 
 /**

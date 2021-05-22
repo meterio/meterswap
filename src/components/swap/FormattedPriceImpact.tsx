@@ -1,4 +1,4 @@
-import { Percent } from 'meterswap-sdk'
+import { Percent } from 'my-meter-swap-sdk'
 import React from 'react'
 import { ONE_BIPS } from '../../constants'
 import { warningSeverity } from '../../utils/prices'

@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from 'meterswap-sdk'
+import { Token, TokenAmount } from 'my-meter-swap-sdk'
 import { useMemo } from 'react'
 
 import { useTokenContract } from '../hooks/useContract'
