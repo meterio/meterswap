@@ -13,13 +13,15 @@ import { TokenAmount, Pair } from 'my-meter-swap-sdk'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { usePairContract, useStakingContract } from '../../hooks/useContract'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
+import { useApproveCallbackVariant, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
 import { StakingInfo, useDerivedStakeInfo } from '../../state/stake/hooks'
 import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
+
+
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -73,27 +75,45 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const dummyPair = new Pair(new TokenAmount(stakingInfo.tokens[0], '0'), new TokenAmount(stakingInfo.tokens[1], '0'))
   const pairContract = usePairContract(dummyPair.liquidityToken.address)
 
+  
+
   // approval data for stake
   const deadline = useTransactionDeadline()
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
-
+  const [approval, approveCallback] = useApproveCallbackVariant(stakingInfo.tokens[0],parsedAmount,stakingInfo.stakingRewardAddress,stakingInfo.tokens[0].address)
+  
   const isArgentWallet = useIsArgentWallet()
   const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+
+
+
   async function onStake() {
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
+      
       if (approval === ApprovalState.APPROVED) {
-        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
+        stakingContract.stake(
+          parsedAmount.raw.toString(),
+          
+          { gasLimit: 500000 }
+        )
+        .then((response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: `Deposit liquidity`
+          })
+          setHash(response.hash)
+        })
+        .catch((error: any) => {
+          setAttempting(false)
+          console.log(error)
+        })
+
       } else if (signatureData) {
-        stakingContract
-          .stakeWithPermit(
-            `0x${parsedAmount.raw.toString(16)}`,
-            signatureData.deadline,
-            signatureData.v,
-            signatureData.r,
-            signatureData.s,
-            { gasLimit: 350000 }
+   
+          stakingContract.stake(
+            parsedAmount.raw.toString(),
+            
+            { gasLimit: 500000 }
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
@@ -105,6 +125,18 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             setAttempting(false)
             console.log(error)
           })
+
+          // stakingContract
+					// .stakeWithPermit(
+					// 	`0x${parsedAmount.raw.toString(16)}`,
+					// 	signatureData.deadline,
+					// 	signatureData.v,
+					// 	signatureData.r,
+					// 	signatureData.s,
+					// 	{ gasLimit: 350000 }
+					// )
+        
+       
       } else {
         setAttempting(false)
         throw new Error('Attempting to stake without approval or a signature. Please contact support.')
@@ -144,7 +176,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
-      name: 'Uniswap V2',
+      name: 'METER LIQUIDITY',
       version: '1',
       chainId: chainId,
       verifyingContract: pairContract.address
@@ -154,14 +186,15 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' }
+      { name: 'deadline', type: 'uint256' },
+      { name: 'tokenAddress', type: 'address' }
     ]
     const message = {
       owner: account,
       spender: stakingInfo.stakingRewardAddress,
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
-      deadline: deadline.toNumber()
+      deadline: deadline.toNumber(),
     }
     const data = JSON.stringify({
       types: {
@@ -173,23 +206,26 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       message
     })
 
-    library
-      .send('eth_signTypedData_v4', [account, data])
-      .then(splitSignature)
-      .then(signature => {
-        setSignatureData({
-          v: signature.v,
-          r: signature.r,
-          s: signature.s,
-          deadline: deadline.toNumber()
-        })
-      })
-      .catch(error => {
-        // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (error?.code !== 4001) {
-          approveCallback()
-        }
-      })
+     approveCallback()
+     //signature signing fails therefore we need to fallback to manual approval
+    // library
+    //   .send('eth_signTypedData_v4', [account, data])
+    //   .then(splitSignature)
+    //   .then(signature => {
+    //     setSignatureData({
+    //       v: signature.v,
+    //       r: signature.r,
+    //       s: signature.s,
+    //       deadline: deadline.toNumber()
+    //     })
+    //     //approveCallback()
+    //   })
+    //   .catch(error => {
+    //     // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
+    //     if (error?.code !== 4001) {
+    //       approveCallback()
+    //     }
+    //   })
   }
 
   return (
@@ -220,7 +256,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
 
             <TYPE.black>
               {hypotheticalRewardRate.multiply((60 * 60 * 24 * 7).toString()).toSignificant(4, { groupSeparator: ',' })}{' '}
-              UNI / week
+              MTRG / week
             </TYPE.black>
           </HypotheticalRewardRate>
 
@@ -248,7 +284,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Depositing Liquidity</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} UNI-V2</TYPE.body>
+            <TYPE.body fontSize={20}>{parsedAmount?.toSignificant(4)} MTR</TYPE.body>
           </AutoColumn>
         </LoadingView>
       )}
@@ -256,7 +292,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
-            <TYPE.body fontSize={20}>Deposited {parsedAmount?.toSignificant(4)} UNI-V2</TYPE.body>
+            <TYPE.body fontSize={20}>Deposited {parsedAmount?.toSignificant(4)} MTR</TYPE.body>
           </AutoColumn>
         </SubmittedView>
       )}

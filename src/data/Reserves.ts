@@ -1,13 +1,13 @@
 import { TokenAmount, Pair, Currency } from 'my-meter-swap-sdk'
 import { useMemo } from 'react'
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { abi as IMeterPairABI } from '../constants/abis/IMeterPairABI.json';
 import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
+const PAIR_INTERFACE = new Interface(IMeterPairABI)
 
 export enum PairState {
   LOADING,
@@ -19,6 +19,7 @@ export enum PairState {
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
   const { chainId } = useActiveWeb3React()
 
+ 
   const tokens = useMemo(
     () =>
       currencies.map(([currencyA, currencyB]) => [
@@ -28,13 +29,20 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [chainId, currencies]
   )
 
+
+  
+
+ 
+
   const pairAddresses = useMemo(
     () =>
-      tokens.map(([tokenA, tokenB]) => {
+    tokens.map(([tokenA, tokenB]) => {
+       
         return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
       }),
     [tokens]
   )
+
 
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
@@ -58,5 +66,6 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 }
 
 export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
+
   return usePairs([[tokenA, tokenB]])[0]
 }

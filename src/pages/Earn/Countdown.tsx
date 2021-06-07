@@ -55,14 +55,14 @@ export function Countdown({ exactEnd }: { exactEnd?: Date }) {
 
   return (
     <TYPE.black fontWeight={400}>
-      {message}{' '}
-      {Number.isFinite(timeRemaining) && (
+      The Rewards Never End!
+      {/* {Number.isFinite(timeRemaining) && (
         <code>
           {`${days}:${hours.toString().padStart(2, '0')}:${minutes
             .toString()
             .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}
         </code>
-      )}
+      )} */}
     </TYPE.black>
   )
 }

@@ -127,6 +127,7 @@ function toCallState(
   fragment: FunctionFragment | undefined,
   latestBlockNumber: number | undefined
 ): CallState {
+
   if (!callResult) return INVALID_CALL_STATE
   const { valid, data, blockNumber } = callResult
   if (!valid) return INVALID_CALL_STATE
@@ -219,7 +220,9 @@ export function useMultipleContractSingleData(
     [addresses, callData, fragment]
   )
 
+
   const results = useCallsData(calls, options)
+  
 
   const latestBlockNumber = useBlockNumber()
 

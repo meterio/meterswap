@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import styled from 'styled-components'
 import { TYPE, StyledInternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
-import { ETHER, JSBI, TokenAmount } from 'my-meter-swap-sdk'
+import { ETHER, JSBI, TokenAmount,Fraction  } from 'my-meter-swap-sdk'
 import { ButtonPrimary } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
 import { useColor } from '../../hooks/useColor'
@@ -14,6 +15,8 @@ import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import useUSDCPrice from '../../utils/useUSDCPrice'
+import {getTokenPriceUSD} from './getTokenUSDPrice'
+ 
 
 const StatContainer = styled.div`
   display: flex;
@@ -75,15 +78,54 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
 export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
+  const [tokenAPY, setTokenAPY] = useState(new Fraction(JSBI.BigInt(0)))
+ 
 
   const currency0 = unwrappedToken(token0)
   const currency1 = unwrappedToken(token1)
+
+ 
+  useEffect(() => {
+
+    if(stakingInfo.totalRewardRate){
+   
+    getTokenPriceUSD().then((data:any)=>{
+    let priceInUSD = data.MTRUSDPrice
+   
+    let priceInYear = Math.ceil(priceInUSD * 365)
+   
+ 
+    if(JSBI.NE(stakingInfo.totalRewardRate.raw,JSBI.BigInt(0))){
+  let rateInYear = JSBI.divide(JSBI.BigInt(priceInYear),(stakingInfo.totalRewardRate.raw))
+  
+  //APY = (1 + r/n)n — 1
+
+  let rateIndecimal =JSBI.subtract(JSBI.exponentiate(JSBI.add(JSBI.BigInt(1),JSBI.divide(rateInYear,JSBI.BigInt(52))),JSBI.BigInt(52)), JSBI.BigInt(1))
+  let multRes = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(rateIndecimal))
+ 
+  setTokenAPY(multRes.add(stakingInfo.totalRewardRate))
+  
+    }
+ 
+    })
+  }
+  },[]);
+
+  
+
+
+  
+  //console.log(apy.toSignificant(4, { groupSeparator: ',' }))
+
+
 
   const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
 
   // get the color of the token
   const token = currency0 === ETHER ? token1 : token0
   const WETH = currency0 === ETHER ? token0 : token1
+
+ 
   const backgroundColor = useColor(token)
 
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo.stakedAmount.token)
@@ -105,10 +147,19 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
     )
   }
 
+  
   // get the USD value of staked WETH
-  const USDPrice = useUSDCPrice(WETH)
-  const valueOfTotalStakedAmountInUSDC =
-    valueOfTotalStakedAmountInWETH && USDPrice?.quote(valueOfTotalStakedAmountInWETH)
+
+
+    let weeklyRewardAmount = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 7))
+    let yearlyRewardAmount = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 365))
+    //console.log(yearlyRewardAmount.toSignificant(4, { groupSeparator: ',' }))
+    let weeklyRewardPerMeter = weeklyRewardAmount.divide(stakingInfo.totalStakedAmount)
+    if (JSBI.EQ(weeklyRewardPerMeter.denominator, 0)) {
+      weeklyRewardPerMeter = new Fraction(JSBI.BigInt(0), JSBI.BigInt(1))
+    }
+    
+  
 
   return (
     <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
@@ -121,7 +172,7 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
           {currency0.symbol}-{currency1.symbol}
         </TYPE.white>
 
-        <StyledInternalLink to={`/uni/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '100%' }}>
+        <StyledInternalLink to={`/mtrg/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '100%' }}>
           <ButtonPrimary padding="8px" borderRadius="8px">
             {isStaking ? 'Manage' : 'Deposit'}
           </ButtonPrimary>
@@ -132,18 +183,27 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
         <RowBetween>
           <TYPE.white> Total deposited</TYPE.white>
           <TYPE.white>
-            {valueOfTotalStakedAmountInUSDC
-              ? `$${valueOfTotalStakedAmountInUSDC.toFixed(0, { groupSeparator: ',' })}`
-              : `${valueOfTotalStakedAmountInWETH?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} ETH`}
+            { `${valueOfTotalStakedAmountInWETH?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} MTR`}
+          </TYPE.white>
+        </RowBetween>
+        
+        <RowBetween>
+          <TYPE.white> Pool Rate</TYPE.white>
+          <TYPE.white>
+            {`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })  ?? '-'} MTRG / week`}
           </TYPE.white>
         </RowBetween>
         <RowBetween>
-          <TYPE.white> Pool rate </TYPE.white>
-          <TYPE.white>{`${stakingInfo.totalRewardRate
-            ?.multiply(`${60 * 60 * 24 * 7}`)
-            ?.toFixed(0, { groupSeparator: ',' })} UNI / week`}</TYPE.white>
+          <TYPE.white> Current reward </TYPE.white>
+          <TYPE.white>{`${weeklyRewardPerMeter.toFixed(4, { groupSeparator: ',' }) ??
+            '-'} MTRG / Week`}</TYPE.white>
+        </RowBetween>
+        <RowBetween>
+          <TYPE.white> Earn up to (yearly) </TYPE.white>
+          <TYPE.white>{ `${tokenAPY?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} %`}</TYPE.white>
         </RowBetween>
       </StatContainer>
+      
 
       {isStaking && (
         <>
@@ -159,7 +219,7 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
               </span>
               {`${stakingInfo.rewardRate
                 ?.multiply(`${60 * 60 * 24 * 7}`)
-                ?.toSignificant(4, { groupSeparator: ',' })} UNI / week`}
+                ?.toSignificant(4, { groupSeparator: ',' })} MTRG / week`}
             </TYPE.black>
           </BottomSection>
         </>

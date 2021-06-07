@@ -49,7 +49,6 @@ const HeaderFrame = styled.div`
     width: calc(100%);
     position: relative;
   `};
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         padding: 0.5rem 1rem;
   `}
@@ -60,7 +59,6 @@ const HeaderControls = styled.div`
   flex-direction: row;
   align-items: center;
   justify-self: flex-end;
-
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: row;
     justify-content: space-between;
@@ -83,7 +81,6 @@ const HeaderElement = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-
   ${({ theme }) => theme.mediaWidth.upToMedium`
    flex-direction: row-reverse;
     align-items: center;
@@ -118,7 +115,6 @@ const AccountElement = styled.div<{ active: boolean }>`
   white-space: nowrap;
   width: 100%;
   cursor: pointer;
-
   :focus {
     border: 1px solid blue;
   }
@@ -189,14 +185,11 @@ const Title = styled.a`
   }
 `
 
-const UniIcon = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  transition: transform 0.3s ease;
-  :hover {
-    transform: rotate(-5deg);
-  }
+const UniIcon =  styled.div`
+transition: transform 0.3s ease;
+:hover {
+  transform: rotate(-5deg);
+}
 `
 
 const activeClassName = 'ACTIVE'
@@ -215,7 +208,6 @@ const StyledNavLink = styled(NavLink).attrs({
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
-
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 600;
@@ -242,18 +234,16 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
-
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 600;
     color: ${({ theme }) => theme.text1};
   }
-
   :hover,
   :focus {
+    text-decoration: none;
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       display: none;
 `}
@@ -295,16 +285,29 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img height={'24px'} width={'28px'} src={Logo} alt="logo" style={{ marginRight: '5px' }} />
+            <img width={'24px'} src={Logo} alt="logo"  />
           </UniIcon>
         </Title>
         <HeaderLinks>
           {/*<StyledNavLink to={'/meter'}>*/}
           {/*  SmartAMM*/}
           {/*</StyledNavLink>*/}
-          <StyledNavLink to={'/swap'}>
-            MeterSwap
+         
+
+          <StyledNavLink id={`stake-nav-link`}  to={'/swap'}>
+            Swap
           </StyledNavLink>
+          <StyledNavLink id={`stake-nav-link`} to={'/rewards'}>
+          Rewards
+          </StyledNavLink>
+      
+          <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
+          Passport <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+         
+          <StyledExternalLink id={`gov-nav-link`}  href={'http://faucet-warringstakes.meter.io'}>
+          Faucet <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
           {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
           {/*</StyledExternalLink>*/}
