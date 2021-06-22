@@ -1,15 +1,16 @@
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { darken, lighten } from 'polished'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
+import detectEthereumProvider from "@metamask/detect-provider";
 import CoinbaseWalletIcon from '../../assets/images/coinbaseWalletIcon.svg'
 import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import PortisIcon from '../../assets/images/portisIcon.png'
 import WalletConnectIcon from '../../assets/images/walletConnectIcon.svg'
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../../connectors'
+import { fortmatic, injected, portis, walletconnect, walletlink, SUPPORTED_CHAINIDS } from '../../connectors'
 import { NetworkContextName } from '../../constants'
 import useENSName from '../../hooks/useENSName'
 import { useHasSocks } from '../../hooks/useSocksBalance'
@@ -18,12 +19,15 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { TransactionDetails } from '../../state/transactions/reducer'
 import { shortenAddress } from '../../utils'
 import { ButtonSecondary } from '../Button'
+import getChain from '../../constants/chain'
 
 import Identicon from '../Identicon'
 import Loader from '../Loader'
 
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
+
+const REACT_APP_METER_CHAIN_ID = process.env.REACT_APP_METER_CHAIN_ID
 
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
@@ -161,9 +165,50 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   return null
 }
 
+function addChain(chainId: number) {
+  const chain = getChain(chainId)
+  detectEthereumProvider().then((provider: any) => {
+    provider.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: "0x" + chain.networkId.toString(16),
+          chainName: chain.name,
+          nativeCurrency: {
+            name: chain.nativeTokenSymbol,
+            symbol: chain.nativeTokenSymbol,
+            decimals: chain.decimals,
+          },
+          rpcUrls: [chain.rpcUrl],
+          blockExplorerUrls: [chain.blockExplorer],
+        },
+      ],
+    })
+  })
+}
+
 function Web3StatusInner() {
   const { t } = useTranslation()
-  const { account, connector, error } = useWeb3React()
+  const { account, connector, error, active, activate } = useWeb3React()
+
+  console.log("is connected to metamask: ", active);
+  useEffect(() => {
+    injected.getChainId().then(chainId => {
+      console.log("chainId: ", chainId)
+      if (!active) {
+        activate(injected, undefined, true).then(_ => {
+          if (!SUPPORTED_CHAINIDS.includes(Number(chainId))) {
+            addChain(Number(REACT_APP_METER_CHAIN_ID))
+          }
+        }).catch(error => {
+          console.log("connect to metamask: ", error)
+          if (error instanceof UnsupportedChainIdError) {
+            addChain(Number(REACT_APP_METER_CHAIN_ID))
+          }
+        })
+      }
+    })
+  }, [active])
 
   const { ENSName } = useENSName(account ?? undefined)
 

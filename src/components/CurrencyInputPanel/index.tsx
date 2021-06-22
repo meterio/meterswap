@@ -220,9 +220,12 @@ export default function CurrencyInputPanel({
                   {pair?.token0.symbol}:{pair?.token1.symbol}
                 </StyledTokenName>
               ) : (
+                <>
+                {currency ? <CurrencyLogo currency={currency} size={'24px'} /> : null}
                 <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
                   {(currency?.symbol) || t('selectToken')}
                 </StyledTokenName>
+                </>
               )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
             </Aligner>

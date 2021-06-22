@@ -114,6 +114,7 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@metamask/detect-provider": "^1.2.0",
     "coingecko-api": "^1.0.10",
     "meterify": "0.2.1",
     "meterswap-sdk": "^4.0.0",
