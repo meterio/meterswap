@@ -118,7 +118,7 @@
     "coingecko-api": "^1.0.10",
     "meterify": "0.2.1",
     "meterswap-sdk": "^4.0.0",
-    "my-meter-swap-sdk": "^1.0.2",
+    "meterswap-sdk": "^1.0.2",
     "web3": "^1.3.0"
   }
 }

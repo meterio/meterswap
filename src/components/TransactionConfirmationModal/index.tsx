@@ -1,4 +1,4 @@
-import { ChainId } from 'my-meter-swap-sdk'
+import { ChainId } from 'meterswap-sdk'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import Modal from '../Modal'

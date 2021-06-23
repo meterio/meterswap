@@ -1,4 +1,4 @@
-import { JSBI, Token } from 'my-meter-swap-sdk'
+import { JSBI, Token } from 'meterswap-sdk'
 import React, { useCallback, useContext, useMemo, useState, useEffect } from 'react'
 import { ThemeContext } from 'styled-components'
 import { AutoColumn } from '../../components/Column'

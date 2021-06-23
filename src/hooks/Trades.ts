@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Token, Trade } from 'my-meter-swap-sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from 'meterswap-sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
 

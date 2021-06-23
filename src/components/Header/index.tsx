@@ -1,4 +1,4 @@
-import { ChainId, TokenAmount } from 'my-meter-swap-sdk'
+import { ChainId, TokenAmount } from 'meterswap-sdk'
 import React, { useState } from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
@@ -305,7 +305,7 @@ export default function Header() {
           Passport <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          
-          <StyledExternalLink id={`gov-nav-link`}  href={'http://faucet-warringstakes.meter.io'}>
+          <StyledExternalLink id={`gov-nav-link`}  href={'http://faucet.meter.io'}>
           Faucet <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}

@@ -8,7 +8,7 @@ import {
 } from '../../contracts/useChargePair'
 import { ActionType } from '../../Swap/constants'
 import { BigNumber } from 'ethers'
-import { ChainId, Token } from 'my-meter-swap-sdk'
+import { ChainId, Token } from 'meterswap-sdk'
 import { useActiveWeb3React } from '../../../../hooks'
 import { isValidNumber, tryParseAmount, tryParseToBigNumber } from '../utils'
 import { useCurrencyBalance } from '../../../../state/wallet/hooks'

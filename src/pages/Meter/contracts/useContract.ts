@@ -5,7 +5,7 @@ import { getContract } from '../../../utils'
 import ChargeFactoryABI from './abis/ChargeFactory.json'
 import ChargeABI from './abis/Charge.json'
 import EthProxyABI from './abis/ChargeEthProxy.json'
-import { ChainId, Token } from 'my-meter-swap-sdk'
+import { ChainId, Token } from 'meterswap-sdk'
 import { Call, ListenerOptions } from '../../../state/multicall/actions'
 import { useBlockNumber } from '../../../state/application/hooks'
 
@@ -29,9 +29,7 @@ export const ChargeFactoryAddress: { [key in ChainId]: string } = {
   [ChainId.RINKEBY]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.GÖRLI]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.KOVAN]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
-  [ChainId.METER]: '0x56aD9A9149685b290ffeC883937caE191e193135',
-  [ChainId.METERTEST]: '',
-  [ChainId.HECO]: ''
+  [ChainId.METER]: '0x56aD9A9149685b290ffeC883937caE191e193135'
 }
 
 export const ChargeEthProxyAddress: { [key in ChainId]: string } = {
@@ -40,9 +38,7 @@ export const ChargeEthProxyAddress: { [key in ChainId]: string } = {
   [ChainId.RINKEBY]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.GÖRLI]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.KOVAN]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
-  [ChainId.METER]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
-  [ChainId.METERTEST]: '',
-  [ChainId.HECO]: ''
+  [ChainId.METER]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c'
 }
 
 export function useChargeFactory(): Contract | null {

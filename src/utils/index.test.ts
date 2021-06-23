@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { TokenAmount, Token, ChainId, Percent, JSBI } from 'my-meter-swap-sdk'
+import { TokenAmount, Token, ChainId, Percent, JSBI } from 'meterswap-sdk'
 
 import {
   getEtherscanLink,

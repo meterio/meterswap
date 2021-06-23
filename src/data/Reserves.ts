@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Currency } from 'my-meter-swap-sdk'
+import { TokenAmount, Pair, Currency } from 'meterswap-sdk'
 import { useMemo } from 'react'
 import { abi as IMeterPairABI } from '../constants/abis/IMeterPairABI.json';
 import { Interface } from '@ethersproject/abi'

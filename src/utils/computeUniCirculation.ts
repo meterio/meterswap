@@ -1,4 +1,4 @@
-import { JSBI, Token, TokenAmount } from 'my-meter-swap-sdk'
+import { JSBI, Token, TokenAmount } from 'meterswap-sdk'
 import { BigNumber } from 'ethers'
 import { STAKING_GENESIS } from '../state/stake/hooks'
 

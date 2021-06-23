@@ -1,4 +1,4 @@
-import { Trade, TradeType } from 'my-meter-swap-sdk'
+import { Trade, TradeType } from 'meterswap-sdk'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'

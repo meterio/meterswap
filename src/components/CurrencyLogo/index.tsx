@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from 'my-meter-swap-sdk'
+import { Currency, ETHER, Token } from 'meterswap-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 

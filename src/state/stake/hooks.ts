@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from 'my-meter-swap-sdk'
+import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WETH, Pair } from 'meterswap-sdk'
 import { useMemo } from 'react'
 import { DAI, UNI, USDC, USDT, WBTC, MTR, MTRG } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
@@ -17,12 +17,7 @@ export const STAKING_REWARDS_INFO: {
     stakingRewardAddress: string
   }[]
 } = {
-  [ChainId.METERTEST]: [
-    {
-      tokens: [MTR, MTRG],
-      stakingRewardAddress: '0x5A990c2482697a6F63Af28ad22EDD90a13E6D9ab'
-    }
-  ]
+ 
 }
 
 export interface StakingInfo {

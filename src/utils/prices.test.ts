@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from 'my-meter-swap-sdk'
+import { ChainId, JSBI, Pair, Route, Token, TokenAmount, Trade, TradeType } from 'meterswap-sdk'
 import { computeTradePriceBreakdown } from './prices'
 
 describe('prices', () => {

@@ -1,4 +1,4 @@
-import { JSBI, Pair, Percent } from 'my-meter-swap-sdk'
+import { JSBI, Pair, Percent } from 'meterswap-sdk'
 import { darken } from 'polished'
 import React, { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'

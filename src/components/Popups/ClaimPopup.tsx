@@ -1,4 +1,4 @@
-import { TokenAmount } from 'my-meter-swap-sdk'
+import { TokenAmount } from 'meterswap-sdk'
 import React, { useEffect } from 'react'
 import { X } from 'react-feather'
 import styled, { keyframes } from 'styled-components'

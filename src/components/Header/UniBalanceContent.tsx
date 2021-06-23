@@ -1,4 +1,4 @@
-import { ChainId, TokenAmount } from 'my-meter-swap-sdk'
+import { ChainId, TokenAmount } from 'meterswap-sdk'
 import React, { useMemo } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'

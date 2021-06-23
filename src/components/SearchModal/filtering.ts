@@ -1,5 +1,5 @@
 import { isAddress } from '../../utils'
-import { Token } from 'my-meter-swap-sdk'
+import { Token } from 'meterswap-sdk'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens

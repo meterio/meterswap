@@ -1,9 +1,9 @@
-import { ChainId, JSBI, Percent, Token, WETH } from 'my-meter-swap-sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from 'meterswap-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x3138856F6A41aA130D6a29E7C5B1781A59d41D99'
+export const ROUTER_ADDRESS = '0xC6E88363ea74F31f514b56E979413B3Ee8d76f39'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -21,9 +21,9 @@ export const COMP = new Token(ChainId.MAINNET, '0xc00e94Cb662C3520282E6f57172140
 export const MKR = new Token(ChainId.MAINNET, '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2', 18, 'MKR', 'Maker')
 export const AMPL = new Token(ChainId.MAINNET, '0xD46bA6D942050d489DBd938a2C909A5d5039A161', 9, 'AMPL', 'Ampleforth')
 export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 18, 'WBTC', 'Wrapped BTC')
+export const MTR = new Token(ChainId.METER, '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2', 18, 'MTR', 'MTR')
+export const MTRG = new Token(ChainId.METER, '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3', 18, 'MTRG', 'MTRG')
 
-export const MTR = new Token(ChainId.METERTEST, '0x4cb6cEf87d8cADf966B455E8BD58ffF32aBA49D1', 18, 'MTR', 'MTR')
-export const MTRG = new Token(ChainId.METERTEST, '0x8A419Ef4941355476cf04933E90Bf3bbF2F73814', 18, 'MTRG', 'MTRG')
 
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
@@ -40,9 +40,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.METER]: new Token(ChainId.METER, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.HECO]: new Token(ChainId.HECO, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
- 
-  [ChainId.METERTEST]:new Token(ChainId.METERTEST, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
+  
   
 }
 
@@ -63,9 +61,7 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.RINKEBY]: [MTR],
   [ChainId.GÖRLI]: [MTR],
   [ChainId.KOVAN]: [MTR],
-  [ChainId.METER]: [MTR],
-  [ChainId.HECO]: [WETH[ChainId.HECO]],
-  [ChainId.METERTEST]: [WETH[ChainId.METERTEST]]
+  [ChainId.METER]: [MTR]
 }
 
 // used to construct intermediary pairs for trading
