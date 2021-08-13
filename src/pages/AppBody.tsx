@@ -5,14 +5,23 @@ export const BodyWrapper = styled.div`
   position: relative;
   max-width: 420px;
   width: 100%;
-  background: ${({ theme }) => theme.bg1};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01),
-              0px 4px 8px rgba(0, 0, 0, 0.04),
-              0px 16px 24px rgba(0, 0, 0, 0.04),
-              0px 24px 32px rgba(0, 0, 0, 0.01);
+  background: rgba(0,0,0,0.1);
+  
+  box-shadow: #E6007E 0px 54px 55px, 
+              #E6007E 0px -12px 30px, 
+              #E6007E 0px 4px 6px,
+              #E6007E 0px 12px 13px,
+              #E6007E 0px -3px 5px;
   border-radius: 30px;
-  padding: 1rem;
+  padding: 2rem;
 `
+
+
+
+//box-shadow: #E6007E 0px 4px 16px, #E6007E 0px 8px 32px;
+
+
+
 
 /**
  * The styled container element that wraps the content of most pages and the tabs.

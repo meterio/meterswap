@@ -25,6 +25,38 @@ const StyledNavLink = styled(NavLink).attrs({
   justify-content: center;
   height: 3rem;
   border-radius: 3rem;
+  width: 100px;
+  //background:  #E6007E;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text3};
+  font-size: 20px;
+
+  &.${activeClassName} {
+    border-radius: 12px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.text1};
+  }
+
+  :hover,
+  :focus {
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
+`
+
+
+
+const StyledNavLinkPool = styled(NavLink).attrs({
+  activeClassName
+})`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  
+  border-radius: 3rem;
+ 
   outline: none;
   cursor: pointer;
   text-decoration: none;
@@ -54,14 +86,18 @@ const StyledArrowLeft = styled(ArrowLeft)`
 
 export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
   const { t } = useTranslation()
+  
   return (
+  
+      active === "pool" ? <StyledNavLinkPool id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
+      {t('pool')}
+    </StyledNavLinkPool>:
+    
     <Tabs style={{ marginBottom: '20px' }}>
       <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
         {t('swap')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
-        {t('pool')}
-      </StyledNavLink>
+      
     </Tabs>
   )
 }

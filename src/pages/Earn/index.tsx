@@ -13,6 +13,7 @@ import { useActiveWeb3React } from '../../hooks'
 const PageWrapper = styled(AutoColumn)`
   max-width: 640px;
   width: 100%;
+  
 `
 
 const TopSection = styled(AutoColumn)`

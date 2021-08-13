@@ -9,6 +9,7 @@ import styled, {
 import { useIsDarkMode } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
+import BGIMAGE from '../assets/images/BG4K.png'
 
 export * from './components'
 
@@ -35,43 +36,44 @@ const white = '#FFFFFF'
 const black = '#000000'
 
 export function colors(darkMode: boolean): Colors {
+  darkMode = true;
   return {
     // base
     white,
     black,
 
     // text
-    text1: '#000000',
-    text2:  '#565A69',
-    text3:  '#888D9B',
-    text4:  '#C3C5CB',
-    text5: '#EDEEF2',
+    text1: darkMode ? '#FFFFFF' : '#000000',
+    text2: darkMode ? '#C3C5CB' : '#565A69',
+    text3: darkMode ? '#6C7284' : '#888D9B',
+    text4: darkMode ? '#565A69' : '#C3C5CB',
+    text5: darkMode ? '#2C2F36' : '#EDEEF2',
 
     // backgrounds / greys
-    bg1: '#FFFFFF',
-    bg2:  '#F7F8FA',
-    bg3: '#EDEEF2',
-    bg4: '#CED0D9',
-    bg5: '#888D9B',
+    bg1: darkMode ? '#212429' : '#FFFFFF',
+    bg2: darkMode ? '#2C2F36' : '#F7F8FA',
+    bg3: darkMode ? '#40444F' : '#EDEEF2',
+    bg4: darkMode ? '#565A69' : '#CED0D9',
+    bg5: darkMode ? '#6C7284' : '#888D9B',
 
     //specialty colors
-    modalBG: 'rgba(0,0,0,0.3)',
-    advancedBG: 'rgba(255,255,255,0.6)',
+    modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
+    advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: '#287DF9',
-    primary2:  '#408bf8',
-    primary3:  '#71a6f3',
-    primary4: '#9cc1f6',
-    primary5:  '#dee9fa',
+    primary1: darkMode ? '#2172E5' : '#287DF9',
+    primary2: darkMode ? '#3680E7' : '#408bf8',
+    primary3: darkMode ? '#4D8FEA' : '#71a6f3',
+    primary4: darkMode ? '#376bad70' : '#9cc1f6',
+    primary5: darkMode ? '#153d6f70' : '#dee9fa',
 
     // color text
-    primaryText1:  '#287DF9',
+    primaryText1: darkMode ? '#6da8ff' : '#287DF9',
 
     // secondary colors
-    secondary1:  '#287DF9',
-    secondary2: '#9cc1f6',
-    secondary3: '#dee9fa',
+    secondary1: darkMode ? '#2172E5' : '#287DF9',
+    secondary2: darkMode ? '#17000b26' : '#9cc1f6',
+    secondary3: darkMode ? '#17000b26' : '#dee9fa',
 
     // other
     red1: '#FF6871',
@@ -98,7 +100,7 @@ export function theme(darkMode: boolean): DefaultTheme {
     },
 
     //shadows
-    shadow1:  '#2F80ED',
+    shadow1: darkMode ? '#000' : '#2F80ED',
 
     // media queries
     mediaWidth: mediaWidthTemplates,
@@ -184,25 +186,20 @@ html, input, textarea, button {
     font-family: 'Inter var', sans-serif;
   }
 }
-
 html,
 body {
   margin: 0;
   padding: 0;
 }
-
 * {
   box-sizing: border-box;
 }
-
 a {
   color: ${colors(false).blue1};
 }
-
 button {
   user-select: none;
 }
-
 html {
   font-size: 16px;
   font-variant: none;
@@ -210,7 +207,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
-
 }
 `
 
@@ -219,15 +215,10 @@ html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg2};
 }
-
 body {
   min-height: 100vh;
-  background-position: 0 -30vh;
-  background-repeat: no-repeat;
-  background-image: ${({ theme }) =>
-  `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.9, theme.primary1)} 0%, ${transparentize(
-    1,
-    theme.bg1
-  )} 100%)`};
+
+  background-repeat: round;
+  background-image: url(${BGIMAGE});
 }
 `

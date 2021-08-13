@@ -6,18 +6,33 @@ import { AdvancedSwapDetails, AdvancedSwapDetailsProps } from './AdvancedSwapDet
 const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   padding-top: calc(16px + 2rem);
   padding-bottom: 20px;
-  margin-top: -2rem;
+  margin-top: -30px;
   width: 100%;
-  max-width: 400px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+ 
+  max-width: 365px;
+  border-radius:10px;
   color: ${({ theme }) => theme.text2};
-  background-color: ${({ theme }) => theme.advancedBG};
-  z-index: -1;
+  background-color: ${({ show, theme }) => (show ? theme.advancedBG: '')};
+  z-index: ${({ show}) => (show ? '99': '0')};
 
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
   transition: transform 300ms ease-in-out;
+  opacity:  ${({ show }) => (show ? '1':'0.01')};
 `
+
+// padding-top: calc(16px + 2rem);
+//   padding-bottom: 20px;
+//   margin-top: -2rem;
+//   width: 100%;
+//   max-width: 400px;
+//   border-bottom-left-radius: 20px;
+//   border-bottom-right-radius: 20px;
+//   color: ${({ theme }) => theme.text2};
+//   background-color: ${({ theme }) => theme.advancedBG};
+//   z-index: 99;
+
+//   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
+//   transition: transform 300ms ease-in-out;
 
 export default function AdvancedSwapDetailsDropdown({ trade, ...rest }: AdvancedSwapDetailsProps) {
   const lastTrade = useLastTruthy(trade)

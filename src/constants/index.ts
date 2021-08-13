@@ -25,6 +25,10 @@ export const MTR = new Token(ChainId.METER, '0x687A6294D0D6d63e751A059bf1ca68E4A
 export const MTRG = new Token(ChainId.METER, '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3', 18, 'MTRG', 'MTRG')
 
 
+
+
+
+
 // TODO this is only approximate, it's actually based on blocks
 export const PROPOSAL_LENGTH_IN_DAYS = 7
 

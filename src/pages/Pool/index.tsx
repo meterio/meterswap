@@ -27,8 +27,10 @@ const PageWrapper = styled(AutoColumn)`
 
 const VoteCard = styled(DataCard)`
   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
+  box-shadow: #E6007E 0px 4px 16px, #E6007E 0px 8px 32px;
   overflow: hidden;
 `
+
 
 const TitleRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`

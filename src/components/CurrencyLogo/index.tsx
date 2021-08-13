@@ -7,9 +7,13 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 
-const getTokenLogoURL = (address: string) =>
-  `https://raw.githubusercontent.com/meterio/bridge-tokens/master/tokens/meter/${address.toLowerCase()}/logo.png`
+const getTokenLogoURL = (address: string, symbol:string | undefined) =>{
+  symbol = symbol === 'MTR' ? 'MTRG' : symbol;
+  return `https://raw.githubusercontent.com/meterio/token-list/master/data/${symbol}/logo.png`
 
+}
+
+  
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
@@ -40,10 +44,10 @@ export default function CurrencyLogo({
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, getTokenLogoURL(currency.address)]
+        return [...uriLocations, getTokenLogoURL(currency.address,currency.symbol)]
       }
 
-      return [getTokenLogoURL(currency.address)]
+      return [getTokenLogoURL(currency.address, currency.symbol)]
     }
     return []
   }, [currency, uriLocations])

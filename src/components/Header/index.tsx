@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 import styled from 'styled-components'
 
-import Logo from '../../assets/svg/logo.svg'
+import Logo from '../../assets/images/Voltswap_Logo.png'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
@@ -27,6 +27,7 @@ import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
 import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
 
@@ -206,15 +207,23 @@ const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
+  border-radius: 50px;
+  border: 1px solid #E6007E;
+  padding: 10px;
   margin: 0 12px;
   font-weight: 500;
   &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 3em;
+    font-weight: 500;
     color: ${({ theme }) => theme.text1};
+    background:  #E6007E;
   }
 
-  :hover,
+  :hover{
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+    background:  #E6007E;
+    text-decoration:none;
+  },
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
@@ -229,17 +238,25 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
+  border-radius: 50px;
+  border: 1px solid #E6007E;
+  padding: 10px;
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
   &.${activeClassName} {
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 3em;
+    font-weight: 500;
     color: ${({ theme }) => theme.text1};
+    background:  #E6007E;
   }
-  :hover,
+  :hover{
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+    background:  #E6007E;
+    text-decoration:none;
+  },
   :focus {
     text-decoration: none;
     color: ${({ theme }) => darken(0.1, theme.text1)};
@@ -249,6 +266,41 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 `}
 `
 
+const LanguageSelect = styled.button<{ selected: boolean }>`
+  align-items: center;
+  height: 2.2rem;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: ${({ selected, theme }) => (selected ? theme.bg1 :"#E6007E")};
+  color: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
+  border-radius: 12px;
+  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0 0.5rem;
+
+  :focus,
+  :hover {
+    background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, "#E6007E"))};
+  }
+`
+
+const Aligner = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
+  margin: 0 0.25rem 0 0.5rem;
+  height: 35%;
+
+  path {
+    stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
+    stroke-width: 1.5px;
+  }
+`
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
@@ -285,7 +337,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img width={'24px'} src={Logo} alt="logo"  />
+            <img width={'150px'} src={Logo} alt="logo"  />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -297,17 +349,17 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`}  to={'/swap'}>
             Swap
           </StyledNavLink>
+          <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
+            Pool
+          </StyledNavLink>
           <StyledNavLink id={`stake-nav-link`} to={'/rewards'}>
-          Rewards
+           Stake
           </StyledNavLink>
       
-          <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
-          Passport <span style={{ fontSize: '11px' }}>↗</span>
+          <StyledExternalLink id={`gov-nav-link`} href={'https://philipappiah.github.io/graphinfo'}>
+          Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          
-          <StyledExternalLink id={`gov-nav-link`}  href={'http://faucet.meter.io'}>
-          Faucet <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
           {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
           {/*</StyledExternalLink>*/}
@@ -333,6 +385,18 @@ export default function Header() {
           </AccountElement>
         </HeaderElement>
         <HeaderElementWrap>
+        {/* <LanguageSelect
+        selected={true}
+    
+    className="open-currency-select-button"
+   
+  >
+    
+    <Aligner>
+    <img src="https://www.countryflags.io/be/shiny/64.png"></img> <StyledDropDown selected={true} />
+    </Aligner>
+    </LanguageSelect> */}
+
           <Settings />
           {/*<Menu />*/}
         </HeaderElementWrap>

@@ -62,6 +62,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   }
 `
 
+
 const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   background-color: ${({ theme }) => theme.primary4};
   border: none;
@@ -77,14 +78,14 @@ const Web3StatusConnect = styled(Web3StatusGeneric)<{ faded?: boolean }>`
   ${({ faded }) =>
     faded &&
     css`
-      background-color: ${({ theme }) => theme.primary5};
+      background-color: #E6007E;
       border: 1px solid ${({ theme }) => theme.primary5};
-      color: ${({ theme }) => theme.primaryText1};
+      color: #fff;
 
       :hover,
       :focus {
         border: 1px solid ${({ theme }) => darken(0.05, theme.primary4)};
-        color: ${({ theme }) => darken(0.05, theme.primaryText1)};
+        color: ${({ theme }) => darken(0.05,"#fff")};
       }
     `}
 `
@@ -165,8 +166,14 @@ function StatusIcon({ connector }: { connector: AbstractConnector }) {
   return null
 }
 
+const defaultProvider = {
+
+}
+
 function addChain(chainId: number) {
   const chain = getChain(chainId)
+
+  
   detectEthereumProvider().then((provider: any) => {
     provider.request({
       method: "wallet_addEthereumChain",

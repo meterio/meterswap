@@ -21,6 +21,7 @@ export const DataCard = styled(AutoColumn)<{ disabled?: boolean }>`
   border-radius: 12px;
   width: 100%;
   position: relative;
+  box-shadow: #E6007E 0px 4px 16px, #E6007E 0px 8px 32px;
   overflow: hidden;
 `
 
