@@ -11,6 +11,7 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 import BGIMAGE from '../assets/images/BG4K.png'
 
+
 export * from './components'
 
 const MEDIA_WIDTHS = {
@@ -178,14 +179,7 @@ export const TYPE = {
 }
 
 export const FixedGlobalStyle = createGlobalStyle`
-html, input, textarea, button {
-  font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
-  }
-}
+
 html,
 body {
   margin: 0;
@@ -200,6 +194,7 @@ a {
 button {
   user-select: none;
 }
+
 html {
   font-size: 16px;
   font-variant: none;

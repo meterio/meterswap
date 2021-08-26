@@ -13,7 +13,11 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
   &[data-reach-dialog-overlay] {
     z-index: 2;
     background-color: transparent;
-    box-shadow: #E6007E 0px 4px 16px, #E6007E 0px 8px 32px;
+    box-shadow: #E6007E 0px 54px 55px, 
+              #E6007E 0px -12px 30px, 
+              #E6007E 0px 4px 6px,
+              #E6007E 0px 12px 13px,
+              #E6007E 0px -3px 5px;
     overflow: hidden;
 
     display: flex;

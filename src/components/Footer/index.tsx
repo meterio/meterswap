@@ -32,26 +32,29 @@ import usePrevious from '../../hooks/usePrevious'
 
 const FooterFrame = styled.div`
   display: inline-flex;
-  grid-template-columns: 1fr 120px;
+  
   align-items: center;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+
+  position: fixed;
   width: 100%;
-  top: 0;
-  position: relative;
+  left: 0px;
+  bottom:0px;
+ 
   border-top: 3px solid rgba(0, 0, 0, 0.1);
   padding: 1rem;
-  z-index: 2;
+ 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     grid-template-columns: 1fr;
     padding: 0 1rem;
     width: calc(100%);
-    position: relative;
+    position: fixed;
   `};
+ 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        padding: 0.5rem 1rem;
-  `}
+  display: none;
+`}
 `
 
 const activeClassName = 'ACTIVE'

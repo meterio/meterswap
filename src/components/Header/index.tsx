@@ -188,6 +188,7 @@ const Title = styled.a`
 
 const UniIcon =  styled.div`
 transition: transform 0.3s ease;
+margin-right: 10px;
 :hover {
   transform: rotate(-5deg);
 }
@@ -200,20 +201,20 @@ const StyledNavLink = styled(NavLink).attrs({
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
-  border-radius: 3rem;
+  
   outline: none;
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
-  border-radius: 50px;
+  border-radius: 15px;
   border: 1px solid #E6007E;
   padding: 10px;
   margin: 0 12px;
   font-weight: 500;
   &.${activeClassName} {
-    border-radius: 3em;
+    
     font-weight: 500;
     color: ${({ theme }) => theme.text1};
     background:  #E6007E;
@@ -227,6 +228,10 @@ const StyledNavLink = styled(NavLink).attrs({
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      padding: 3px;
+      font-size: 12px;
+`}
 `
 
 const StyledExternalLink = styled(ExternalLink).attrs({
@@ -234,11 +239,10 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 })<{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
-  border-radius: 3rem;
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  border-radius: 50px;
+  border-radius: 15px;
   border: 1px solid #E6007E;
   padding: 10px;
   color: ${({ theme }) => theme.text2};
@@ -247,7 +251,6 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   margin: 0 12px;
   font-weight: 500;
   &.${activeClassName} {
-    border-radius: 3em;
     font-weight: 500;
     color: ${({ theme }) => theme.text1};
     background:  #E6007E;
@@ -337,7 +340,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img width={'150px'} src={Logo} alt="logo"  />
+            <img width={'120px'} src={Logo} alt="logo"  />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -352,11 +355,17 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
             Pool
           </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/rewards'}>
-           Stake
+        
+          <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
+            Farm
           </StyledNavLink>
+          
       
-          <StyledExternalLink id={`gov-nav-link`} href={'https://philipappiah.github.io/graphinfo'}>
+          <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
+          Passport <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+
+          <StyledExternalLink id={`gov-nav-link`} href={'http://voltswapinfo.surge.sh'}>
           Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          

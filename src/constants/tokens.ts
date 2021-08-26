@@ -1,8 +1,14 @@
 import { ChainId, Token } from 'meterswap-sdk'
 
+import {tokens} from './swap_tokens_list.json'
+
+
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
+  
 
   [ChainId.METER]: {
+
+    
     '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2': new Token(
       ChainId.METER,
       '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2',
@@ -17,20 +23,6 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       'MTRG',
       'MTRG'
     ),
-    '0xa285BFF4202fE703B497729E4076C601CBB96d04': new Token(
-      ChainId.METER,
-      '0xa285BFF4202fE703B497729E4076C601CBB96d04',
-      6,
-      'USDT',
-      'USDT'
-    ),
-    '0x1a6eef221e4c4a2CCf84d125E975FbB3A879F66E': new Token(
-      ChainId.METER,
-      '0x1a6eef221e4c4a2CCf84d125E975FbB3A879F66E',
-      18,
-      'ETH',
-      'ETH'
-    ),
     '0x39BFB931Cae5B1A3033237Db1244004a3dF5987b': new Token(
       ChainId.METER,
       '0x39BFB931Cae5B1A3033237Db1244004a3dF5987b',
@@ -38,15 +30,34 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       'USDC',
       'USDC'
     ),
-    '0xe347E3948761832b9bcC288d2202A69278D51ddD': new Token(
+    '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C': new Token(
       ChainId.METER,
-      '0xe347E3948761832b9bcC288d2202A69278D51ddD',
+      '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C',
+      18,
+      'ETH',
+      'ETH'
+    ),
+    '0x093Dc064D9E7b7558241E014bAE631F02f684146': new Token(
+      ChainId.METER,
+      '0x093Dc064D9E7b7558241E014bAE631F02f684146',
       18,
       'WBTC',
       'WBTC'
+    ),
+    '0xC3266026DB809f923bF7594d6C3c03363854746c': new Token(
+      ChainId.METER,
+      '0xC3266026DB809f923bF7594d6C3c03363854746c',
+      6,
+      'USDT',
+      'USDT'
     )
+  
+///from here
+
+   
 
   },
+
   [ChainId.MAINNET]: {},
   [ChainId.RINKEBY]: {
     '0xBeE85b7b676f9306803B6DFC09F024c30a7A2a1e': new Token(

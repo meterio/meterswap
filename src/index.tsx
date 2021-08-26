@@ -5,6 +5,7 @@ import { isMobile } from 'react-device-detect'
 import ReactDOM from 'react-dom'
 import ReactGA from 'react-ga'
 import { Provider } from 'react-redux'
+import { ApolloProvider } from '@apollo/client'
 import { HashRouter } from 'react-router-dom'
 import { NetworkContextName } from './constants'
 import './i18n'
@@ -17,6 +18,11 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
+import { client } from './queries/client'
+
+
+
+
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -58,6 +64,7 @@ ReactDOM.render(
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
+      <ApolloProvider client={client}>
         <Provider store={store}>
           <Updaters />
           <ThemeProvider>
@@ -67,6 +74,7 @@ ReactDOM.render(
             </HashRouter>
           </ThemeProvider>
         </Provider>
+        </ApolloProvider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
   </StrictMode>,

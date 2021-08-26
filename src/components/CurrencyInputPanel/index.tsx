@@ -39,6 +39,10 @@ const CurrencySelectInput = styled.button<{ selected: boolean }>`
   :hover {
     background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, "#E6007E"))};
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+ 
+  padding: 0 0.1rem;
+`}
 `
 
 
@@ -61,6 +65,10 @@ const CurrencySelectOutput = styled.button<{ selected: boolean }>`
   :hover {
     background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, theme.primary1))};
   }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+ 
+  padding: 0 0.1rem;
+`}
 `
 
 

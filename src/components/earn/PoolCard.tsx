@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import styled from 'styled-components'
-import { TYPE, StyledInternalLink } from '../../theme'
+import { TYPE, StyledInternalLink,ExternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { ETHER, JSBI, TokenAmount,Fraction  } from 'meterswap-sdk'
 import { ButtonPrimary } from '../Button'
@@ -16,7 +16,38 @@ import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import useUSDCPrice from '../../utils/useUSDCPrice'
 import {getTokenPriceUSD} from './getTokenUSDPrice'
+import {getCurrentPrice} from './price';
+import BigNumber from 'bignumber.js';
+import { darken } from 'polished';
  
+
+enum GeyserStatus {
+  ONLINE = 'Online',
+  OFFLINE = 'Offline',
+  SHUTDOWN = 'Shutdown',
+}
+
+type RewardSchedule = {
+  id: string
+  duration: string
+  start: string
+  rewardAmount: string
+}
+
+type Geyser = {
+  id: string
+  rewardToken: string
+  stakingToken: string
+  totalStake: string
+  totalStakeUnits: string
+  status: GeyserStatus
+  scalingFloor: string
+  scalingCeiling: string
+  scalingTime: string
+  unlockedReward: string
+  rewardSchedules: RewardSchedule[]
+  lastUpdate: string
+}
 
 const StatContainer = styled.div`
   display: flex;
@@ -74,44 +105,84 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   justify-content: space-between;
   z-index: 1;
 `
+const activeClassName = 'ACTIVE'
 
-export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) {
-  const token0 = stakingInfo.tokens[0]
-  const token1 = stakingInfo.tokens[1]
-  const [tokenAPY, setTokenAPY] = useState(new Fraction(JSBI.BigInt(0)))
- 
-
-  const currency0 = unwrappedToken(token0)
-  const currency1 = unwrappedToken(token1)
-
- 
-  useEffect(() => {
-
-    if(stakingInfo.totalRewardRate){
-   
-    getTokenPriceUSD().then((data:any)=>{
-    let priceInUSD = data.MTRUSDPrice
-   
-    let priceInYear = Math.ceil(priceInUSD * 365)
-   
- 
-    if(JSBI.NE(stakingInfo.totalRewardRate.raw,JSBI.BigInt(0))){
-  let rateInYear = JSBI.divide(JSBI.BigInt(priceInYear),(stakingInfo.totalRewardRate.raw))
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName
+})<{ isActive?: boolean }>`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: left;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  position:absolute;
+  right:8px;
   
-  //APY = (1 + r/n)n — 1
+  padding: 10px;
+  color: ${({ theme }) => theme.text2};
+  font-size: 1rem;
+  width: fit-content;
+  margin: 0 12px;
+  font-weight: 500;
 
-  let rateIndecimal =JSBI.subtract(JSBI.exponentiate(JSBI.add(JSBI.BigInt(1),JSBI.divide(rateInYear,JSBI.BigInt(52))),JSBI.BigInt(52)), JSBI.BigInt(1))
-  let multRes = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(rateIndecimal))
- 
-  setTokenAPY(multRes.add(stakingInfo.totalRewardRate))
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      display: none;
+`}
+`
+
+const nowInSeconds = () => Math.round(Date.now() / 1000)
+
+const getGeyserDuration = (geyser: Geyser) => {
+  const now = nowInSeconds()
+  const { rewardSchedules } = geyser
+  const schedulesEndTime = rewardSchedules.map(
+    (schedule) => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10),
+  )
+  return Math.max(...schedulesEndTime.map((endTime) => endTime - now), 0)
+}
+
+
+export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
+
+
+
   
-    }
+  
+  //console.log(geyserInfo)
+
+  const [token0Price, setToken0Price] = useState(1)
+  const [token1Price, setToken1Price] = useState(1)
+  let duration_sec = 86400
+
+  let duration_left = getGeyserDuration(geyserInfo) / duration_sec
+  
  
+ 
+  
+
+  let totalDeposited = new BigNumber(geyserInfo.totalStake)
+  let _totalDeposited = totalDeposited.dividedBy(1e18)
+
+  let AMPL_price = getCurrentPrice('AMPL')
+
+
+  useEffect(()=>{
+
+    getCurrentPrice('BAL').then((price:number) => {
+      
+      setToken0Price(price)
     })
-  }
-  },[]);
 
-  
+    getCurrentPrice('AMPL').then((price:number) => {
+      setToken1Price(price)
+    })
+
+  })
+
+  getCurrentPrice('BAL').then((price:number) => {
+      
+    setToken0Price(price)
+  })
 
 
   
@@ -119,93 +190,51 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
 
 
 
-  const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
-
-  // get the color of the token
-  const token = currency0 === ETHER ? token1 : token0
-  const WETH = currency0 === ETHER ? token0 : token1
-
- 
-  const backgroundColor = useColor(token)
-
-  const totalSupplyOfStakingToken = useTotalSupply(stakingInfo.stakedAmount.token)
-  const [, stakingTokenPair] = usePair(...stakingInfo.tokens)
-
-  // let returnOverMonth: Percent = new Percent('0')
-  let valueOfTotalStakedAmountInWETH: TokenAmount | undefined
-  if (totalSupplyOfStakingToken && stakingTokenPair) {
-    // take the total amount of LP tokens staked, multiply by ETH value of all LP tokens, divide by all LP tokens
-    valueOfTotalStakedAmountInWETH = new TokenAmount(
-      WETH,
-      JSBI.divide(
-        JSBI.multiply(
-          JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WETH).raw),
-          JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WETH they entitle owner to
-        ),
-        totalSupplyOfStakingToken.raw
-      )
-    )
-  }
-
   
-  // get the USD value of staked WETH
-
-
-    let weeklyRewardAmount = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 7))
-    let yearlyRewardAmount = stakingInfo.totalRewardRate.multiply(JSBI.BigInt(60 * 60 * 24 * 365))
-    //console.log(yearlyRewardAmount.toSignificant(4, { groupSeparator: ',' }))
-    let weeklyRewardPerMeter = weeklyRewardAmount.divide(stakingInfo.totalStakedAmount)
-    if (JSBI.EQ(weeklyRewardPerMeter.denominator, 0)) {
-      weeklyRewardPerMeter = new Fraction(JSBI.BigInt(0), JSBI.BigInt(1))
-    }
     
   
 
   return (
-    <Wrapper showBackground={isStaking} bgColor={backgroundColor}>
+    <Wrapper showBackground={true} bgColor={'#2172E5'}>
       <CardBGImage desaturate />
       <CardNoise />
 
       <TopSection>
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
-        <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
-          {currency0.symbol}-{currency1.symbol}
+        {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} /> */}
+        <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width:"200px" }}>
+          BAL-AMPL
         </TYPE.white>
 
-        <StyledInternalLink to={`/mtrg/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '100%' }}>
+        <StyledExternalLink href={`http://voltswapfarm.surge.sh`} >
           <ButtonPrimary padding="8px" borderRadius="8px">
-            {isStaking ? 'Manage' : 'Deposit'}
+             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
-        </StyledInternalLink>
+        </StyledExternalLink>
       </TopSection>
 
       <StatContainer>
         <RowBetween>
           <TYPE.white> Total deposited</TYPE.white>
           <TYPE.white>
-            { `${valueOfTotalStakedAmountInWETH?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} MTR`}
+           {  Number(_totalDeposited.multipliedBy((token0Price + token1Price) / 2)).toFixed(2).toString()} USD
           </TYPE.white>
         </RowBetween>
         
         <RowBetween>
-          <TYPE.white> Pool Rate</TYPE.white>
+          <TYPE.white>Ends In</TYPE.white>
           <TYPE.white>
-            {`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })  ?? '-'} MTRG / week`}
+            {duration_left.toFixed(2)} Days
           </TYPE.white>
         </RowBetween>
-        <RowBetween>
-          <TYPE.white> Current reward </TYPE.white>
-          <TYPE.white>{`${weeklyRewardPerMeter.toFixed(4, { groupSeparator: ',' }) ??
-            '-'} MTRG / Week`}</TYPE.white>
-        </RowBetween>
+        
         <RowBetween>
           <TYPE.white> Earn up to (yearly) </TYPE.white>
-          <TYPE.white>{ `${tokenAPY?.toSignificant(4, { groupSeparator: ',' }) ?? '-'} %`}</TYPE.white>
+          <TYPE.white>98 %</TYPE.white>
         </RowBetween>
       </StatContainer>
       
 
-      {isStaking && (
+      {/* {isStaking && (
         <>
           <Break />
           <BottomSection showBackground={true}>
@@ -223,7 +252,7 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
             </TYPE.black>
           </BottomSection>
         </>
-      )}
+      )} */}
     </Wrapper>
   )
 }

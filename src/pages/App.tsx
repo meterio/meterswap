@@ -13,6 +13,7 @@ import { ApplicationModal } from '../state/application/actions'
 import { useModalOpen, useToggleModal } from '../state/application/hooks'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
+
 import {
   RedirectDuplicateTokenIds,
   RedirectOldAddLiquidityPathStructure,
@@ -98,6 +99,7 @@ export default function App() {
               {/*<Route exact strict path="/send" component={RedirectPathToSwapOnly} />*/}
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
+            
               <Route exact strict path="/rewards" component={Earn} />
               {/*<Route exact strict path="/vote" component={Vote} />*/}
               {/*<Route exact strict path="/create" component={RedirectToAddLiquidity} />*/}
@@ -120,9 +122,10 @@ export default function App() {
           <Marginer />
         </BodyWrapper>
 
-        <Footer/>
+        {/* <Footer/> */}
         
       </AppWrapper>
     </Suspense>
   )
 }
+

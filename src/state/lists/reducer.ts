@@ -41,6 +41,9 @@ const initialState: ListsState = {
   selectedListUrl: DEFAULT_TOKEN_LIST_URL
 }
 
+
+console.log(initialState)
+
 export default createReducer(initialState, builder =>
   builder
     .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
