@@ -19,6 +19,8 @@ import {getTokenPriceUSD} from './getTokenUSDPrice'
 import {getCurrentPrice} from './price';
 import BigNumber from 'bignumber.js';
 import { darken } from 'polished';
+import {useToken} from '../../hooks/Tokens';
+import {getTokenSymbol} from './tokenSymbol';
  
 
 enum GeyserStatus {
@@ -152,6 +154,8 @@ export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
 
   const [token0Price, setToken0Price] = useState(1)
   const [token1Price, setToken1Price] = useState(1)
+  const [token0Symbol, setToken0symbol] = useState("")
+  const [token1Symbol, setToken1symbol] = useState("")
   let duration_sec = 86400
 
   let duration_left = getGeyserDuration(geyserInfo) / duration_sec
@@ -162,27 +166,38 @@ export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
 
   let totalDeposited = new BigNumber(geyserInfo.totalStake)
   let _totalDeposited = totalDeposited.dividedBy(1e18)
-
-  let AMPL_price = getCurrentPrice('AMPL')
+ 
 
 
   useEffect(()=>{
 
-    getCurrentPrice('BAL').then((price:number) => {
-      
-      setToken0Price(price)
+    getTokenSymbol(geyserInfo.stakingToken).then((symbol:string)=>{
+     
+      getCurrentPrice(symbol).then((price:number) => {
+        setToken0symbol(symbol)
+        setToken0Price(price)
+      }).catch((error:any)=>{
+        setToken0Price(0)
+      })
+  
     })
 
-    getCurrentPrice('AMPL').then((price:number) => {
-      setToken1Price(price)
+    getTokenSymbol(geyserInfo.rewardToken).then((symbol:string)=>{
+     
+      setToken1symbol(symbol)
+      getCurrentPrice(symbol).then((price:number) => {
+      
+        setToken1Price(price)
+      }).catch((error:any)=>{
+        setToken1Price(0)
+      })
+  
     })
 
-  })
 
-  getCurrentPrice('BAL').then((price:number) => {
-      
-    setToken0Price(price)
-  })
+  },[token0Symbol, token1Symbol,token0Price, token1Price])
+
+
 
 
   
@@ -202,7 +217,7 @@ export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
       <TopSection>
         {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} /> */}
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width:"200px" }}>
-          BAL-AMPL
+          {token0Symbol}-{token1Symbol}
         </TYPE.white>
 
         <StyledExternalLink href={`http://voltswapfarm.surge.sh`} >

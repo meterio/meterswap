@@ -6,10 +6,17 @@ import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
+import {tokens} from '../../constants/swap_tokens_list.json'
 
 const getTokenLogoURL = (address: string, symbol:string | undefined) =>{
+  var parsedList = JSON.parse(JSON.stringify(tokens));
   symbol = symbol === 'MTR' ? 'MTRG' : symbol;
-  return `https://raw.githubusercontent.com/meterio/token-list/master/data/${symbol}/logo.png`
+  var logoURI = `https://raw.githubusercontent.com/meterio/token-list/master/data/${symbol}/logo.png`
+  parsedList.map((token_data:any)=>{
+    logoURI = token_data.address === address ? token_data.logoURI : logoURI
+  })
+  
+  return logoURI
 
 }
 

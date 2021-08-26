@@ -87,7 +87,7 @@ export default function Earn() {
    
     if (geyserData && geyserData.geysers) {
       const currentGeysers = [...geyserData.geysers].map((geyser) => ({ ...geyser, status: geyser.powerSwitch.status })) as Geyser[]
-      console.log(geyserData.geysers)
+      
       setGeysers(currentGeysers)
     }
 

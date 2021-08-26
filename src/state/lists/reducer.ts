@@ -42,7 +42,7 @@ const initialState: ListsState = {
 }
 
 
-console.log(initialState)
+
 
 export default createReducer(initialState, builder =>
   builder

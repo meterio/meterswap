@@ -1,6 +1,5 @@
 import { ChainId, Token } from 'meterswap-sdk'
 
-import {tokens} from './swap_tokens_list.json'
 
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
@@ -27,29 +26,29 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       ChainId.METER,
       '0x39BFB931Cae5B1A3033237Db1244004a3dF5987b',
       18,
-      'USDC',
-      'USDC'
+      'USDC.eth',
+      'USDC.eth'
     ),
     '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C': new Token(
       ChainId.METER,
       '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C',
       18,
-      'ETH',
-      'ETH'
+      'WETH.eth',
+      'WETH.eth'
     ),
     '0x093Dc064D9E7b7558241E014bAE631F02f684146': new Token(
       ChainId.METER,
       '0x093Dc064D9E7b7558241E014bAE631F02f684146',
       18,
-      'WBTC',
-      'WBTC'
+      'WBTC.eth',
+      'WBTC.eth'
     ),
     '0xC3266026DB809f923bF7594d6C3c03363854746c': new Token(
       ChainId.METER,
       '0xC3266026DB809f923bF7594d6C3c03363854746c',
       6,
-      'USDT',
-      'USDT'
+      'USDT.eth',
+      'USDT.eth'
     )
   
 ///from here
