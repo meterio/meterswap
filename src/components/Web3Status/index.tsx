@@ -210,7 +210,7 @@ function Web3StatusInner() {
         }).catch(error => {
           console.log("connect to metamask: ", error)
           if (error instanceof UnsupportedChainIdError) {
-           // addChain(Number(REACT_APP_METER_CHAIN_ID))
+           addChain(Number(REACT_APP_METER_CHAIN_ID))
           }
         })
       }

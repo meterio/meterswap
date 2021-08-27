@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import styled from 'styled-components'
+import { useActiveWeb3React } from '../../hooks'
 import { TYPE, StyledInternalLink,ExternalLink } from '../../theme'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import { ETHER, JSBI, TokenAmount,Fraction  } from 'meterswap-sdk'
@@ -21,8 +22,10 @@ import BigNumber from 'bignumber.js';
 import { darken } from 'polished';
 import {useToken} from '../../hooks/Tokens';
 import {getTokenSymbol} from './tokenSymbol';
- 
 
+const MS_PER_SEC = 1000
+// polling interval for querying subgraph
+const POLL_INTERVAL = 30 * MS_PER_SEC
 enum GeyserStatus {
   ONLINE = 'Online',
   OFFLINE = 'Offline',
@@ -142,6 +145,10 @@ const getGeyserDuration = (geyser: Geyser) => {
   )
   return Math.max(...schedulesEndTime.map((endTime) => endTime - now), 0)
 }
+
+
+
+
 
 
 export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {

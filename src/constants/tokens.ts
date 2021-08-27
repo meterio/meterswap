@@ -1,8 +1,15 @@
 import { ChainId, Token } from 'meterswap-sdk'
 
+import {tokens} from './swap_tokens_list.json'
+var parsedList = JSON.parse(JSON.stringify(tokens));
+
+
+ 
+
 
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
+
   
 
   [ChainId.METER]: {
@@ -22,9 +29,9 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       'MTRG',
       'MTRG'
     ),
-    '0x39BFB931Cae5B1A3033237Db1244004a3dF5987b': new Token(
+    '0xd86e243fc0007e6226b07c9a50c9d70d78299eb5': new Token(
       ChainId.METER,
-      '0x39BFB931Cae5B1A3033237Db1244004a3dF5987b',
+      '0xd86e243fc0007e6226b07c9a50c9d70d78299eb5',
       18,
       'USDC.eth',
       'USDC.eth'
@@ -39,17 +46,10 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
     '0x093Dc064D9E7b7558241E014bAE631F02f684146': new Token(
       ChainId.METER,
       '0x093Dc064D9E7b7558241E014bAE631F02f684146',
-      18,
+      6,
       'WBTC.eth',
       'WBTC.eth'
     ),
-    '0xC3266026DB809f923bF7594d6C3c03363854746c': new Token(
-      ChainId.METER,
-      '0xC3266026DB809f923bF7594d6C3c03363854746c',
-      6,
-      'USDT.eth',
-      'USDT.eth'
-    )
   
 ///from here
 
