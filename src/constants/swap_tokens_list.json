@@ -1,6 +1,6 @@
 {
   "name": "Voltswap Default List",
-  "timestamp": "2021-08-27T13:23:26.491Z",
+  "timestamp": "",
   "version": {
     "major": 1,
     "minor": 0,
@@ -8,11 +8,7 @@
   },
   "tags": {},
   "logoURI": "",
-  "keywords": [
-    "voltswap",
-    "default",
-    "meter"
-  ],
+  "keywords": ["voltswap", "default", "meter"],
   "tokens": [
     {
       "name": "AmpleForth",
@@ -176,9 +172,9 @@
     },
     {
       "name": "USDC Token",
-      "address": "0xd86e243fc0007e6226b07c9a50c9d70d78299eb5",
+      "address": "0x39BFB931Cae5B1A3033237Db1244004a3dF5987b",
       "symbol": "USDC.eth",
-      "decimals": 6,
+      "decimals": 18,
       "chainId": 82,
       "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png"
     },
