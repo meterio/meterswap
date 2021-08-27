@@ -365,6 +365,10 @@ export default function Header() {
           Passport <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
 
+          <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
+          Wallet <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+
           <StyledExternalLink id={`gov-nav-link`} href={'http://voltswapinfo.surge.sh'}>
           Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>

@@ -28,6 +28,9 @@ const DEFAULT_PRICES: Record<string, number> = {
   YFI: 17000,
   NMR: 25,
   USDC: 1,
+  MTRG:2.33,
+  MTR:2.91,
+  'UNI-V2':2.91,
   'yDAI+yUSDC+yUSDT+yTUSD': 1.1,
 }
 
@@ -45,6 +48,9 @@ const SYMBOL_TO_QUERY: Record<string, string> = {
   YFI: 'yearn-finance',
   NMR: 'numeraire',
   USDC: 'usd-coin',
+  MTRG: 'Meter Governance',
+  MTR: 'Meter Stable',
+  'UNI-V2':'Meter Stable',
   'yDAI+yUSDC+yUSDT+yTUSD': 'curve-fi-ydai-yusdc-yusdt-ytusd',
 }
 
@@ -54,6 +60,7 @@ export const getCurrentPrice = async (symbol: string) => {
 
   try {
     const query = SYMBOL_TO_QUERY[symbol]
+    
     if (!query) {
       throw new Error(`Can't fetch price for ${symbol}`)
     }
@@ -69,6 +76,7 @@ export const getCurrentPrice = async (symbol: string) => {
           }),
           new Promise((_, reject) => setTimeout(() => reject(new Error('request timeout')), reqTimeoutSec * 1000)),
         ])
+        
         const price = p.data[query].usd
         return price as number
       },
