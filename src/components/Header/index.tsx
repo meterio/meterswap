@@ -359,6 +359,7 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
             Farm
           </StyledNavLink>
+        
           
       
           <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
@@ -380,6 +381,7 @@ export default function Header() {
           {/*  Charts <span style={{ fontSize: '11px' }}>↗</span>*/}
           {/*</StyledExternalLink>*/}
         </HeaderLinks>
+      
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
