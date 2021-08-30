@@ -41,6 +41,188 @@ html, input, textarea, button {
 
 
 
+.header {
+ 
+ 
+  position: fixed;
+  width: 100%;
+  z-index: 99999;
+}
+
+.header ul {
+  margin: 0;
+ 
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  z-index: 9999;
+  background-image: url('./BG4K.png');
+  background-repeat: round;
+     margin-left: -18px;
+}
+
+.header li  {
+  display: block;
+  color: #f4f4f4;
+  padding: 5px;
+  
+  text-decoration: none;
+}
+
+header ul li a {
+  display: block;
+  color: #f4f4f4;
+  padding: 5px;
+  
+  text-decoration: none;
+}
+
+
+.header li a:hover,
+.header .menu-btn:hover {
+ 
+}
+
+.header .logo {
+  display: block;
+  float: left;
+  font-size: 2em;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+/* menu */
+
+.header .menu {
+  clear: both;
+  max-height: 0;
+  transition: max-height .2s ease-out;
+}
+
+/* menu icon */
+
+.header .menu-icon {
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  padding: 28px 20px;
+  position: relative;
+  user-select: none;
+}
+
+.header .menu-icon .navicon {
+  background: #f4f4f4;
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease-out;
+  width: 25px;
+  margin-right: 10px;
+}
+
+.header .menu-icon .navicon:before,
+.header .menu-icon .navicon:after {
+  background: #f4f4f4;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.header .menu-icon .navicon:before {
+  top: 5px;
+}
+
+.header .menu-icon .navicon:after {
+  top: -5px;
+}
+
+/* menu btn */
+
+.header .menu-btn {
+  display: none;
+}
+
+.header .menu-btn:checked ~ .menu {
+  max-height: 340px;
+}
+
+.header .menu-btn:checked ~ .menu-icon .navicon {
+  background: transparent;
+}
+
+.header .menu-btn:checked ~ .menu-icon .navicon:before {
+  transform: rotate(-45deg);
+}
+
+.header .menu-btn:checked ~ .menu-icon .navicon:after {
+  transform: rotate(45deg);
+}
+
+.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+.header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+  top: 0;
+}
+
+/* 48em = 768px */
+
+@media (min-width: 48em) {
+  
+  .header li {
+    float: left;
+  }
+  .header li a {
+
+    font-size: 1rem;
+  width: fit-content;
+  color: #f4f4f4;
+  border-radius: 15px;
+  border: 1px solid #E6007E;
+  padding: 10px;
+  margin: 0 12px;
+  font-weight: 500;
+  align-items: left;
+  
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+
+}
+
+
+
+.header li a:visited {
+
+background:  #E6007E;
+font-weight: 500;
+color: #f4f4f4;
+
+}
+
+header li a:hover{
+  background:  #E6007E;
+    text-decoration:none;
+}
+ 
+  .header ul{
+      background-color:transparent;
+      background-image: unset;
+      margin-left: 120px;
+    }
+  .header .menu {
+    clear: none;
+   
+    max-height: none;
+  }
+  .header .menu-icon {
+    display: none;
+  }
+}
+
+
   </style>
 </head>
 <body>

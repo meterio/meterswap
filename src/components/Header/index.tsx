@@ -18,6 +18,12 @@ import { TYPE, ExternalLink } from '../../theme'
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 import Menu from '../Menu'
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from "react-device-detect";
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
@@ -38,6 +44,7 @@ const HeaderFrame = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  height:70px;
   width: 100%;
   top: 0;
   position: relative;
@@ -200,19 +207,8 @@ const StyledNavLink = styled(NavLink).attrs({
   activeClassName
 })`
   ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
   
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  border-radius: 15px;
-  border: 1px solid #E6007E;
-  padding: 10px;
-  margin: 0 12px;
-  font-weight: 500;
+  text-decoration:none;
   &.${activeClassName} {
     
     font-weight: 500;
@@ -220,54 +216,26 @@ const StyledNavLink = styled(NavLink).attrs({
     background:  #E6007E;
   }
 
-  :hover{
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-    background:  #E6007E;
-    text-decoration:none;
-  },
-  :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      padding: 3px;
-      font-size: 12px;
-`}
+ 
 `
+
+
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
 })<{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
-  align-items: left;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  border-radius: 15px;
-  border: 1px solid #E6007E;
-  padding: 10px;
-  color: ${({ theme }) => theme.text2};
-  font-size: 1rem;
-  width: fit-content;
-  margin: 0 12px;
-  font-weight: 500;
+  text-decoration:none;
+  color: ${({ theme }) => theme.text1};
+ 
   &.${activeClassName} {
     font-weight: 500;
     color: ${({ theme }) => theme.text1};
     background:  #E6007E;
   }
-  :hover{
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-    background:  #E6007E;
-    text-decoration:none;
-  },
-  :focus {
-    text-decoration: none;
-    color: ${({ theme }) => darken(0.1, theme.text1)};
-  }
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
+  
 `
+
 
 const LanguageSelect = styled.button<{ selected: boolean }>`
   align-items: center;
@@ -333,6 +301,7 @@ export default function Header() {
 
   return (
     <HeaderFrame>
+  
       <ClaimModal />
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
@@ -343,44 +312,67 @@ export default function Header() {
             <img width={'120px'} src={Logo} alt="logo"  />
           </UniIcon>
         </Title>
-        <HeaderLinks>
+       
           {/*<StyledNavLink to={'/meter'}>*/}
           {/*  SmartAMM*/}
           {/*</StyledNavLink>*/}
-         
 
-          <StyledNavLink id={`stake-nav-link`}  to={'/swap'}>
-            Swap
-          </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
-            Pool
-          </StyledNavLink>
-        
-          <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
-            Farm
-          </StyledNavLink>
-        
-          
-      
-          <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
-          Passport <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
 
-          <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
-          Wallet <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
 
-          <StyledExternalLink id={`gov-nav-link`} href={'http://voltswapinfo.surge.sh'}>
-          Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-         
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
           {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
           {/*</StyledExternalLink>*/}
           {/*<StyledExternalLink id={`stake-nav-link`} href={'https://happy-grass-0af584900.azurestaticapps.net/'}>*/}
           {/*  Charts <span style={{ fontSize: '11px' }}>↗</span>*/}
           {/*</StyledExternalLink>*/}
-        </HeaderLinks>
+          <header className="header" style={{top:"0px" }}>
+  
+  <input className="menu-btn" type="checkbox" id="menu-btn" />
+  <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
+
+  <ul className="menu" >
+    
+
+       <li><StyledNavLink id={`stake-nav-link`}  to={'/swap'}>
+       Swap
+     </StyledNavLink></li>
+    
+   
+    <li> <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
+            Pool
+          </StyledNavLink></li>
+    <li>
+          <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
+            Farm
+          </StyledNavLink></li>
+    <li> <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
+          Passport <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink></li>
+          <li>
+            
+          <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
+          Wallet <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+
+          </li>
+
+          <li>
+
+          <StyledExternalLink id={`gov-nav-link`} href={'http://voltswapinfo.surge.sh'}>
+          Charts <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+         
+
+          </li>
+  </ul>
+
+
+
+
+  
+
+</header>
+      
       
       </HeaderRow>
       <HeaderControls>

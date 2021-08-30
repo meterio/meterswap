@@ -20,7 +20,7 @@ const getTokenLogoURL = (address: string, symbol:string | undefined) =>{
     logoURI = web3.utils.toChecksumAddress(token_data.address) === web3.utils.toChecksumAddress(address) ? token_data.logoURI : logoURI
   })
   
-  
+ 
   return logoURI
 
 }
