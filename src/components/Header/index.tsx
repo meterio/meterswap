@@ -18,12 +18,7 @@ import { TYPE, ExternalLink } from '../../theme'
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 import Menu from '../Menu'
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile
-} from "react-device-detect";
+
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
@@ -196,6 +191,7 @@ const Title = styled.a`
 const UniIcon =  styled.div`
 transition: transform 0.3s ease;
 margin-right: 10px;
+z-index:99;
 :hover {
   transform: rotate(-5deg);
 }
@@ -405,7 +401,7 @@ export default function Header() {
     </LanguageSelect> */}
 
           <Settings />
-          {/*<Menu />*/}
+          <Menu />
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>
