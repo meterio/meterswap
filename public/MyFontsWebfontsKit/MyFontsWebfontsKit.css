@@ -1,0 +1,28 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 4170496, 2021-08-31T21:15:46-0400
+ * 
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are 
+ * explicitly restricted from using the Licensed Webfonts(s).
+ * 
+ * You may obtain a valid license at the URLs below.
+ * 
+ * Webfont: GeomGraphic-Regular by Dharma Type
+ * URL: https://www.myfonts.com/fonts/flat-it/geom-graphic/regular/
+ * Copyright: Copyright (c) 2011 by Ryoichi Tsunekawa. All rights reserved.
+ * 
+ * 
+ * 
+ * © 2021 MyFonts Inc
+*/
+
+
+/* @import must be at top of file, otherwise CSS will not work */
+@import url("//hello.myfonts.net/count/3fa300");
+  
+@font-face {
+  font-family: "GeomGraphic-Regular";
+  src: url('webFonts/GeomGraphicRegular/font.woff2') format('woff2'), url('webFonts/GeomGraphicRegular/font.woff') format('woff');
+}
+
