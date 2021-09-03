@@ -1,0 +1,103 @@
+{
+    "name": "My Token List",
+    "logoURI": "ipfs://QmUSNbwUxUYNMvMksKypkgWs8unSm8dX2GjCPBVGZ7GGMr",
+    "keywords": [
+      "voltswap",
+      "default",
+      "meter"
+    ],
+    "tags": {
+      "stablecoin": {
+        "name": "Stablecoin",
+        "description": "Tokens that are fixed to an external asset, e.g. the US dollar"
+      },
+      "compound": {
+        "name": "Compound Finance",
+        "description": "Tokens that earn interest on compound.finance"
+      }
+    },
+    "timestamp": "2020-06-12T00:00:00+00:00",
+    "tokens": [
+      {
+        "name": "Meter Governance",
+        "address": "0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3",
+        "symbol": "MTRG",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png",
+        "tags": [
+          "stablecoin"
+        ]
+      },
+      {
+        "name": "USDC Token",
+        "address": "0xD86e243FC0007e6226B07c9A50C9d70D78299EB5",
+        "symbol": "USDC.eth",
+        "decimals": 6,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png",
+        "tags": [
+          "compound"
+        ]
+      },
+      {
+        "name": "USDT from Ethereum on Meter",
+        "address": "0x5Fa41671c48e3C951AfC30816947126CCC8C162e",
+        "symbol": "USDT.eth",
+        "decimals": 6,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png",
+
+        "tags": [
+          "compound"
+        ]
+      }, {
+
+        "name": "WBTC from Ethereum on Meter",
+        "address": "0x093Dc064D9E7b7558241E014bAE631F02f684146",
+        "symbol": "WBTC.eth",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/WBTC/logo.png",
+
+
+        "tags": [
+          "compound"
+        ]
+      },
+
+      {
+
+        "name": "ETH from Ethereum on Meter",
+        "address": "0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C",
+        "symbol": "WETH.eth",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png",
+
+        "tags": [
+          "compound"
+        ]
+      },
+      {
+        "name": "MeterStable Token",
+        "address": "0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2",
+        "symbol": "MTR",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png",
+
+        "tags": [
+          "compound"
+        ]
+      }
+
+
+
+    ],
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    }
+  }

@@ -1,6 +1,6 @@
 {
   "name": "Voltswap Default List",
-  "timestamp": "2021-08-27T13:23:26.491Z",
+  "timestamp": "",
   "version": {
     "major": 1,
     "minor": 0,
@@ -176,7 +176,7 @@
     },
     {
       "name": "USDC Token",
-      "address": "0xd86e243fc0007e6226b07c9a50c9d70d78299eb5",
+      "address": "0xD86e243FC0007e6226B07c9A50C9d70D78299EB5",
       "symbol": "USDC.eth",
       "decimals": 6,
       "chainId": 82,
@@ -184,7 +184,7 @@
     },
     {
       "name": "USDT from Ethereum on Meter",
-      "address": "0xC3266026DB809f923bF7594d6C3c03363854746c",
+      "address": "0x5Fa41671c48e3C951AfC30816947126CCC8C162e",
       "symbol": "USDT.eth",
       "decimals": 6,
       "chainId": 82,
@@ -268,6 +268,14 @@
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 101,
+      "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
+    },
+    {
+      "name": "Wrapped ETH",
+      "address": "0x07446A7e12C2d24d6b180d009e4255aE26fBF018",
+      "symbol": "WETH",
+      "decimals": 18,
+      "chainId": 365,
       "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
     },
     {

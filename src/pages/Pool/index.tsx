@@ -103,6 +103,7 @@ export default function Pool() {
   )
 
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  console.log(v2Pairs)
 
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some(V2Pair => !V2Pair)

@@ -14,7 +14,8 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
 
   [ChainId.METER]: {
 
-    
+   
+
     '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2': new Token(
       ChainId.METER,
       '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2',
@@ -36,9 +37,9 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       'USDC.eth',
       'USDC.eth'
     ),
-    '0xC3266026DB809f923bF7594d6C3c03363854746c': new Token(
+    '0x5Fa41671c48e3C951AfC30816947126CCC8C162e': new Token(
       ChainId.METER,
-      '0xC3266026DB809f923bF7594d6C3c03363854746c',
+      '0x5Fa41671c48e3C951AfC30816947126CCC8C162e',
       6,
       'USDT.eth',
       'USDT.eth'
