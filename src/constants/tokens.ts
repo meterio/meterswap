@@ -10,6 +10,8 @@ var parsedList = JSON.parse(JSON.stringify(tokens));
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
 
+ 
+
   
 
   [ChainId.METER]: {
@@ -43,6 +45,21 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       6,
       'USDT.eth',
       'USDT.eth'
+    ),
+    '0xF8BBb44E6fD13632D36fe09eB61820f9A44f5D74': new Token(
+      ChainId.METER,
+      '0xF8BBb44E6fD13632D36fe09eB61820f9A44f5D74',
+      18,
+      'BNB',
+      'BNB'
+    ),
+  
+    '0x24aA189DfAa76c671c279262F94434770F557c35': new Token(
+      ChainId.METER,
+      '0x24aA189DfAa76c671c279262F94434770F557c35',
+      18,
+      'BUSD',
+      'BUSD'
     ),
     '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C': new Token(
       ChainId.METER,
