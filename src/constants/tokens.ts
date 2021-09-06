@@ -16,6 +16,8 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
 
   [ChainId.METER]: {
 
+  
+
    
 
     '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2': new Token(
@@ -68,13 +70,21 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
       'WETH.eth',
       'WETH.eth'
     ),
-    '0x093Dc064D9E7b7558241E014bAE631F02f684146': new Token(
+    '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C': new Token(
       ChainId.METER,
-      '0x093Dc064D9E7b7558241E014bAE631F02f684146',
+      '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C',
       18,
       'WBTC.eth',
       'WBTC.eth'
     ),
+      
+  '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0': new Token(
+    ChainId.METER,
+    '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0',
+    18,
+    'VOLT',
+    'VOLT'
+  ),
   
 ///from here
 
