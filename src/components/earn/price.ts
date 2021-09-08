@@ -50,7 +50,6 @@ const SYMBOL_TO_QUERY: Record<string, string> = {
   USDC: 'usd-coin',
   MTRG: 'meter-governance-mapped-by-meter-io',
   MTR: 'meter-stable',
-  VOLT_AIR: 'meter', // FIXME: change this when volt got listed on coingecko
   'yDAI+yUSDC+yUSDT+yTUSD': 'curve-fi-ydai-yusdc-yusdt-ytusd'
 };
 
