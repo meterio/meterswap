@@ -72,7 +72,7 @@
       {
         "name": "VoltSwap Token",
         "address": "0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0",
-        "symbol": "VOLTS",
+        "symbol": "VOLT",
         "decimals": 18,
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/VOLT/logo.png"

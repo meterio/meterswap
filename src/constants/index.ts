@@ -26,6 +26,14 @@ export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C
 export const MTR = new Token(ChainId.METER, '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2', 18, 'MTR', 'MTR')
 export const MTRG = new Token(ChainId.METER, '0x228ebBeE999c6a7ad74A6130E81b12f9Fe237Ba3', 18, 'MTRG', 'MTRG')
 
+export const USDC_eth = new Token(ChainId.METER, '0xD86e243FC0007e6226B07c9A50C9d70D78299EB5', 6, 'USD.eth', 'USD.eth')
+export const BNB_bsc = new Token(ChainId.METER, '0xF8BBb44E6fD13632D36fe09eB61820f9A44f5D74', 18, 'BNB.bsc', 'BNB.bsc')
+export const BUSD_bsc = new Token(ChainId.METER, '0x24aA189DfAa76c671c279262F94434770F557c35', 18, 'BUSD.bsc', 'BUSD.bsc')
+export const USDT_eth = new Token(ChainId.METER, '0x5Fa41671c48e3C951AfC30816947126CCC8C162e', 6, 'USDt.eth', 'USDT.eth')
+export const VOLT = new Token(ChainId.METER, '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0', 18, 'VOLT', 'VOLT')
+export const WBTC_eth = new Token(ChainId.METER, '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C', 18, 'WBTC.eth', 'WBTC.eth')
+export const WETH_eth = new Token(ChainId.METER, '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C', 18, 'WETH.eth', 'WETH.eth')
+
 
 
 
@@ -96,9 +104,44 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT]
 }
 
+
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.METER]: [
-    [MTRG, MTR]
+    [MTRG, MTR],
+    [MTRG, USDC_eth],
+    [MTRG, BNB_bsc],
+    [MTRG, USDT_eth],
+    [MTRG, VOLT],
+    [MTRG, WBTC_eth],
+    [MTRG, WETH_eth],
+
+  
+    [MTR, USDC_eth],
+    [MTR, BNB_bsc],
+    [MTR, USDT_eth],
+    [MTR, VOLT],
+    [MTR, WBTC_eth],
+    [MTR, WETH_eth],
+
+ 
+    [USDC_eth, BNB_bsc],
+    [USDC_eth, USDT_eth],
+    [USDC_eth, VOLT],
+    [USDC_eth, WBTC_eth],
+    [USDC_eth, WETH_eth],
+
+    [BNB_bsc, USDT_eth],
+    [BNB_bsc, VOLT],
+    [BNB_bsc, WBTC_eth],
+    [BNB_bsc, WETH_eth],
+
+    [USDT_eth, VOLT],
+    [USDT_eth, WBTC_eth],
+    [USDT_eth, WETH_eth],
+
+    [VOLT, WBTC_eth],
+    [VOLT, WETH_eth]
+
   ]
 }
 
