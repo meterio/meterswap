@@ -243,7 +243,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           setRewardTokenSymbol(rewardSymbol);
           const voltPrice = await getCurrentPrice(rewardSymbol);
           setRewardTokenPrice(voltPrice);
-          setTotalDeposit(totalStake.times(uniPrice + voltPrice).dividedBy(2));
+          setTotalDeposit(totalStake.times(uniPrice));
           console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
           console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           console.log(`reward ${rewardSymbol} price ${voltPrice}`);
@@ -287,7 +287,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
         <RowBetween>
           <TYPE.white>Ends In</TYPE.white>
-          <TYPE.white>{durationInDay.toFixed(2)} Days</TYPE.white>
+          <TYPE.white>{durationInDay > 0 ? durationInDay.toFixed(2) : '--'} Days</TYPE.white>
         </RowBetween>
 
         <RowBetween>
