@@ -241,7 +241,23 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
           const rewardSymbol = await rewardToken.symbol();
           setRewardTokenSymbol(rewardSymbol);
-          const voltPrice = await getCurrentPrice(rewardSymbol);
+
+          let voltPrice = 0;
+          if (rewardSymbol === 'VOLT') {
+            const mtrgPrice = await getCurrentPrice('MTRG');
+            const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const { reserve0, reserve1 } = await mtrgVoltPair.getReserves();
+            console.log('mtrg price:', mtrgPrice);
+            console.log('mtrg amount:', reserve0.toString());
+            console.log('volt amount:', reserve1.toString());
+            voltPrice = new BigNumber(mtrgPrice)
+              .times(reserve0.toString())
+              .div(reserve1.toString())
+              .toNumber();
+          } else {
+            voltPrice = await getCurrentPrice(rewardSymbol);
+          }
+          console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
           setTotalDeposit(totalStake.times(uniPrice));
           console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
