@@ -1,58 +1,53 @@
-import React, {useEffect, useState} from 'react'
-
-import { AutoColumn } from '../Column'
-import { RowBetween } from '../Row'
-import styled from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
-import { TYPE, StyledInternalLink,ExternalLink } from '../../theme'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { ETHER, JSBI, TokenAmount,Fraction  } from 'meterswap-sdk'
-import { ButtonPrimary } from '../Button'
-import { StakingInfo } from '../../state/stake/hooks'
-import { useColor } from '../../hooks/useColor'
-import { currencyId } from '../../utils/currencyId'
-import { Break, CardNoise, CardBGImage } from './styled'
-import { unwrappedToken } from '../../utils/wrappedCurrency'
-import { useTotalSupply } from '../../data/TotalSupply'
-import { usePair } from '../../data/Reserves'
-import useUSDCPrice from '../../utils/useUSDCPrice'
-import {getTokenPriceUSD} from './getTokenUSDPrice'
-import {getCurrentPrice} from './price';
+import React, { useEffect, useState } from 'react';
+import { formatUnits } from '@ethersproject/units';
+import { AutoColumn } from '../Column';
+import { RowBetween } from '../Row';
+import styled from 'styled-components';
+import { useActiveWeb3React } from '../../hooks';
+import { TYPE, ExternalLink } from '../../theme';
+import { ButtonPrimary } from '../Button';
+import { CardNoise, CardBGImage } from './styled';
+import { getCurrentPrice } from './price';
 import BigNumber from 'bignumber.js';
-import { darken } from 'polished';
-import {useToken} from '../../hooks/Tokens';
-import {getTokenSymbol} from './tokenSymbol';
+import { getERC20Contract, getGeyserContract, getPairContract } from '../../utils';
+import { Contract } from '@ethersproject/contracts';
+import { TokenPair } from '../../pages/Earn/types';
+import { Web3Provider } from '@ethersproject/providers';
+const MS_PER_SEC = 1000;
+const YEAR_IN_SEC = 12 * 30 * 24 * 3600;
 
-const MS_PER_SEC = 1000
 // polling interval for querying subgraph
-const POLL_INTERVAL = 30 * MS_PER_SEC
+
+const POLL_INTERVAL = 30 * MS_PER_SEC;
+
 enum GeyserStatus {
   ONLINE = 'Online',
   OFFLINE = 'Offline',
-  SHUTDOWN = 'Shutdown',
+  SHUTDOWN = 'Shutdown'
 }
 
 type RewardSchedule = {
-  id: string
-  duration: string
-  start: string
-  rewardAmount: string
-}
+  id: string;
+  duration: string;
+  start: string;
+  rewardAmount: string;
+};
 
 type Geyser = {
-  id: string
-  rewardToken: string
-  stakingToken: string
-  totalStake: string
-  totalStakeUnits: string
-  status: GeyserStatus
-  scalingFloor: string
-  scalingCeiling: string
-  scalingTime: string
-  unlockedReward: string
-  rewardSchedules: RewardSchedule[]
-  lastUpdate: string
-}
+  id: string;
+  rewardToken: string;
+  stakingToken: string;
+  totalStake: string;
+  totalStakeUnits: string;
+  status: GeyserStatus;
+  scalingFloor: string;
+  scalingCeiling: string;
+  scalingTime: string;
+  unlockedReward: string;
+  rewardSchedules: RewardSchedule[];
+  lastUpdate: string;
+};
+export const DAY_IN_SEC = 24 * 3600;
 
 const StatContainer = styled.div`
   display: flex;
@@ -65,7 +60,7 @@ const StatContainer = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
   display: none;
 `};
-`
+`;
 
 const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
   border-radius: 12px;
@@ -76,12 +71,11 @@ const Wrapper = styled(AutoColumn)<{ showBackground: boolean; bgColor: any }>`
   background: ${({ theme, bgColor, showBackground }) =>
     `radial-gradient(91.85% 100% at 1.84% 0%, ${bgColor} 0%, ${showBackground ? theme.black : theme.bg5} 100%) `};
   color: ${({ theme, showBackground }) => (showBackground ? theme.white : theme.text1)} !important;
-
   ${({ showBackground }) =>
     showBackground &&
     `  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);`}
-`
+`;
 
 const TopSection = styled.div`
   display: grid;
@@ -93,7 +87,7 @@ const TopSection = styled.div`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     grid-template-columns: 48px 1fr 96px;
   `};
-`
+`;
 
 // const APR = styled.div`
 //   display: flex;
@@ -109,8 +103,8 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
   align-items: baseline;
   justify-content: space-between;
   z-index: 1;
-`
-const activeClassName = 'ACTIVE'
+`;
+const activeClassName = 'ACTIVE';
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
@@ -120,141 +114,187 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   outline: none;
   cursor: pointer;
   text-decoration: none;
-  position:absolute;
-  right:8px;
-  
+  position: absolute;
+  right: 8px;
   padding: 10px;
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       display: none;
 `}
-`
-
-const nowInSeconds = () => Math.round(Date.now() / 1000)
+`;
+const nowInSeconds = () => Math.round(Date.now() / 1000);
 
 const getGeyserDuration = (geyser: Geyser) => {
-  const now = nowInSeconds()
-  const { rewardSchedules } = geyser
+  const now = nowInSeconds();
+  const { rewardSchedules } = geyser;
   const schedulesEndTime = rewardSchedules.map(
-    (schedule) => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10),
-  )
-  return Math.max(...schedulesEndTime.map((endTime) => endTime - now), 0)
-}
+    schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
+  );
+  return Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
+};
 
+const getCalcPeriod = (geyser: Geyser) => {
+  const { scalingTime, rewardSchedules } = geyser;
+  const now = nowInSeconds();
+  const schedulesEndTime = rewardSchedules.map(
+    schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
+  );
+  const geyserDuration = Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
+  return Math.max(Math.min(geyserDuration, parseInt(scalingTime, 10)), DAY_IN_SEC);
+};
+/**
+ * Returns the amount of reward token that will be unlocked between now and `end`
+ */
+export const getStakeDrip = async (geyser: Geyser, stake: BigNumber, duration: number, contract: Contract) => {
+  const now = nowInSeconds();
+  const afterDuration = now + duration;
+  const futureReward = await contract.getFutureUnlockedRewards(afterDuration);
+  const currentReward = await contract.getCurrentUnlockedRewards();
+  const poolDrip = futureReward - currentReward;
+  const stakeUnitsFromStake = stake.times(duration);
+  const geyserData = await contract.getGeyserData();
+  const { lastUpdate, totalStake, totalStakeUnits } = geyserData;
+  const durationSinceLastUpdate = Math.max(afterDuration - lastUpdate, 0);
+  // console.log('stake:', stake.toString());
+  // console.log('total stake units:', totalStakeUnits.toString());
+  // console.log('total stake:', totalStake.toString());
+  // console.log('duration since last update:', durationSinceLastUpdate);
+  // console.log('stake units from stake:', stakeUnitsFromStake.toString());
+  const totalStakeUnitsAfterDuration = new BigNumber(totalStakeUnits.toString()).plus(
+    new BigNumber(totalStake.toString()).times(durationSinceLastUpdate)
+  );
+  // console.log('total stake units after duration:', totalStakeUnitsAfterDuration.toString());
 
+  if (totalStakeUnitsAfterDuration.isZero()) return 0;
+  // console.log('pool drip:', poolDrip);
+  return new BigNumber(poolDrip)
+    .times(stakeUnitsFromStake)
+    .div(totalStakeUnitsAfterDuration.plus(stakeUnitsFromStake))
+    .div(new BigNumber(1e9))
+    .toNumber();
+};
 
+const calculateAPY = (inflow: number, outflow: number, periods: number) => (1 + outflow / inflow) ** periods - 1;
 
+/**
+ * Pool APY is the APY for a user who makes an average deposit at the current moment in time
+ */
+const getPoolAPY = async (
+  geyser: Geyser,
+  stakingTokenPrice: number,
+  stakingTokenDecimals: number,
+  rewardTokenPrice: number,
+  rewardTokenDecimals: number,
+  library: Web3Provider
+) => {
+  const { scalingTime } = geyser;
 
+  const inflow = 20000.0; // avg_deposit: 20,000 USD
+  const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString());
+  const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals);
+  const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice));
+  // console.log('stake token price: ', stakeTokenPriceBigNum.toString());
+  // console.log('inflow fixed pt:', inflowFixedPt.toString());
+  const stake = inflowFixedPt.div(stakeTokenPriceBigNum);
+  // console.log('stake: ', stake.toString());
+  const calcPeriod = getCalcPeriod(geyser);
+  const contract = getGeyserContract(geyser.id, library);
 
-export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
+  // console.log('scaling time: ', scalingTime);
+  const stakeDripAfterPeriod = await getStakeDrip(geyser, stake, parseInt(scalingTime, 10), contract);
+  // console.log('stake drip after period:', stakeDripAfterPeriod);
+  if (stakeDripAfterPeriod === 0) return 0;
 
+  const outflow = parseFloat(formatUnits(Math.round(stakeDripAfterPeriod), rewardTokenDecimals)) * rewardTokenPrice;
+  const periods = YEAR_IN_SEC / calcPeriod;
+  // console.log('inflow: ', inflow);
+  // console.log('outflow: ', outflow * 1e9);
 
+  return calculateAPY(inflow, outflow * 1e9, periods);
+};
 
-  
-  
+export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser; tokenPair: TokenPair }) {
   //console.log(geyserInfo)
+  const { library } = useActiveWeb3React();
+  const [stakingTokenSymbol, setStakingTokenSymbol] = useState('');
+  const [stakingTokenPrice, setStakingTokenPrice] = useState(1);
+  const [rewardTokenSymbol, setRewardTokenSymbol] = useState('');
+  const [rewardTokenPrice, setRewardTokenPrice] = useState(1);
+  const [totalDeposit, setTotalDeposit] = useState(new BigNumber(0));
+  const [geyserAPY, setGeyserAPY] = useState(0);
 
-  const [token0Price, setToken0Price] = useState(1)
-  const [token1Price, setToken1Price] = useState(1)
-  const [token0Symbol, setToken0symbol] = useState("")
-  const [token1Symbol, setToken1symbol] = useState("")
-  let duration_sec = 86400
+  const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
+  const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
 
-  let duration_left = getGeyserDuration(geyserInfo) / duration_sec
-  
- 
- 
-  
+  useEffect(() => {
+    (async () => {
+      try {
+        if (library) {
+          const stakingSymbol = `UNI-${tokenPair.token0.symbol}-${tokenPair.token1.symbol}-V2`;
+          setStakingTokenSymbol(stakingSymbol);
+          const uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+          setStakingTokenPrice(uniPrice);
+          const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
+          const rewardSymbol = await rewardToken.symbol();
+          setRewardTokenSymbol(rewardSymbol);
+          const voltPrice = await getCurrentPrice(rewardSymbol);
+          setRewardTokenPrice(voltPrice);
+          setTotalDeposit(totalStake.times(uniPrice + voltPrice).dividedBy(2));
+          console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
+          console.log(`staking ${stakingSymbol} price ${uniPrice}`);
+          console.log(`reward ${rewardSymbol} price ${voltPrice}`);
+          console.log('total stake:', totalStake.toFixed(2));
+          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
+          console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+          console.log('-'.repeat(40));
+          setGeyserAPY(apy);
+        }
+      } catch (e) {
+        console.log('Error happened:', e);
+      }
+    })();
+  }, [library]);
 
-  let totalDeposited = new BigNumber(geyserInfo.totalStake)
-  let _totalDeposited = totalDeposited.dividedBy(1e18)
- 
-
-
-  useEffect(()=>{
-
-    getTokenSymbol(geyserInfo.stakingToken).then((symbol:string)=>{
-     
-      getCurrentPrice(symbol).then((price:number) => {
-        setToken0symbol(symbol)
-        setToken0Price(price)
-      }).catch((error:any)=>{
-        setToken0Price(0)
-      })
-  
-    })
-
-    getTokenSymbol(geyserInfo.rewardToken).then((symbol:string)=>{
-     
-      setToken1symbol(symbol)
-      getCurrentPrice(symbol).then((price:number) => {
-      
-        setToken1Price(price)
-      }).catch((error:any)=>{
-        setToken1Price(0)
-      })
-  
-    })
-
-
-  },[token0Symbol, token1Symbol,token0Price, token1Price])
-
-
-
-
-  
   //console.log(apy.toSignificant(4, { groupSeparator: ',' }))
-
-
-
-  
-    
-  
 
   return (
     <Wrapper showBackground={true} bgColor={'#2172E5'}>
       <CardBGImage desaturate />
       <CardNoise />
-
       <TopSection>
         {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} /> */}
-        <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width:"200px" }}>
-          {token0Symbol}-{token1Symbol}
+
+        <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width: '300px' }}>
+          {stakingTokenSymbol} -- {rewardTokenSymbol}
         </TYPE.white>
 
-        <StyledExternalLink href={`http://voltswapfarm.surge.sh`} >
+        <StyledExternalLink href={`https://farm.voltswap.finance`}>
           <ButtonPrimary padding="8px" borderRadius="8px">
-             Detail <span style={{ fontSize: '11px' }}>↗</span>
+            Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
         </StyledExternalLink>
       </TopSection>
 
       <StatContainer>
         <RowBetween>
-          <TYPE.white> Total deposited</TYPE.white>
-          <TYPE.white>
-           {  Number(_totalDeposited.multipliedBy((token0Price + token1Price) / 2)).toFixed(2).toString()} USD
-          </TYPE.white>
+          <TYPE.white> Total staked value</TYPE.white>
+          <TYPE.white>{totalDeposit.isGreaterThan(0) ? totalDeposit.toFixed(2) : '--.--'} USD</TYPE.white>
         </RowBetween>
-        
+
         <RowBetween>
           <TYPE.white>Ends In</TYPE.white>
-          <TYPE.white>
-            {duration_left.toFixed(2)} Days
-          </TYPE.white>
+          <TYPE.white>{durationInDay.toFixed(2)} Days</TYPE.white>
         </RowBetween>
-        
+
         <RowBetween>
-          <TYPE.white> Earn up to (yearly) </TYPE.white>
-          <TYPE.white>98 %</TYPE.white>
+          <TYPE.white> Estimated APY </TYPE.white>
+          <TYPE.white>{geyserAPY > 0 ? (geyserAPY * 100).toFixed(2) : '-.--'} %</TYPE.white>
         </RowBetween>
       </StatContainer>
-      
 
       {/* {isStaking && (
         <>
@@ -263,10 +303,8 @@ export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
             <TYPE.black color={'white'} fontWeight={500}>
               <span>Your rate</span>
             </TYPE.black>
-
             <TYPE.black style={{ textAlign: 'right' }} color={'white'} fontWeight={500}>
               <span role="img" aria-label="wizard-icon" style={{ marginRight: '0.5rem' }}>
-                ⚡
               </span>
               {`${stakingInfo.rewardRate
                 ?.multiply(`${60 * 60 * 24 * 7}`)
@@ -276,5 +314,5 @@ export default function PoolCard({geyserInfo }: {geyserInfo:Geyser}) {
         </>
       )} */}
     </Wrapper>
-  )
+  );
 }
