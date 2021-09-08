@@ -288,7 +288,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           {stakingTokenSymbol} -- {rewardTokenSymbol}
         </TYPE.white>
 
-        <StyledExternalLink href={`https://farm.voltswap.finance?farm=${stakingTokenSymbol}_${rewardTokenSymbol}`}>
+        <StyledExternalLink href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token0.symbol}`}>
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
