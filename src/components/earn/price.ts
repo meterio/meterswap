@@ -30,6 +30,7 @@ const DEFAULT_PRICES: Record<string, number> = {
   USDC: 1,
   MTRG: 2.37,
   MTR: 2.91,
+  VOLT_AIR:0,
   'UNI-V2': 2.91,
   'yDAI+yUSDC+yUSDT+yTUSD': 1.1
 };
@@ -50,6 +51,7 @@ const SYMBOL_TO_QUERY: Record<string, string> = {
   USDC: 'usd-coin',
   MTRG: 'meter-governance-mapped-by-meter-io',
   MTR: 'meter-stable',
+  VOLT: 'meter-stable',
   'yDAI+yUSDC+yUSDT+yTUSD': 'curve-fi-ydai-yusdc-yusdt-ytusd'
 };
 
