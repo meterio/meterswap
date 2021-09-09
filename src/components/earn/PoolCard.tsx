@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {Currency, Token} from 'meterswap-sdk'
 import { formatUnits } from '@ethersproject/units';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
@@ -8,6 +9,8 @@ import { TYPE, ExternalLink } from '../../theme';
 import { ButtonPrimary } from '../Button';
 import { CardNoise, CardBGImage } from './styled';
 import { getCurrentPrice } from './price';
+import DoubleCurrencyLogo from '../DoubleLogo'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 import BigNumber from 'bignumber.js';
 import { getERC20Contract, getGeyserContract, getPairContract } from '../../utils';
 import { Contract } from '@ethersproject/contracts';
@@ -217,15 +220,22 @@ const getPoolAPY = async (
   return calculateAPY(inflow, outflow * 1e9, periods);
 };
 
+
 export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser; tokenPair: TokenPair }) {
   //console.log(geyserInfo)
-  const { library } = useActiveWeb3React();
+
+
+  const { library, chainId } = useActiveWeb3React();
   const [stakingTokenSymbol, setStakingTokenSymbol] = useState('');
   const [stakingTokenPrice, setStakingTokenPrice] = useState(1);
   const [rewardTokenSymbol, setRewardTokenSymbol] = useState('');
   const [rewardTokenPrice, setRewardTokenPrice] = useState(1);
   const [totalDeposit, setTotalDeposit] = useState(new BigNumber(0));
   const [geyserAPY, setGeyserAPY] = useState(0);
+  const [currency0, setCurrency0] = useState<Currency>()
+  const [currency1, setCurrency1] = useState<Currency>()
+
+  
 
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
@@ -239,17 +249,23 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           const uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
           setStakingTokenPrice(uniPrice);
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
+          
           const rewardSymbol = await rewardToken.symbol();
+      
           setRewardTokenSymbol(rewardSymbol);
+         
+       
+          setCurrency0(unwrappedToken(new Token(82,tokenPair.token0.id,Number(tokenPair.token0.decimals), tokenPair.token0.symbol)))
+          setCurrency1(unwrappedToken(new Token(82,tokenPair.token1.id,Number(tokenPair.token1.decimals), tokenPair.token1.symbol)))
 
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
             const mtrgPrice = await getCurrentPrice('MTRG');
             const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
             const { reserve0, reserve1 } = await mtrgVoltPair.getReserves();
-            console.log('mtrg price:', mtrgPrice);
-            console.log('mtrg amount:', reserve0.toString());
-            console.log('volt amount:', reserve1.toString());
+            // console.log('mtrg price:', mtrgPrice);
+            // console.log('mtrg amount:', reserve0.toString());
+            // console.log('volt amount:', reserve1.toString());
             voltPrice = new BigNumber(mtrgPrice)
               .times(reserve0.toString())
               .div(reserve1.toString())
@@ -257,16 +273,16 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);
           }
-          console.log('VOLT price: ', voltPrice);
+          // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
           setTotalDeposit(totalStake.times(uniPrice));
-          console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
-          console.log(`staking ${stakingSymbol} price ${uniPrice}`);
-          console.log(`reward ${rewardSymbol} price ${voltPrice}`);
-          console.log('total stake:', totalStake.toFixed(2));
+          // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
+          // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
+          // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
+          // console.log('total stake:', totalStake.toFixed(2));
           const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
-          console.log(`apy: ${(apy * 100).toFixed(2)}%`);
-          console.log('-'.repeat(40));
+          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+          // console.log('-'.repeat(40));
           setGeyserAPY(apy);
         }
       } catch (e) {
@@ -277,12 +293,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
   //console.log(apy.toSignificant(4, { groupSeparator: ',' }))
 
+
   return (
     <Wrapper showBackground={true} bgColor={'#2172E5'}>
       <CardBGImage desaturate />
       <CardNoise />
       <TopSection>
-        {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} /> */}
+        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
 
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width: '300px' }}>
           {stakingTokenSymbol}
