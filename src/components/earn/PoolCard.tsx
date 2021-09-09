@@ -118,7 +118,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   cursor: pointer;
   text-decoration: none;
   position: absolute;
-  right: 8px;
+  right: 0px;
   padding: 10px;
   color: ${({ theme }) => theme.text2};
   font-size: 1rem;
