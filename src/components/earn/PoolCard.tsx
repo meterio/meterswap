@@ -125,9 +125,6 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   width: fit-content;
   margin: 0 12px;
   font-weight: 500;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      display: none;
-`}
 `;
 const nowInSeconds = () => Math.round(Date.now() / 1000);
 
@@ -301,7 +298,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
       <TopSection>
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
 
-        <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width: '300px' }}>
+        <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px'}}>
           {stakingTokenSymbol}
         </TYPE.white>
 
