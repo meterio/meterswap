@@ -354,7 +354,7 @@ export default function Header() {
 
           <li>
 
-          <StyledExternalLink id={`gov-nav-link`} href={'https://info.voltswap.finance'}>
+          <StyledExternalLink id={`gov-nav-link`} href={'http://voltswapinfo.surge.sh'}>
           Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          
