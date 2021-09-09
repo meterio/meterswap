@@ -44,10 +44,8 @@ const Tag = styled.div`
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
  
-  return <StyledBalanceText title={balance.toExact()}>{balance.toExact()}</StyledBalanceText>
+  return <StyledBalanceText title={balance.toExact()}>{balance.toFixed(1)}</StyledBalanceText>
 }
-
-{/* <StyledBalanceText title={balance.toExact()}>{balance.toExact()}</StyledBalanceText> */}
 
 const TagContainer = styled.div`
   display: flex;

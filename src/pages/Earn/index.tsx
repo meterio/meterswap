@@ -125,19 +125,19 @@ export default function Earn() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Meter liquidity mining</TYPE.white>
+                <TYPE.white fontWeight={600}>Voltswap liquidity mining</TYPE.white>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your Liquidity Provider tokens to receive MTRG, the Meter protocol governance token.
+                  Deposit your Liquidity Provider tokens to receive VOLT, the Voltswap token on meter.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
                 style={{ color: 'white', textDecoration: 'underline' }}
-                href="https://meter.io"
+                href="https://docs.voltswap.finance/the-volt-token/staking-liquidity-mining"
                 target="_blank"
               >
-                <TYPE.white fontSize={14}>Read more about METER</TYPE.white>
+                <TYPE.white fontSize={14}>Read more about VOLTSWAP Liquidity Mining</TYPE.white>
               </ExternalLink>
             </AutoColumn>
           </CardSection>
