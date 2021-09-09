@@ -85,7 +85,7 @@ const MenuItem = styled(ExternalLink)`
   }
 `
 
-const CODE_LINK = 'https://github.com/xiaohanzhu/meterswap'
+const CODE_LINK = 'https://github.com/meterio/meterswap/tree/voltswap'
 
 export default function Menu() {
   const { account } = useActiveWeb3React()
