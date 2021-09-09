@@ -1,24 +1,24 @@
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from 'meterswap-sdk'
-import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
-import { FixedSizeList } from 'react-window'
-import { Text } from 'rebass'
-import styled from 'styled-components'
-import { useActiveWeb3React } from '../../hooks'
-import { useSelectedTokenList, WrappedTokenInfo } from '../../state/lists/hooks'
-import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { LinkStyledButton, TYPE } from '../../theme'
-import { useIsUserAddedToken } from '../../hooks/Tokens'
-import Column from '../Column'
-import { RowFixed } from '../Row'
-import CurrencyLogo from '../CurrencyLogo'
-import { MouseoverTooltip } from '../Tooltip'
-import { FadedSpan, MenuItem } from './styleds'
-import Loader from '../Loader'
-import { isTokenOnList } from '../../utils'
+import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from 'meterswap-sdk';
+import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react';
+import { FixedSizeList } from 'react-window';
+import { Text } from 'rebass';
+import styled from 'styled-components';
+import { useActiveWeb3React } from '../../hooks';
+import { useSelectedTokenList, WrappedTokenInfo } from '../../state/lists/hooks';
+import { useAddUserToken, useRemoveUserAddedToken } from '../../state/user/hooks';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
+import { LinkStyledButton, TYPE } from '../../theme';
+import { useIsUserAddedToken } from '../../hooks/Tokens';
+import Column from '../Column';
+import { RowFixed } from '../Row';
+import CurrencyLogo from '../CurrencyLogo';
+import { MouseoverTooltip } from '../Tooltip';
+import { FadedSpan, MenuItem } from './styleds';
+import Loader from '../Loader';
+import { isTokenOnList } from '../../utils';
 
 function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
+  return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : '';
 }
 
 const StyledBalanceText = styled(Text)`
@@ -26,7 +26,7 @@ const StyledBalanceText = styled(Text)`
   overflow: hidden;
   max-width: 5rem;
   text-overflow: ellipsis;
-`
+`;
 
 const Tag = styled.div`
   background-color: ${({ theme }) => theme.bg3};
@@ -40,27 +40,26 @@ const Tag = styled.div`
   white-space: nowrap;
   justify-self: flex-end;
   margin-right: 4px;
-`
+`;
 
 function Balance({ balance }: { balance: CurrencyAmount }) {
- 
-  return <StyledBalanceText title={balance.toExact()}>{balance.toFixed(1)}</StyledBalanceText>
+  return <StyledBalanceText title={balance.toExact()}>{balance.toFixed(1)}</StyledBalanceText>;
 }
 
 const TagContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-`
+`;
 
 function TokenTags({ currency }: { currency: Currency }) {
   if (!(currency instanceof WrappedTokenInfo)) {
-    return <span />
+    return <span />;
   }
 
-  const tags = currency.tags
-  if (!tags || tags.length === 0) return <span />
+  const tags = currency.tags;
+  if (!tags || tags.length === 0) return <span />;
 
-  const tag = tags[0]
+  const tag = tags[0];
 
   return (
     <TagContainer>
@@ -78,33 +77,32 @@ function TokenTags({ currency }: { currency: Currency }) {
         </MouseoverTooltip>
       ) : null}
     </TagContainer>
-  )
+  );
 }
 
 function CurrencyRow({
-                       currency,
-                       onSelect,
-                       isSelected,
-                       otherSelected,
-                       style
-                     }: {
-  currency: Currency
-  onSelect: () => void
-  isSelected: boolean
-  otherSelected: boolean
-  style: CSSProperties
+  currency,
+  onSelect,
+  isSelected,
+  otherSelected,
+  style
+}: {
+  currency: Currency;
+  onSelect: () => void;
+  isSelected: boolean;
+  otherSelected: boolean;
+  style: CSSProperties;
 }) {
- 
-  const { account, chainId } = useActiveWeb3React()
-  const key = currencyKey(currency)
-  const selectedTokenList = useSelectedTokenList()
-  
-  const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
-  const customAdded = useIsUserAddedToken(currency)
-  const balance = useCurrencyBalance(account ?? undefined, currency)
+  const { account, chainId } = useActiveWeb3React();
+  const key = currencyKey(currency);
+  const selectedTokenList = useSelectedTokenList();
 
-  const removeToken = useRemoveUserAddedToken()
-  const addToken = useAddUserToken()
+  const isOnSelectedList = isTokenOnList(selectedTokenList, currency);
+  const customAdded = useIsUserAddedToken(currency);
+  const balance = useCurrencyBalance(account ?? undefined, currency);
+
+  const removeToken = useRemoveUserAddedToken();
+  const addToken = useAddUserToken();
 
   // only show add or remove buttons if not on selected list
   return (
@@ -115,7 +113,7 @@ function CurrencyRow({
       disabled={isSelected}
       selected={otherSelected}
     >
-      <CurrencyLogo currency={currency} size={'24px'} />
+      <CurrencyLogo currency={currency} size={'30px'} />
       <Column>
         <Text title={currency.name} fontWeight={500}>
           {currency.symbol}
@@ -126,8 +124,8 @@ function CurrencyRow({
               Added by user
               <LinkStyledButton
                 onClick={event => {
-                  event.stopPropagation()
-                  if (chainId && currency instanceof Token) removeToken(chainId, currency.address)
+                  event.stopPropagation();
+                  if (chainId && currency instanceof Token) removeToken(chainId, currency.address);
                 }}
               >
                 (Remove)
@@ -139,8 +137,8 @@ function CurrencyRow({
               Found by address
               <LinkStyledButton
                 onClick={event => {
-                  event.stopPropagation()
-                  if (currency instanceof Token) addToken(currency)
+                  event.stopPropagation();
+                  if (currency instanceof Token) addToken(currency);
                 }}
               >
                 (Add)
@@ -154,34 +152,34 @@ function CurrencyRow({
         {balance ? <Balance balance={balance} /> : account ? <Loader /> : null}
       </RowFixed>
     </MenuItem>
-  )
+  );
 }
 
 export default function CurrencyList({
-                                       height,
-                                       currencies,
-                                       selectedCurrency,
-                                       onCurrencySelect,
-                                       otherCurrency,
-                                       fixedListRef,
-                                       showETH
-                                     }: {
-  height: number
-  currencies: Currency[]
-  selectedCurrency?: Currency | null
-  onCurrencySelect: (currency: Currency) => void
-  otherCurrency?: Currency | null
-  fixedListRef?: MutableRefObject<FixedSizeList | undefined>
-  showETH: boolean
+  height,
+  currencies,
+  selectedCurrency,
+  onCurrencySelect,
+  otherCurrency,
+  fixedListRef,
+  showETH
+}: {
+  height: number;
+  currencies: Currency[];
+  selectedCurrency?: Currency | null;
+  onCurrencySelect: (currency: Currency) => void;
+  otherCurrency?: Currency | null;
+  fixedListRef?: MutableRefObject<FixedSizeList | undefined>;
+  showETH: boolean;
 }) {
-  const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
+  const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH]);
 
   const Row = useCallback(
     ({ data, index, style }) => {
-      const currency: Currency = data[index]
-      const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
-      const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
-      const handleSelect = () => onCurrencySelect(currency)
+      const currency: Currency = data[index];
+      const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency));
+      const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency));
+      const handleSelect = () => onCurrencySelect(currency);
       return (
         <CurrencyRow
           style={style}
@@ -190,12 +188,12 @@ export default function CurrencyList({
           onSelect={handleSelect}
           otherSelected={otherSelected}
         />
-      )
+      );
     },
     [onCurrencySelect, otherCurrency, selectedCurrency]
-  )
+  );
 
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
+  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), []);
 
   return (
     <FixedSizeList
@@ -209,5 +207,5 @@ export default function CurrencyList({
     >
       {Row}
     </FixedSizeList>
-  )
+  );
 }
