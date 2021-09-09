@@ -234,7 +234,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     (async () => {
       try {
         if (library) {
-          const stakingSymbol = `UNI-${tokenPair.token0.symbol}-${tokenPair.token1.symbol}-V2`;
+          const stakingSymbol = `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
           setStakingTokenSymbol(stakingSymbol);
           const uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
           setStakingTokenPrice(uniPrice);
@@ -285,10 +285,12 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         {/* <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} /> */}
 
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '8px', width: '300px' }}>
-          {stakingTokenSymbol} -- {rewardTokenSymbol}
+          {stakingTokenSymbol}
         </TYPE.white>
 
-        <StyledExternalLink href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}>
+        <StyledExternalLink
+          href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
+        >
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
