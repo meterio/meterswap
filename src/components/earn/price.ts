@@ -13,59 +13,53 @@ export const YEAR_IN_SEC = 365 * DAY_IN_SEC;
 
 export const MIN_IN_MS = MIN_IN_SEC * MS_PER_SEC;
 export const HOUR_IN_MS = HOUR_IN_SEC * MS_PER_SEC;
+export const FIVE_MIN_IN_MS = 5 * MIN_IN_MS * MS_PER_SEC;
 
-const DEFAULT_PRICES: Record<string, number> = {
-  AMPL: 1.0,
-  BTC: 50000.0,
-  WETH: 320,
-  LINK: 5,
-  BAL: 10,
-  LEND: 0.33,
-  COMP: 100,
-  MKR: 350,
-  CRV: 0.5,
-  BZRX: 0.1,
-  YFI: 17000,
-  NMR: 25,
-  USDC: 1,
-  MTRG: 2.37,
-  MTR: 2.91,
-  VOLT_AIR:0,
-  'UNI-V2': 2.91,
-  'yDAI+yUSDC+yUSDT+yTUSD': 1.1
-};
+const TTL = FIVE_MIN_IN_MS;
+interface Coin {
+  id: string;
+  price: number;
+}
 
-const SYMBOL_TO_QUERY: Record<string, string> = {
-  WBTC: 'wrapped-bitcoin',
-  AMPL: 'ampleforth',
-  WETH: 'ethereum',
-  LINK: 'chainlink',
-  BAL: 'balancer',
-  LEND: 'ethlend',
-  COMP: 'compound-governance-token',
-  MKR: 'maker',
-  CRV: 'curve-dao-token',
-  BZRX: 'bzx-protocol',
-  YFI: 'yearn-finance',
-  NMR: 'numeraire',
-  USDC: 'usd-coin',
-  MTRG: 'meter-governance-mapped-by-meter-io',
-  MTR: 'meter-stable',
-  VOLT: 'meter-stable',
-  'yDAI+yUSDC+yUSDT+yTUSD': 'curve-fi-ydai-yusdc-yusdt-ytusd'
+const symbolMap: { [key: string]: Coin } = {
+  // voltswap supported
+  WBTC: { id: 'wrapped-bitcoin', price: 50000 },
+  'WBTC.eth': { id: 'wrapped-bitcoin', price: 50000 },
+  USDC: { id: 'usd-coin', price: 1 },
+  'USDC.eth': { id: 'usd-coin', price: 1 },
+  USDT: { id: 'tether', price: 1 },
+  'USDT.eth': { id: 'tether', price: 1 },
+  MTRG: { id: 'meter', price: 3 },
+  MTR: { id: 'meter-stable', price: 2.5 },
+  WETH: { id: 'ethereum', price: 3500 },
+  'WETH.eth': { id: 'ethereum', price: 3500 },
+  BUSD: { id: 'binance-usd', price: 1 },
+  'BUSD.bsc': { id: 'binance-usd', price: 1 },
+  BNB: { id: 'binancecoin', price: 400 },
+  'BNB.bsc': { id: 'binancecoin', price: 400 },
+
+  // pending
+  VOLT: { id: '', price: 50 },
+  AMPL: { id: 'ampleforth', price: 1 },
+
+  // extended
+  CRV: { id: 'curve-dao-token', price: 1 },
+  YFI: { id: 'yearn-finance', price: 1 },
+  LINK: { id: 'chainlink', price: 1 },
+  BAL: { id: 'balancer', price: 1 },
+  COMP: { id: 'compound-governance-token', price: 1 }
 };
 
 export const getCurrentPrice = async (symbol: string) => {
   const cacheKey = `geyser|${symbol}|spot`;
-  const TTL = HOUR_IN_MS;
+
+  const coin = symbolMap[symbol];
+  if (!coin) {
+    throw new Error(`Can't fetch price for ${symbol}`);
+  }
 
   try {
-    const query = SYMBOL_TO_QUERY[symbol];
-
-    if (!query) {
-      throw new Error(`Can't fetch price for ${symbol}`);
-    }
-
+    const query = coin.id;
     return await ls.computeAndCache<number>(
       async () => {
         const client = new CGApi();
@@ -86,6 +80,6 @@ export const getCurrentPrice = async (symbol: string) => {
     );
   } catch (e) {
     console.error(e);
-    return DEFAULT_PRICES[symbol] || 0;
+    return coin.price || 0;
   }
 };
