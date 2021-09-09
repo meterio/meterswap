@@ -41,6 +41,26 @@ const PoolSection = styled.div`
   justify-self: center;
 `;
 
+const PageButtons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size:20px;
+  margin-top: 2em;
+  margin-bottom: 2em;
+`
+
+const Arrow = styled.div`
+  color: ${({ theme }) => theme.primary1};
+  padding: 0 20px;
+  font-weight:bolder;
+  font-size:20px;
+  user-select: none;
+  :hover {
+    cursor: pointer;
+  }
+`
+
 export default function Earn() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
@@ -52,6 +72,8 @@ export default function Earn() {
     pollInterval: 3000,
     client: uniClient
   });
+  // pagination
+  const [page, setPage] = useState(1)
   const [geysers, setGeysers] = useState<Geyser[]>([]);
   const [pairs, setPairs] = useState<TokenPair[]>([]);
 
@@ -89,6 +111,8 @@ export default function Earn() {
   `;
 
   const stakingRewardsExist = true;
+  const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
+  const ITEMS_PER_PAGE = 10;
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -131,13 +155,17 @@ export default function Earn() {
           <Countdown exactEnd={stakingInfos?.[0]?.periodFinish} />
         </DataRow>
 
+        
         <PoolSection>
           {geysers?.length === 0 || pairs?.length == 0 ? (
             <Loader style={{ margin: 'auto' }} />
           ) : !stakingRewardsExist ? (
             'No active rewards'
           ) : (
-            geysers?.map(geyserInfo => {
+            geysers?.slice(
+              page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
+              (page * ITEMS_PER_PAGE) < geysers.length ? (page * ITEMS_PER_PAGE): geysers.length  
+            ).map(geyserInfo => {
               // need to sort by added liquidity here
               let tokenPair: TokenPair | undefined = undefined;
               for (const p of pairs) {
@@ -150,6 +178,23 @@ export default function Earn() {
               return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
             })
           )}
+          <PageButtons>
+        <div
+          onClick={(e) => {
+            setPage(page === 1 ? page : page - 1)
+          }}
+        >
+          <Arrow>←</Arrow>
+        </div>
+        <TYPE.body style={{fontSize:"20px"}}>{'Page ' + page + ' of ' + maxPage}</TYPE.body>
+        <div
+          onClick={(e) => {
+            setPage(page === maxPage ? page : page + 1)
+          }}
+        >
+          <Arrow>→</Arrow>
+        </div>
+      </PageButtons>
         </PoolSection>
       </AutoColumn>
     </PageWrapper>
