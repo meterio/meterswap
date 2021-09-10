@@ -178,7 +178,7 @@ export const getStakeDrip = async (geyser: Geyser, stake: BigNumber, duration: n
     .toNumber();
 };
 
-const calculateAPY = (inflow: number, outflow: number, periods: number) => (1 + outflow / inflow) ** periods - 1;
+const calculateAPY = (inflow: number, outflow: number, periods: number) => (1 + outflow / inflow) * periods - 1;
 
 /**
  * Pool APY is the APY for a user who makes an average deposit at the current moment in time
@@ -214,7 +214,7 @@ const getPoolAPY = async (
   // console.log('inflow: ', inflow);
   // console.log('outflow: ', outflow * 1e9);
 
-  return calculateAPY(inflow, outflow * 1e9, periods);
+  return calculateAPY(inflow, outflow * 1e9, periods)
 };
 
 export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser; tokenPair: TokenPair }) {
