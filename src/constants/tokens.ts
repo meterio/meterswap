@@ -73,7 +73,7 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
     '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C': new Token(
       ChainId.METER,
       '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C',
-      18,
+      8,
       'WBTC.eth',
       'WBTC.eth'
     ),

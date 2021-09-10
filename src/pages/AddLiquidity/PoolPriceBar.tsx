@@ -19,6 +19,8 @@ export function PoolPriceBar({
   poolTokenPercentage?: Percent
   price?: Price
 }) {
+
+
   const theme = useContext(ThemeContext)
   return (
     <AutoColumn gap="md">

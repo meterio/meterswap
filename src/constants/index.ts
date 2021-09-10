@@ -31,7 +31,7 @@ export const BNB_bsc = new Token(ChainId.METER, '0xF8BBb44E6fD13632D36fe09eB6182
 export const BUSD_bsc = new Token(ChainId.METER, '0x24aA189DfAa76c671c279262F94434770F557c35', 18, 'BUSD.bsc', 'BUSD.bsc')
 export const USDT_eth = new Token(ChainId.METER, '0x5Fa41671c48e3C951AfC30816947126CCC8C162e', 6, 'USDt.eth', 'USDT.eth')
 export const VOLT = new Token(ChainId.METER, '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0', 18, 'VOLT', 'VOLT')
-export const WBTC_eth = new Token(ChainId.METER, '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C', 18, 'WBTC.eth', 'WBTC.eth')
+export const WBTC_eth = new Token(ChainId.METER, '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C', 8, 'WBTC.eth', 'WBTC.eth')
 export const WETH_eth = new Token(ChainId.METER, '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C', 18, 'WETH.eth', 'WETH.eth')
 
 
@@ -81,7 +81,7 @@ const WETH_ONLY: ChainTokenList = {
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.METER]: [MTR, MTRG]
+  [ChainId.METER]: [MTRG, WETH_eth]
 }
 
 /**
