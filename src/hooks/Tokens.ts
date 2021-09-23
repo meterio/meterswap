@@ -16,6 +16,8 @@ export function useAllTokens(): { [address: string]: Token } {
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
   
+ 
+  
   return useMemo(() => {
     if (!chainId) return {}
     return (
@@ -28,7 +30,7 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...MeterTokens[chainId] }
+          { ...allTokens[chainId] }
         )
     )
   }, [chainId, userAddedTokens, allTokens])

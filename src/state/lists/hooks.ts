@@ -3,6 +3,7 @@ import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
+import { meter_token_list } from '../../constants/lists'
 import token_list from '../../constants/metermain_tokens_list.json';
 
 type TagDetails = Tags[keyof Tags]
@@ -77,7 +78,9 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string | undefined): TokenAddressMap {
 
-  return listToTokenMap(JSON.parse(JSON.stringify(token_list)))
+  return listToTokenMap(meter_token_list)
+
+
   // const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   // return useMemo(() => {
   //   if (!url) return EMPTY_LIST

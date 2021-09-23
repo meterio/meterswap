@@ -13,6 +13,7 @@ export default function Updater(): null {
   const { library } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  
 
   const isWindowVisible = useIsWindowVisible()
 
@@ -30,6 +31,7 @@ export default function Updater(): null {
 
   // whenever a list is not loaded and not loading, try again to load it
   useEffect(() => {
+    
     Object.keys(lists).forEach(listUrl => {
       const list = lists[listUrl]
 

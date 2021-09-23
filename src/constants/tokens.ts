@@ -1,10 +1,7 @@
 import { ChainId, Token } from 'meterswap-sdk'
 
-import {tokens} from './swap_tokens_list.json'
-var parsedList = JSON.parse(JSON.stringify(tokens));
 
 
- 
 
 
 
