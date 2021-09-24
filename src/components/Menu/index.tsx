@@ -119,7 +119,7 @@ export default function Menu() {
           </MenuItem>
           <MenuItem id="link" href="https://t.me/Meter_IO">
             <MessageCircle size={14} />
-            Twitter
+            Telegram
           </MenuItem>
           <MenuItem id="link" href="https://info.voltswap.finance/">
             <PieChart size={14} />
