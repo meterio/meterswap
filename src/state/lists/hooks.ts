@@ -78,7 +78,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
 
 export function useTokenList(url: string | undefined): TokenAddressMap {
 
-  return listToTokenMap(meter_token_list)
+  return listToTokenMap(JSON.parse(JSON.stringify(token_list)))
 
 
   // const lists = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)

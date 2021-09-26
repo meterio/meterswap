@@ -24,10 +24,7 @@
         "symbol": "MTRG",
         "decimals": 18,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png",
-        "tags": [
-          "stablecoin"
-        ]
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png"
       },
       {
         "name": "USDC Token",
@@ -35,10 +32,7 @@
         "symbol": "USDC.eth",
         "decimals": 6,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png",
-        "tags": [
-          "compound"
-        ]
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png"
       },
       {
         "name": "BNB from BSC on Meter",
@@ -56,18 +50,22 @@
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BUSD/logo.png"
       },
-      
+      {
+        "name": "MOVR from MoonRiver on Meter",
+        "address": "0xb158870beB809Ad955Bf56065C5C10D7Fd957cC0",
+        "symbol": "MOVR",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MOVR/logo.png"
+      },
+
       {
         "name": "USDT from Ethereum on Meter",
         "address": "0x5Fa41671c48e3C951AfC30816947126CCC8C162e",
         "symbol": "USDT.eth",
         "decimals": 6,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png",
-
-        "tags": [
-          "compound"
-        ]
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png"
       }, 
       {
         "name": "VoltSwap Token",
@@ -77,6 +75,7 @@
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/VOLT/logo.png"
     },
+    
       {
 
         "name": "WBTC from Ethereum on Meter",
@@ -84,12 +83,7 @@
         "symbol": "WBTC.eth",
         "decimals": 8,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/WBTC/logo.png",
-
-
-        "tags": [
-          "compound"
-        ]
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/WBTC/logo.png"
       },
 
       {
@@ -99,11 +93,9 @@
         "symbol": "WETH.eth",
         "decimals": 18,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png",
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
 
-        "tags": [
-          "compound"
-        ]
+     
       },
       {
         "name": "MeterStable Token",
@@ -111,11 +103,7 @@
         "symbol": "MTR",
         "decimals": 18,
         "chainId": 82,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png",
-
-        "tags": [
-          "compound"
-        ]
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png"
       }
 
 
