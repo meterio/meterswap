@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7.0
+  slack: circleci/slack@4.4.4
 jobs:
   build_and_deploy_mainnet:
     docker:
@@ -26,12 +27,20 @@ jobs:
       - run:
           name: invalidation
           command: aws cloudfront create-invalidation --distribution-id E2WA1QZUJZWSWY --paths "/*"
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: basic_success_1
 
 workflows:
   fresh_deploy:
     jobs:
       - build_and_deploy_mainnet:
-          context: new-aws-s3
+          context:
+            - new-aws-s3
+            - slack-secrets
           filters:
             tags:
               only: /^v.*/
