@@ -234,9 +234,27 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     (async () => {
       try {
         if (library) {
-          const stakingSymbol = `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
+          const stakingSymbol =  `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
           setStakingTokenSymbol(stakingSymbol);
-          const uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+           
+          let uniPrice = 0
+          if ( geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()) {
+            console.log(geyserInfo.stakingToken)
+            const mtrgPrice_st = await getCurrentPrice('MTRG');
+            const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
+         
+            uniPrice = new BigNumber(mtrgPrice_st)
+              .times(reserve0.toString())
+              .div(reserve1.toString())
+              .toNumber();
+               
+          } else {
+            uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+          }
+         
+
+         
           setStakingTokenPrice(uniPrice);
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
 
@@ -273,14 +291,26 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
           setTotalDeposit(totalStake.times(uniPrice));
+         
           // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
+          if ( geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()) {
+           
+            const apy = await getPoolAPY(geyserInfo, (uniPrice + voltPrice) , 18, voltPrice, 18, library);
+          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+          // console.log('-'.repeat(40));
+          setGeyserAPY(apy);
+
+          }else{
           const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
+          }
+          
+        
         }
       } catch (e) {
         console.log('Error happened:', e);

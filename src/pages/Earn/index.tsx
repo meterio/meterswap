@@ -61,6 +61,28 @@ const Arrow = styled.div`
   }
 `
 
+
+const voltsTokenPair = {
+  __typename: "Pair",
+  id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+  reserveUSD: "0",
+  token0: {
+      __typename: "Token",
+      decimals: "18",
+      id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+      symbol: "VOLT"
+  },
+  token0Price: "50",
+  token1: {
+    __typename: "Token",
+    decimals: "18",
+    id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+    symbol: "VOLT"
+},
+  token1Price: "50",
+  totalSupply: "0"
+}
+
 export default function Earn() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
@@ -99,7 +121,10 @@ export default function Earn() {
 
       setGeysers(geysers);
       if (pairData && pairData.pairs) {
-        setPairs(pairData.pairs);
+      
+        setPairs([...pairData.pairs,voltsTokenPair] );
+       
+        
       }
     }
   }, [geyserData, pairData]);
@@ -115,6 +140,7 @@ export default function Earn() {
   const ITEMS_PER_PAGE = 10;
 
   return (
+    
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
         <DataCard>
