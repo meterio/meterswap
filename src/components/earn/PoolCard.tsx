@@ -262,16 +262,26 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
           setRewardTokenSymbol(rewardSymbol);
 
-          setCurrency0(
-            unwrappedToken(
-              new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
-            )
-          );
-          setCurrency1(
-            unwrappedToken(
-              new Token(82, tokenPair.token1.id, Number(tokenPair.token1.decimals), tokenPair.token1.symbol)
-            )
-          );
+          if ( geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()) {
+            setCurrency0(
+              unwrappedToken(
+                new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
+              )
+            );
+            
+          }else{
+            setCurrency0(
+              unwrappedToken(
+                new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
+              )
+            );
+            setCurrency1(
+              unwrappedToken(
+                new Token(82, tokenPair.token1.id, Number(tokenPair.token1.decimals), tokenPair.token1.symbol)
+              )
+            );
+          }
+         
 
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
