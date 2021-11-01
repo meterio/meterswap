@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'meterswap-sdk'
+import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'voltswap-sdk'
 import { useCallback, useMemo } from 'react'
 import { ROUTER_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
@@ -194,5 +194,7 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   )
   const tradeIsV1 = getTradeVersion(trade) === Version.v1
   const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
-  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : ROUTER_ADDRESS)
+  const { chainId } = useActiveWeb3React()
+   
+  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F')
 }

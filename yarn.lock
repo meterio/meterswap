@@ -16150,6 +16150,19 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
+voltswap-sdk@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/voltswap-sdk/-/voltswap-sdk-3.0.6.tgz#7aaaa6efd11563f99c57557a9a5086c724af77de"
+  integrity sha512-Y/TMi43dOKMftHOkny7qw6yqxYnGL0ZRCqAyzln5yWV6m800ha/s3kx76wcSqlBguya2LJ2c+ha4jpQcNvROww==
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 w3c-hr-time@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.2.tgz#0a89cdf5cc15822df9c360543676963e0cc308cd"

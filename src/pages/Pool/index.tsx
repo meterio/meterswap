@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import { Pair } from 'meterswap-sdk'
+import { Pair } from 'voltswap-sdk'
 import { Link } from 'react-router-dom'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
 
@@ -76,14 +76,16 @@ const EmptyProposals = styled.div`
 
 export default function Pool() {
   const theme = useContext(ThemeContext)
-  const { account } = useActiveWeb3React()
+  const { account , chainId } = useActiveWeb3React()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
  
+  let init_hash = chainId == 82 ? '0x6e606594edd361bf44d40d92d2cdfc727a589f93838ad772145f30af1d6664eb':'0x973ae61b539a46236341ceee1b77feaafd7e9e098f799c4ae790b7a5fae726ca'
+  let factory_address = chainId == 82 ? '0x56aD9A9149685b290ffeC883937caE191e193135' : '0xdB29b2314F0E3c6d04CCD0C303223f28d6aF2d8E'
   
   const tokenPairsWithLiquidityTokens = useMemo(
-    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens, factory_address, init_hash), tokens })),
     [trackedTokenPairs]
   )
   const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [

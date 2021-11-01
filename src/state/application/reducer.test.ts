@@ -1,4 +1,4 @@
-import { ChainId } from 'meterswap-sdk'
+import { ChainId } from 'voltswap-sdk'
 import { createStore, Store } from 'redux'
 import { addPopup, ApplicationModal, removePopup, setOpenModal, updateBlockNumber } from './actions'
 import reducer, { ApplicationState } from './reducer'

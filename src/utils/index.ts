@@ -8,7 +8,7 @@ import { abi as IUniswapV2Pair } from '@uniswap/v2-periphery/build/IUniswapV2Pai
 import { abi as IERC20 } from '@uniswap/v2-periphery/build/IERC20.json';
 import { abi as Geyser } from '../constants/abis/Geyser.json';
 import { ROUTER_ADDRESS } from '../constants';
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from 'meterswap-sdk';
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from 'voltswap-sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -26,7 +26,8 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   4: 'rinkeby.',
   5: 'goerli.',
   42: 'kovan.',
-  82: 'meter.'
+  82: 'meter.',
+  365: 'testnet-explorer'
 };
 
 export function getEtherscanLink(
@@ -34,7 +35,10 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = `https://scan.meter.io`;
+  let prefix = `https://scan.meter.io`;
+  if (chainId === 365){
+   prefix = `https://testnet-explorer.thetatoken.org`
+  }
 
   switch (type) {
     case 'transaction': {
@@ -102,8 +106,11 @@ export function getContract(address: string, ABI: any, library: Web3Provider, ac
 }
 
 // account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, library, account);
+export function getRouterContract(chainId: number, library: Web3Provider, account?: string): Contract {
+  
+
+  
+  return getContract(chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F', IUniswapV2Router02ABI, library, account);
 }
 
 export function getPairContract(address: string, library: Web3Provider): Contract {

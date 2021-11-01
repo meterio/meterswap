@@ -1,4 +1,4 @@
-import { ChainId, Token } from 'meterswap-sdk'
+import { ChainId, Token } from 'voltswap-sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -41,7 +41,8 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ROPSTEN]: {},
   [ChainId.GÖRLI]: {},
   [ChainId.MAINNET]: {},
-  [ChainId.METER]: {}
+  [ChainId.METER]: {},
+  [ChainId.THETA]:{}
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =

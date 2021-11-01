@@ -6,6 +6,7 @@ import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Polling from '../components/Header/Polling'
+import { useActiveWeb3React } from '../hooks'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
@@ -77,6 +78,8 @@ function TopLevelModals() {
 }
 
 export default function App() {
+  const { chainId } = useActiveWeb3React()
+  console.log('chainId --> ',chainId)
   return (
     <Suspense fallback={null}>
       <Route component={GoogleAnalyticsReporter} />

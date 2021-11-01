@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from 'meterswap-sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from 'voltswap-sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
@@ -33,7 +33,7 @@ export const USDT_eth = new Token(ChainId.METER, '0x5Fa41671c48e3C951AfC30816947
 export const VOLT = new Token(ChainId.METER, '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0', 18, 'VOLT', 'VOLT')
 export const WBTC_eth = new Token(ChainId.METER, '0xc1f6C86ABEe8e2e0B6fd5BD80F0b51fef783635C', 8, 'WBTC.eth', 'WBTC.eth')
 export const WETH_eth = new Token(ChainId.METER, '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C', 18, 'WETH.eth', 'WETH.eth')
-
+export const WETH_theta = new Token(ChainId.THETA, '0x07446A7e12C2d24d6b180d009e4255aE26fBF018', 18, 'Weth.eth', 'WETH.eth')
 
 
 
@@ -54,6 +54,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.METER]: new Token(ChainId.METER, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.THETA]: new Token(ChainId.THETA, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   
   
 }
@@ -75,7 +76,8 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.RINKEBY]: [MTR],
   [ChainId.GÖRLI]: [MTR],
   [ChainId.KOVAN]: [MTR],
-  [ChainId.METER]: [MTR]
+  [ChainId.METER]: [MTR],
+  [ChainId.THETA]:[WETH_theta]
 }
 
 // used to construct intermediary pairs for trading

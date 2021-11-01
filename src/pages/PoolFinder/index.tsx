@@ -1,4 +1,4 @@
-import { Currency, ETHER, JSBI, TokenAmount } from 'meterswap-sdk'
+import { Currency, ETHER, JSBI, TokenAmount } from 'voltswap-sdk'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
 import { Text } from 'rebass'

@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
-import { Token } from 'meterswap-sdk'
+import { Token } from 'voltswap-sdk'
 
 export function tryParseToBigNumber(value: any): BigNumber | null {
   try {

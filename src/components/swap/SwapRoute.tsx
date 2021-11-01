@@ -1,4 +1,4 @@
-import { Trade } from 'meterswap-sdk'
+import { Trade } from 'voltswap-sdk'
 import React, { Fragment, memo, useContext } from 'react'
 import { ChevronRight } from 'react-feather'
 import { Flex } from 'rebass'

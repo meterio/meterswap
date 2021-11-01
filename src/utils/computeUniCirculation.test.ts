@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Token, TokenAmount } from 'meterswap-sdk'
+import { ChainId, JSBI, Token, TokenAmount } from 'voltswap-sdk'
 import { BigNumber } from 'ethers'
 import { ZERO_ADDRESS } from '../constants'
 import { computeUniCirculation } from './computeUniCirculation'

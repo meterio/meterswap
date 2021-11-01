@@ -174,6 +174,7 @@ function addChain(chainId: number) {
   const chain = getChain(chainId)
 
   
+  window.localStorage.setItem("chainId", chain.networkId.toString())
   detectEthereumProvider().then((provider: any) => {
     provider.request({
       method: "wallet_addEthereumChain",

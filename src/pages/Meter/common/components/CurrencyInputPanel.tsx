@@ -1,4 +1,4 @@
-import { Token } from 'meterswap-sdk'
+import { Token } from 'voltswap-sdk'
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'

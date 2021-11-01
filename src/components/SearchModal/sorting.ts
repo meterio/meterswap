@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from 'meterswap-sdk'
+import { Token, TokenAmount } from 'voltswap-sdk'
 import { useMemo } from 'react'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 

@@ -108,8 +108,10 @@ export default function Earn() {
     // console.log('geyser data updated:', geyserData);
 
     if (geyserData && geyserData.geysers) {
+     
       const geysers = [...geyserData.geysers]
-        .filter(g => g.rewardToken.toLowerCase() === '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0'.toLowerCase())
+     
+        geysers.filter(g => g.rewardToken.toLowerCase() === '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0'.toLowerCase())
         .map(
           geyser =>
             ({

@@ -1,4 +1,4 @@
-import { ChainId } from 'meterswap-sdk'
+import { ChainId } from 'voltswap-sdk'
 import MULTICALL_ABI from './abi.json'
 
 const MULTICALL_NETWORKS: { [chainId in ChainId]: string } = {
@@ -7,7 +7,8 @@ const MULTICALL_NETWORKS: { [chainId in ChainId]: string } = {
   [ChainId.KOVAN]: '0x2cc8688C5f75E365aaEEb4ea8D6a480405A48D2A',
   [ChainId.RINKEBY]: '0x42Ad527de7d4e9d9d011aC45B31D8551f8Fe9821',
   [ChainId.GÖRLI]: '0x77dCa2C955b15e9dE4dbBCf1246B4B85b651e50e',
-  [ChainId.METER]: '0x579De77CAEd0614e3b158cb738fcD5131B9719Ae'
+  [ChainId.METER]: '0x579De77CAEd0614e3b158cb738fcD5131B9719Ae',
+  [ChainId.THETA]:'0x032c614EA4CA4f600607cf42F2C29Cb044c49AEb'
 }
 
 export { MULTICALL_ABI, MULTICALL_NETWORKS }

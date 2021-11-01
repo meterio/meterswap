@@ -1,4 +1,4 @@
-import { ChainId, Token } from 'meterswap-sdk'
+import { ChainId, Token } from 'voltswap-sdk'
 
 
 
@@ -7,14 +7,30 @@ import { ChainId, Token } from 'meterswap-sdk'
 
 export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } } = {
 
- 
+ [ChainId.THETA]:{
+  '0x5709dDd0376014202654788466FDd70bda5E69Bb':  new Token(
+    ChainId.THETA,
+    '0x5709dDd0376014202654788466FDd70bda5E69Bb',
+    18,
+    'BUSD.bsc',
+    'BUSD.bsc'
+  ),
+
+  '0x07446A7e12C2d24d6b180d009e4255aE26fBF018': new Token(
+    ChainId.THETA,
+    '0x07446A7e12C2d24d6b180d009e4255aE26fBF018',
+    18,
+    'WETH.eth',
+    'WETH.eth'
+  )
+ },
 
   
 
   [ChainId.METER]: {
 
   
-
+   
    
 
     '0x687A6294D0D6d63e751A059bf1ca68E4AE7B13E2': new Token(

@@ -104,8 +104,23 @@
         "decimals": 18,
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png"
+      },
+      {
+        "name": "BUSD from BSC on Theta Testnet",
+        "address": "0x5709dDd0376014202654788466FDd70bda5E69Bb",
+        "symbol": "BUSD.bsc",
+        "decimals": 18,
+        "chainId": 365,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BUSD/logo.png"
+      },
+      {
+        "name": "Wrapped ETH",
+        "address": "0x07446A7e12C2d24d6b180d009e4255aE26fBF018",
+        "symbol": "WETH.eth",
+        "decimals": 18,
+        "chainId": 365,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
       }
-
 
 
     ],

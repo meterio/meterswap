@@ -13,7 +13,7 @@ import {
   useWithdrawQuotePenalty
 } from '../contracts/useChargePair'
 import { TextWrapper } from '../../../theme'
-import { Token } from 'meterswap-sdk'
+import { Token } from 'voltswap-sdk'
 import { displaySymbol, formatBigNumber } from '../common/utils'
 import { useEstimateTokenAmount } from '../common/hooks/usePool'
 

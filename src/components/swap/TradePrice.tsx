@@ -1,5 +1,5 @@
 import React from 'react'
-import { Price } from 'meterswap-sdk'
+import { Price } from 'voltswap-sdk'
 import { useContext } from 'react'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'

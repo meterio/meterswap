@@ -1,4 +1,4 @@
-import { Currency } from 'meterswap-sdk';
+import { Currency } from 'voltswap-sdk';
 import React from 'react';
 import styled from 'styled-components';
 import CurrencyLogo from '../CurrencyLogo';

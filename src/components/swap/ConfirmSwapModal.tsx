@@ -1,4 +1,4 @@
-import { currencyEquals, Trade } from 'meterswap-sdk'
+import { currencyEquals, Trade } from 'voltswap-sdk'
 import React, { useCallback, useMemo } from 'react'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,

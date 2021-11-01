@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Currency, Token } from 'meterswap-sdk';
+import { Currency, Token } from 'voltswap-sdk';
 import { formatUnits } from '@ethersproject/units';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
@@ -300,6 +300,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           }
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
+          
           setTotalDeposit(totalStake.times(uniPrice));
          
           // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);

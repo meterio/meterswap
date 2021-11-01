@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
-import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeType } from 'meterswap-sdk'
-import {TradeOptionsDeadline} from "meterswap-sdk"
+import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeType } from 'voltswap-sdk'
+import {TradeOptionsDeadline} from "voltswap-sdk"
 import { getTradeVersion } from '../data/V1'
 import { Version } from '../hooks/useToggledVersion'
 

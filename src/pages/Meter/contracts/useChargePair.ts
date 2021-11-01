@@ -1,7 +1,7 @@
 import { useCharge } from './useContract'
 import { useOnceCallResult, useWatchCallResult } from '../../../state/multicall/hooks'
 import { BigNumber } from 'ethers'
-import { Token } from 'meterswap-sdk'
+import { Token } from 'voltswap-sdk'
 import { useToken } from '../../../hooks/Tokens'
 import { useActiveWeb3React } from '../../../hooks'
 
