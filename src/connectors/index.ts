@@ -7,12 +7,12 @@ import { PortisConnector } from '@web3-react/portis-connector'
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
 
-const NETWORK_URL = "https://eth-rpc-api-testnet.thetatoken.org/rpc"
+const NETWORK_URL = "https://rpc.meter.io"
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
-export const SUPPORTED_CHAINIDS = [82, 365]
+export const SUPPORTED_CHAINIDS = [82, 361]
 
-export const NETWORK_CHAIN_ID: number = 356
+export const NETWORK_CHAIN_ID: number = 82
 
 if (typeof NETWORK_URL === 'undefined') {
   throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)

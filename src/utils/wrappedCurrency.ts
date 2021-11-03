@@ -1,8 +1,10 @@
 import { ChainId, Currency, CurrencyAmount, ETHER, Token, TokenAmount, WETH } from 'voltswap-sdk'
 
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {
-  return chainId && currency === ETHER ? WETH[chainId] : currency instanceof Token ? currency : undefined
+  return chainId && currency?.symbol === ETHER.symbol ? WETH[chainId] : currency instanceof Token ? currency : undefined
 }
+
+
 
 export function wrappedCurrencyAmount(
   currencyAmount: CurrencyAmount | undefined,

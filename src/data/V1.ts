@@ -108,8 +108,8 @@ export function useV1Trade(
   const inputPair = useMockV1Pair(inputCurrency)
   const outputPair = useMockV1Pair(outputCurrency)
 
-  const inputIsETH = inputCurrency === ETHER
-  const outputIsETH = outputCurrency === ETHER
+  const inputIsETH = inputCurrency?.symbol === ETHER.symbol
+  const outputIsETH = outputCurrency?.symbol === ETHER.symbol
 
   // construct a direct or through ETH v1 route
   let pairs: Pair[] = []

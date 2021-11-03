@@ -1,5 +1,5 @@
 import { UNI } from './../../constants/index'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from 'voltswap-sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount} from 'voltswap-sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -106,15 +106,24 @@ export function useCurrencyBalances(
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === ETHER) ?? false, [currencies])
-  const ethBalance = useETHBalances(containsETH ? [account] : [])
+  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency?.symbol === ETHER.symbol) ?? false, [currencies])
+  const ethBalance = useETHBalances(containsETH ? [account] : [account])
+  
 
   return useMemo(
     () =>
       currencies?.map(currency => {
+        
         if (!account || !currency) return undefined
+        
+        if(currency?.symbol === ETHER.symbol){
+          
+         
+          return ethBalance[account]
+
+        }
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency === ETHER) return ethBalance[account]
+        if (currency?.symbol === ETHER.symbol) return ethBalance[account]
         return undefined
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances]
@@ -122,7 +131,8 @@ export function useCurrencyBalances(
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
-  return useCurrencyBalances(account, [currency?.symbol === 'WETH' ? ETHER : currency])[0]
+  
+  return useCurrencyBalances(account, [ currency])[0]
 }
 
 // mimics useAllBalances

@@ -191,9 +191,9 @@ export function useURLWarningToggle(): () => void {
  * @param tokenA one of the two tokens
  * @param tokenB the other token
  */
-export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token],factory_address: string, init_hash: string): Token {
+export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token],chainId:number): Token {
  
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB,factory_address,init_hash ), tokenA.decimals, tokenA.symbol, tokenB.symbol)
+  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB,chainId), tokenA.decimals, tokenA.symbol, tokenB.symbol)
 }
 
 /**

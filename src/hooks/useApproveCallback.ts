@@ -33,7 +33,7 @@ export function useApproveCallback(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.symbol === ETHER.symbol) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -117,7 +117,7 @@ export function useApproveCallbackVariant(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.symbol === ETHER.symbol) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -196,5 +196,5 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
   const { chainId } = useActiveWeb3React()
    
-  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F')
+  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
 }

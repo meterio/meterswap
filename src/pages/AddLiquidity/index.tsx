@@ -117,8 +117,8 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F')
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F')
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
 
   const addTransaction = useTransactionAdder()
 
@@ -141,6 +141,7 @@ export default function AddLiquidity({
       args: Array<string | string[] | number>,
       value: BigNumber | null
     if (currencyA === ETHER || currencyB === ETHER) {
+      
       const tokenBIsETH = currencyB === ETHER
       estimate = router.estimateGas.addLiquidityETH
       method = router.addLiquidityETH

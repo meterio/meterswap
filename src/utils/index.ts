@@ -27,7 +27,7 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   5: 'goerli.',
   42: 'kovan.',
   82: 'meter.',
-  365: 'testnet-explorer'
+  361: 'thetatoken'
 };
 
 export function getEtherscanLink(
@@ -36,8 +36,8 @@ export function getEtherscanLink(
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
   let prefix = `https://scan.meter.io`;
-  if (chainId === 365){
-   prefix = `https://testnet-explorer.thetatoken.org`
+  if (chainId === 361){
+   prefix = `https://explorer.thetatoken.org`
   }
 
   switch (type) {
@@ -110,7 +110,7 @@ export function getRouterContract(chainId: number, library: Web3Provider, accoun
   
 
   
-  return getContract(chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F', IUniswapV2Router02ABI, library, account);
+  return getContract(chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5', IUniswapV2Router02ABI, library, account);
 }
 
 export function getPairContract(address: string, library: Web3Provider): Contract {
@@ -130,6 +130,6 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === ETHER) return true;
+  if (currency?.symbol === ETHER.symbol) return true;
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }

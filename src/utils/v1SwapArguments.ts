@@ -24,8 +24,8 @@ export default function v1SwapArguments(
     throw new Error('too many pairs')
   }
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const inputETH = trade.inputAmount.currency === ETHER
-  const outputETH = trade.outputAmount.currency === ETHER
+  const inputETH = trade.inputAmount.currency?.symbol === ETHER.symbol
+  const outputETH = trade.outputAmount.currency?.symbol === ETHER.symbol
   if (inputETH && outputETH) throw new Error('ETHER to ETHER')
   const minimumAmountOut = toHex(trade.minimumAmountOut(options.allowedSlippage))
   const maximumAmountIn = toHex(trade.maximumAmountIn(options.allowedSlippage))

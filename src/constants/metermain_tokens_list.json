@@ -106,22 +106,71 @@
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png"
       },
       {
-        "name": "BUSD from BSC on Theta Testnet",
-        "address": "0x5709dDd0376014202654788466FDd70bda5E69Bb",
+        "name": "BNB from BSC on Moonriver",
+        "address": "0xdFf772186aCe9b5513FB46d7B05b36Efa0A4a20d",
+        "symbol": "BNB.bsc",
+        "decimals": 18,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BNB/logo.png"
+      },
+      {
+        "name": "BUSD from BSC on Moonriver",
+        "address": "0x7B37d0787A3424A0810E02b24743a45eBd5530B2",
         "symbol": "BUSD.bsc",
         "decimals": 18,
-        "chainId": 365,
+        "chainId": 361,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BUSD/logo.png"
       },
       {
-        "name": "Wrapped ETH",
-        "address": "0x07446A7e12C2d24d6b180d009e4255aE26fBF018",
-        "symbol": "WETH.eth",
+        "name": "Meter Governance mapped by Meter.io",
+        "address": "0xBd2949F67DcdC549c6Ebe98696449Fa79D988A9F",
+        "symbol": "MTRG",
         "decimals": 18,
-        "chainId": 365,
-        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/MTRG/logo.png"
+      },
+      {
+        "name": "USDC from Ethereum on Moonriver",
+        "address": "0x3Ca3fEFA944753b43c751336A5dF531bDD6598B6",
+        "symbol": "USDC",
+        "decimals": 6,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDC/logo.png"
+      },
+      {
+        "name": "USDT from Ethereum on Moonriver",
+        "address": "0x3c751Feb00364CA9e2d0105c40F0b423abf1DEE3",
+        "symbol": "USDT",
+        "decimals": 6,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/USDT/logo.png"
+      },
+      {
+        "name": "Volt from Meter on Moonriver",
+        "address": "0xE6a991Ffa8CfE62B0bf6BF72959A3d4f11B2E0f5",
+        "symbol": "VOLT",
+        "decimals": 18,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/VOLT/logo.png"
+      },
+      {
+        "name": "WBTC from Ethereum on Moonriver",
+        "address": "0xf64FA5155D8cc578D473A21FB67507DDCbB80D21",
+        "symbol": "WBTC",
+        "decimals": 8,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/WBTC/logo.png"
+      },
+      {
+        "name": "Wrapped TFuel",
+        "address": "0x4Dc08B15ea0e10B96c41Aec22fAB934bA15C983e",
+        "symbol": "WTFUEL",
+        "decimals": 18,
+        "chainId": 361,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/TFUEL/logo.png"
       }
 
+      
 
     ],
     "version": {

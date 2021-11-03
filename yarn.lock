@@ -2980,6 +2980,11 @@
   resolved "https://registry.yarnpkg.com/@uniswap/token-lists/-/token-lists-1.0.0-beta.17.tgz#a861fe96a0f3de91b01eae05dec05a6a2018b38e"
   integrity sha512-UVRmSsP/ghJ7Dg8BHYjAZmZL96jHlZKrFoIEuKD3g1E4FbahfwS2j2KAaf6iQuLx6RWo8PQmDZ99rfK6T2xi8w==
 
+"@uniswap/token-lists@^1.0.0-beta.27":
+  version "1.0.0-beta.27"
+  resolved "https://registry.yarnpkg.com/@uniswap/token-lists/-/token-lists-1.0.0-beta.27.tgz#8b02a979b0b0024cc96f60e694a3f6db6b2ccab2"
+  integrity sha512-x5hmIniQ9TGqOBCRqfWcmZi/U5kB0qrHMDQ9igs3nMbK0wwmYLraL4owbIwXFGR/co6/lJYJC4K/Gjn4wZY5mQ==
+
 "@uniswap/v2-core@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@uniswap/v2-core/-/v2-core-1.0.0.tgz#e0fab91a7d53e8cafb5326ae4ca18351116b0844"
@@ -16150,11 +16155,12 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-voltswap-sdk@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/voltswap-sdk/-/voltswap-sdk-3.0.6.tgz#7aaaa6efd11563f99c57557a9a5086c724af77de"
-  integrity sha512-Y/TMi43dOKMftHOkny7qw6yqxYnGL0ZRCqAyzln5yWV6m800ha/s3kx76wcSqlBguya2LJ2c+ha4jpQcNvROww==
+voltswap-sdk@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/voltswap-sdk/-/voltswap-sdk-3.1.2.tgz#ddf8b6dbf02ea14a2621402eaaaa3ab5200fa23a"
+  integrity sha512-8cFuMltIYQ2x4OG9KvPVLUJpXCRzlJB90HEg81VSCp07xihhiPQYafnkIhCua8mbNjfwvfXtpJx6PCKAEqs+xw==
   dependencies:
+    "@uniswap/token-lists" "^1.0.0-beta.27"
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
     decimal.js-light "^2.5.0"

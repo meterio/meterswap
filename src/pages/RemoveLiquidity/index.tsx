@@ -100,7 +100,7 @@ export default function RemoveLiquidity({
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], chainId === 82 ? ROUTER_ADDRESS : '0x8901D724945417F75F005c42B356CB3c3ba4164F')
+  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
 
   const isArgentWallet = useIsArgentWallet()
 
