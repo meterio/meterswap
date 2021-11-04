@@ -5,8 +5,11 @@ import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
+import detectEthereumProvider from "@metamask/detect-provider";
+
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
+import { ButtonSecondary} from '../Button'
 import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -15,6 +18,7 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
+import getChain from '../../constants/chain'
 
 import Modal from '../Modal'
 import Option from './Option'
@@ -109,6 +113,10 @@ const HoverText = styled.div`
   }
 `
 
+
+
+
+
 const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
@@ -153,6 +161,34 @@ export default function WalletModal({
       setWalletView(WALLET_VIEWS.ACCOUNT)
     }
   }, [walletModalOpen])
+
+
+  //connect to selected network
+  const connectNetwork = (chainId:number) => {
+    const chain = getChain(chainId)
+
+  
+  window.localStorage.setItem("chainId", chain.networkId.toString())
+    detectEthereumProvider().then((provider: any) => {
+      provider.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: "0x" + chain.networkId.toString(16),
+            chainName: chain.name,
+            nativeCurrency: {
+              name: chain.nativeTokenSymbol,
+              symbol: chain.nativeTokenSymbol,
+              decimals: chain.decimals,
+            },
+            rpcUrls: [chain.rpcUrl],
+            blockExplorerUrls: [chain.blockExplorer],
+          },
+        ],
+      })
+    })
+
+  }
 
   // close modal when a connection is successful
   const activePrevious = usePrevious(active)
@@ -298,7 +334,18 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+
+             <div> <h5>Please connect to the appropriate Ethereum network.</h5>
+             <br/>
+             <ButtonSecondary onClick={()=>connectNetwork(82)}>
+              Meter Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'}></img>
+            </ButtonSecondary>
+            <br></br>
+            <ButtonSecondary onClick={()=>connectNetwork(361)}>
+             Theta Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={'https://raw.githubusercontent.com/meterio/token-list/master/data/TFUEL/logo.png'}></img>
+            </ButtonSecondary>
+             </div>
+           
             ) : (
               'Error connecting. Try refreshing the page.'
             )}

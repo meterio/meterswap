@@ -239,7 +239,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
            
           let uniPrice = 0
           if (isVoltPool) {
-            console.log(geyserInfo.stakingToken)
+            
             const mtrgPrice_st = await getCurrentPrice('MTRG');
             const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
             const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
@@ -308,8 +308,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
           if (isVoltPool) {
-           
-            const apy = await getPoolAPY(geyserInfo, (uniPrice + voltPrice) , 18, voltPrice, 18, library);
+            voltPrice = await getCurrentPrice(rewardSymbol);
+            const apy = await getPoolAPY(geyserInfo, voltPrice , 18, voltPrice, 18, library);
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);

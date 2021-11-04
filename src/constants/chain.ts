@@ -9,12 +9,12 @@ export interface Chains {
   }
 }
 const chains: Chains = {
-  101: {
-    networkId: 101,
-    name: 'Meter Testnet',
-    rpcUrl: 'https://rpctest.meter.io',
-    blockExplorer: 'https://scan-warringstakes.meter.io',
-    nativeTokenSymbol: 'MTR',
+  361: {
+    networkId: 361,
+    name: 'Theta Mainnet',
+    rpcUrl: 'https://eth-rpc-api.thetatoken.org/rpc',
+    blockExplorer: 'https://explorer.thetatoken.org',
+    nativeTokenSymbol: 'TFUEL',
     decimals: 18
   },
   82: {

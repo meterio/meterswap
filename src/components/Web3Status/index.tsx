@@ -200,23 +200,23 @@ function Web3StatusInner() {
   const { account, connector, error, active, activate } = useWeb3React()
 
   console.log("is connected to metamask: ", active);
-  useEffect(() => {
-    injected.getChainId().then(chainId => {
-      console.log("chainId: ", chainId)
-      if (!active) {
-        activate(injected, undefined, true).then(_ => {
-          if (!SUPPORTED_CHAINIDS.includes(Number(chainId))) {
-            addChain(Number(REACT_APP_METER_CHAIN_ID))
-          }
-        }).catch(error => {
-          console.log("connect to metamask: ", error)
-          if (error instanceof UnsupportedChainIdError) {
-           addChain(Number(REACT_APP_METER_CHAIN_ID))
-          }
-        })
-      }
-    })
-  }, [active])
+  // useEffect(() => {
+  //   injected.getChainId().then(chainId => {
+  //     console.log("chainId: ", chainId)
+  //     if (!active) {
+  //       activate(injected, undefined, true).then(_ => {
+  //         if (!SUPPORTED_CHAINIDS.includes(Number(chainId))) {
+  //           addChain(Number(REACT_APP_METER_CHAIN_ID))
+  //         }
+  //       }).catch(error => {
+  //         console.log("connect to metamask: ", error)
+  //         if (error instanceof UnsupportedChainIdError) {
+  //          addChain(Number(REACT_APP_METER_CHAIN_ID))
+  //         }
+  //       })
+  //     }
+  //   })
+  // }, [active])
 
   const { ENSName } = useENSName(account ?? undefined)
 
