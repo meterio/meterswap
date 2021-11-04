@@ -6,7 +6,8 @@ import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import detectEthereumProvider from "@metamask/detect-provider";
-
+import meter_logo from "../../assets/images/meter.png";
+import theta_logo from "../../assets/images/theta.png";
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { ButtonSecondary} from '../Button'
@@ -338,11 +339,11 @@ export default function WalletModal({
              <div> <h5>Please connect to the appropriate Ethereum network.</h5>
              <br/>
              <ButtonSecondary onClick={()=>connectNetwork(82)}>
-              Meter Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={'https://raw.githubusercontent.com/meterio/token-list/master/data/MTR/logo.png'}></img>
+              Meter Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={meter_logo}></img>
             </ButtonSecondary>
             <br></br>
             <ButtonSecondary onClick={()=>connectNetwork(361)}>
-             Theta Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={'https://raw.githubusercontent.com/meterio/token-list/master/data/TFUEL/logo.png'}></img>
+             Theta Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={theta_logo}></img>
             </ButtonSecondary>
              </div>
            
