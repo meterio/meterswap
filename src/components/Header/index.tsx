@@ -341,6 +341,12 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
             Farm
           </StyledNavLink></li>
+
+          <li> <StyledExternalLink id={`gov-nav-link`} href={'https://golucky.io'}>
+          Lottery <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink></li>
+          
+          
     <li> <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
           Passport <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink></li>
