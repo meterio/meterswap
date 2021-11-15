@@ -156,11 +156,12 @@ export const getStakeDrip = async (geyser: Geyser, stake: BigNumber, duration: n
   const geyserData = await contract.getGeyserData();
   const { lastUpdate, totalStake, totalStakeUnits } = geyserData;
   const durationSinceLastUpdate = Math.max(afterDuration - lastUpdate, 0);
-  // console.log('stake:', stake.toString());
-  // console.log('total stake units:', totalStakeUnits.toString());
-  // console.log('total stake:', totalStake.toString());
-  // console.log('duration since last update:', durationSinceLastUpdate);
-  // console.log('stake units from stake:', stakeUnitsFromStake.toString());
+  console.log('duration: ', duration);
+  console.log('stake:', stake.toString());
+  console.log('total stake units:', totalStakeUnits.toString());
+  console.log('total stake:', totalStake.toString());
+  console.log('duration since last update:', durationSinceLastUpdate);
+  console.log('stake units from stake:', stakeUnitsFromStake.toString());
   const totalStakeUnitsAfterDuration = new BigNumber(totalStakeUnits.toString()).plus(
     new BigNumber(totalStake.toString()).times(durationSinceLastUpdate)
   );
@@ -189,19 +190,19 @@ const getPoolAPY = async (
   library: Web3Provider
 ) => {
   const { scalingTime } = geyser;
-
+  // console.log('staking token:', stakingToken);
+  // console.log('scaling time: ', scalingTime);
   const inflow = 20000.0; // avg_deposit: 20,000 USD
   const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString());
   const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals);
-  const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice));
+  const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice * 1000));
   // console.log('stake token price: ', stakeTokenPriceBigNum.toString());
   // console.log('inflow fixed pt:', inflowFixedPt.toString());
-  const stake = inflowFixedPt.div(stakeTokenPriceBigNum);
+  const stake = inflowFixedPt.times(1000).div(stakeTokenPriceBigNum);
   // console.log('stake: ', stake.toString());
   const calcPeriod = getCalcPeriod(geyser);
   const contract = getGeyserContract(geyser.id, library);
 
-  // console.log('scaling time: ', scalingTime);
   const stakeDripAfterPeriod = await getStakeDrip(geyser, stake, parseInt(scalingTime, 10), contract);
   // console.log('stake drip after period:', stakeDripAfterPeriod);
   if (stakeDripAfterPeriod === 0) return 0;
@@ -229,32 +230,31 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
-  const isVoltPool = geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()
+  const isVoltPool = geyserInfo.id.toLowerCase() === '0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc'.toLowerCase();
   useEffect(() => {
     (async () => {
       try {
         if (library) {
-          const stakingSymbol = isVoltPool ? tokenPair.token0.symbol:  `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
+          const stakingSymbol = isVoltPool
+            ? tokenPair.token0.symbol
+            : `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
           setStakingTokenSymbol(stakingSymbol);
-           
-          let uniPrice = 0
+
+          let uniPrice = 0;
           if (isVoltPool) {
-            console.log(geyserInfo.stakingToken)
+            console.log(geyserInfo.stakingToken);
             const mtrgPrice_st = await getCurrentPrice('MTRG');
             const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
             const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
-         
+
             uniPrice = new BigNumber(mtrgPrice_st)
               .times(reserve0.toString())
               .div(reserve1.toString())
               .toNumber();
-               
           } else {
-            uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+            uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
           }
-         
 
-         
           setStakingTokenPrice(uniPrice);
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
 
@@ -268,8 +268,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
                 new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
               )
             );
-            
-          }else{
+          } else {
             setCurrency0(
               unwrappedToken(
                 new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
@@ -281,7 +280,6 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               )
             );
           }
-         
 
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
@@ -301,26 +299,22 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
           setTotalDeposit(totalStake.times(uniPrice));
-         
+
           // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
           if (isVoltPool) {
-           
-            const apy = await getPoolAPY(geyserInfo, (uniPrice + voltPrice) , 18, voltPrice, 18, library);
-          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
-          // console.log('-'.repeat(40));
-          setGeyserAPY(apy);
-
-          }else{
-          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
-          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
-          // console.log('-'.repeat(40));
-          setGeyserAPY(apy);
+            const apy = await getPoolAPY(geyserInfo, uniPrice + voltPrice, 18, voltPrice, 18, library);
+            // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+            // console.log('-'.repeat(40));
+            setGeyserAPY(apy);
+          } else {
+            const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
+            // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+            // console.log('-'.repeat(40));
+            setGeyserAPY(apy);
           }
-          
-        
         }
       } catch (e) {
         console.log('Error happened:', e);
@@ -340,24 +334,21 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '20px' }}>
           {stakingTokenSymbol}
         </TYPE.white>
-        {
-          isVoltPool ?
+        {isVoltPool ? (
+          <StyledExternalLink href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}>
+            <ButtonPrimary padding="8px" borderRadius="8px">
+              Detail <span style={{ fontSize: '11px' }}>↗</span>
+            </ButtonPrimary>
+          </StyledExternalLink>
+        ) : (
           <StyledExternalLink
-          href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
-        >
-          <ButtonPrimary padding="8px" borderRadius="8px">
-            Detail <span style={{ fontSize: '11px' }}>↗</span>
-          </ButtonPrimary>
-        </StyledExternalLink>:
-        <StyledExternalLink
-        href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
-      >
-        <ButtonPrimary padding="8px" borderRadius="8px">
-          Detail <span style={{ fontSize: '11px' }}>↗</span>
-        </ButtonPrimary>
-      </StyledExternalLink>
-        }
-
+            href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
+          >
+            <ButtonPrimary padding="8px" borderRadius="8px">
+              Detail <span style={{ fontSize: '11px' }}>↗</span>
+            </ButtonPrimary>
+          </StyledExternalLink>
+        )}
       </TopSection>
 
       <StatContainer>
