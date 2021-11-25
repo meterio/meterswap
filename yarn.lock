@@ -16155,10 +16155,10 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-voltswap-sdk@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/voltswap-sdk/-/voltswap-sdk-3.1.2.tgz#ddf8b6dbf02ea14a2621402eaaaa3ab5200fa23a"
-  integrity sha512-8cFuMltIYQ2x4OG9KvPVLUJpXCRzlJB90HEg81VSCp07xihhiPQYafnkIhCua8mbNjfwvfXtpJx6PCKAEqs+xw==
+voltswap-sdk@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/voltswap-sdk/-/voltswap-sdk-3.1.4.tgz#e4e32259c282cf5ae71a1c920d36e435e11030ff"
+  integrity sha512-dZ11rZbtf3qYN7l+splkEIR7cBJrcCh406KYCFE3wK1b6rxXyY0GvggIRxv+U6q1ZXkPp99r4qfKU5gASHVd5Q==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.27"
     "@uniswap/v2-core" "^1.0.0"

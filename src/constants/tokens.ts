@@ -22,7 +22,15 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
     18,
     'WETH.eth',
     'WETH.eth'
-  )
+  ),
+  '0x4Dc08B15ea0e10B96c41Aec22fAB934bA15C983e': new Token(
+    ChainId.THETA,
+    '0x4Dc08B15ea0e10B96c41Aec22fAB934bA15C983e',
+    18,
+    'TFUEL',
+    'TFUEL'
+  ),
+  
  },
 
   

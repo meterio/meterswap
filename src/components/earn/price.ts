@@ -39,7 +39,7 @@ const symbolMap: { [key: string]: Coin } = {
   'BNB.bsc': { id: 'binancecoin', price: 400 },
 
   // pending
-  VOLT: { id: '', price: 50 },
+  VOLT: { id: 'volt', price: 50 },
   AMPL: { id: 'ampleforth', price: 1 },
 
   // extended
