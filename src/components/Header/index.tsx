@@ -368,7 +368,7 @@ export default function Header() {
 
           <li>
 
-          <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance?network=${chainId === 361 ? 'theta':'meter'}`}>
+          <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/home?network=${chainId === 361 ? 'theta':'meter'}`}>
           Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          
