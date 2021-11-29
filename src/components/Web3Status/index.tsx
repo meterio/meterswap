@@ -197,9 +197,10 @@ function addChain(chainId: number) {
 
 function Web3StatusInner() {
   const { t } = useTranslation()
-  const { account, connector, error, active, activate } = useWeb3React()
+  const { account, connector, error, active, activate, chainId } = useWeb3React()
 
   console.log("is connected to metamask: ", active);
+  window.localStorage.setItem('chainId', chainId?.toString()||'82')
   // useEffect(() => {
   //   injected.getChainId().then(chainId => {
   //     console.log("chainId: ", chainId)

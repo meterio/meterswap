@@ -65,7 +65,8 @@ export default function CurrencyLogo({
     return [];
   }, [currency, uriLocations]);
 
-  if (currency?.symbol === ETHER.symbol) {
+  
+  if (currency?.symbol === 'WTFUEL' || currency?.symbol === ETHER.symbol) {
     return <StyledEthereumLogo src={'https://raw.githubusercontent.com/meterio/token-list/master/data/TFUEL/logo.png'} size={size} style={style} />;
   }
 

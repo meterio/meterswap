@@ -19,6 +19,7 @@ import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 import { client } from './queries/client'
+import { tclient } from './queries/thetaclient'
 
 
 
@@ -59,8 +60,12 @@ function Updaters() {
   )
 }
 
-ReactDOM.render(
-  <StrictMode>
+function SwitchByNetwork () {
+  let networkId = window.localStorage.getItem('chainId')
+
+  if(!networkId){
+return(
+    <StrictMode>
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
@@ -77,6 +82,59 @@ ReactDOM.render(
         </ApolloProvider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
-  </StrictMode>,
+  </StrictMode>
+)
+
+  }
+
+  if(networkId && networkId === '361') {
+
+    return (
+    <StrictMode>
+    <FixedGlobalStyle />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ProviderNetwork getLibrary={getLibrary}>
+      <ApolloProvider client={tclient}>
+        <Provider store={store}>
+          <Updaters />
+          <ThemeProvider>
+            <ThemedGlobalStyle />
+            <HashRouter>
+              <App />
+            </HashRouter>
+          </ThemeProvider>
+        </Provider>
+        </ApolloProvider>
+      </Web3ProviderNetwork>
+    </Web3ReactProvider>
+  </StrictMode>
+    )
+  }
+
+  return (
+    <StrictMode>
+    <FixedGlobalStyle />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ProviderNetwork getLibrary={getLibrary}>
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <Updaters />
+          <ThemeProvider>
+            <ThemedGlobalStyle />
+            <HashRouter>
+              <App />
+            </HashRouter>
+          </ThemeProvider>
+        </Provider>
+        </ApolloProvider>
+      </Web3ProviderNetwork>
+    </Web3ReactProvider>
+  </StrictMode>
+  )
+}
+
+ReactDOM.render(
+  <SwitchByNetwork/>
+,
   document.getElementById('root')
 )

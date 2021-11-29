@@ -40,6 +40,7 @@ const symbolMap: { [key: string]: Coin } = {
 
   // pending
   VOLT: { id: 'volt', price: 50 },
+  VOLT_AIR: { id: 'volt', price: 50 },
   AMPL: { id: 'ampleforth', price: 1 },
 
   // extended

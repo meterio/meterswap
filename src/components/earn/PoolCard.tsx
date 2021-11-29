@@ -234,7 +234,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     (async () => {
       try {
         if (library) {
-          const stakingSymbol = isVoltPool ? tokenPair.token0.symbol:  `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
+          const stakingSymbol = isVoltPool ? tokenPair.token0.symbol:  `${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL':tokenPair.token0.symbol }-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL':tokenPair.token1.symbol}`;
           setStakingTokenSymbol(stakingSymbol);
            
           let uniPrice = 0
@@ -250,6 +250,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               .toNumber();
                
           } else {
+          
+            
             uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
           }
          
@@ -258,7 +260,11 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           setStakingTokenPrice(uniPrice);
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
 
-          const rewardSymbol = await rewardToken.symbol();
+          let rewardSymbol = await rewardToken.symbol();
+
+          rewardSymbol = rewardSymbol === 'VOLT_AIR' ? 'VOLT': rewardSymbol
+
+
 
           setRewardTokenSymbol(rewardSymbol);
 
@@ -286,7 +292,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
             const mtrgPrice = await getCurrentPrice('MTRG');
-            const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const mtrgVoltPair = getPairContract( chainId === 361 ?'0xbd346458ad37f2d3101ede54cb411d2636decbc6':'0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
             const { reserve0, reserve1 } = await mtrgVoltPair.getReserves();
             // console.log('mtrg price:', mtrgPrice);
             // console.log('mtrg amount:', reserve0.toString());
@@ -295,24 +301,26 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               .times(reserve0.toString())
               .div(reserve1.toString())
               .toNumber();
+            
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);
           }
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
-          
+         
           setTotalDeposit(totalStake.times(uniPrice));
          
           // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
-          if (isVoltPool) {
+          if (isVoltPool || rewardSymbol === 'VOLT_AIR') {
             voltPrice = await getCurrentPrice(rewardSymbol);
             const apy = await getPoolAPY(geyserInfo, voltPrice , 18, voltPrice, 18, library);
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
+          
 
           }else{
           const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
@@ -344,14 +352,14 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         {
           isVoltPool ?
           <StyledExternalLink
-          href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
+          href={chainId === 361 ? `http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
         >
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
         </StyledExternalLink>:
         <StyledExternalLink
-        href={`https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
+        href={chainId === 361 ?`http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
       >
         <ButtonPrimary padding="8px" borderRadius="8px">
           Detail <span style={{ fontSize: '11px' }}>↗</span>

@@ -309,18 +309,7 @@ export default function Header() {
           </UniIcon>
         </Title>
        
-          {/*<StyledNavLink to={'/meter'}>*/}
-          {/*  SmartAMM*/}
-          {/*</StyledNavLink>*/}
-
-
-
-          {/*<StyledExternalLink id={`stake-nav-link`} href={'https://www.chadswap.finance/farms'}>*/}
-          {/*  Farms <span style={{ fontSize: '11px' }}>↗</span>*/}
-          {/*</StyledExternalLink>*/}
-          {/*<StyledExternalLink id={`stake-nav-link`} href={'https://happy-grass-0af584900.azurestaticapps.net/'}>*/}
-          {/*  Charts <span style={{ fontSize: '11px' }}>↗</span>*/}
-          {/*</StyledExternalLink>*/}
+       
           <header className="header" style={{top:"0px" }}>
   
   <input className="menu-btn" type="checkbox" id="menu-btn" />
@@ -337,24 +326,49 @@ export default function Header() {
     <li> <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
             Pool
           </StyledNavLink></li>
-    <li>
-          <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
-            Farm
-          </StyledNavLink></li>
+    
+
+{
+  chainId === 361 ?
+  <li>
+  <StyledNavLink id={`stake-nav-link`}  to={'/thetarewards'}>
+  Farm
+</StyledNavLink></li>:
+ <li>
+ <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
+ Farm
+</StyledNavLink></li>
+
+}
+
+         
     <li> <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
           Passport <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink></li>
-          <li>
+          
+      
+            {
+              chainId === 82  &&  <li> <StyledExternalLink id={`gov-nav-link`} href={'https://golucky.io'}>
+              Lottery <span style={{ fontSize: '11px' }}>↗</span>
+              </StyledExternalLink></li>
             
+            }
+
+          
+
+          {
+              chainId === 82  &&
+            <li>
           <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
           Wallet <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
 
           </li>
+          }
 
           <li>
 
-          <StyledExternalLink id={`gov-nav-link`} href={'https://info.voltswap.finance'}>
+          <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance?network=${chainId === 361 ? 'theta':'meter'}`}>
           Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
          
