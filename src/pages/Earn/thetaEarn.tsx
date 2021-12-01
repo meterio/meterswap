@@ -61,7 +61,7 @@ const Arrow = styled.div`
   }
 `
 
-
+const VOLT_ON_THETA = '0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5';
 const voltsTokenPair = {
   __typename: "Pair",
   id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
@@ -110,18 +110,20 @@ export default function ThetaEarn() {
     if (geyserData && geyserData.geysers) {
      
       const geysers = [...geyserData.geysers]
+
+      const filtered = geysers
+      .filter(g => g.rewardToken.toLowerCase() === VOLT_ON_THETA.toLowerCase())
+      .map(
+        geyser =>
+          ({
+            ...geyser,
+
+            status: geyser.powerSwitch.status
+          } as Geyser)
+      );
      
-        geysers.filter(g => g.rewardToken.toLowerCase() === '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0'.toLowerCase())
-        .map(
-          geyser =>
-            ({
-              ...geyser,
-
-              status: geyser.powerSwitch.status
-            } as Geyser)
-        );
-
-      setGeysers(geysers);
+        
+      setGeysers(filtered);
       if (pairData && pairData.pairs) {
       
         setPairs([...pairData.pairs,voltsTokenPair] );
