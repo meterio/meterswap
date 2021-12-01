@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
-const uri = 'https://newgraph.voltswap.finance/subgraphs/name/meter/geyser-v2';
+const uri = 'https://geyser-graph.voltswap.finance/subgraphs/name/meter/geyser-v2';
 
 
 export const client = new ApolloClient({
