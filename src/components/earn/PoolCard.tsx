@@ -141,6 +141,7 @@ const getCalcPeriod = (geyser: Geyser) => {
     schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
   );
   const geyserDuration = Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
+
   return Math.max(Math.min(geyserDuration, parseInt(scalingTime, 10)), DAY_IN_SEC);
 };
 /**
@@ -226,6 +227,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
   const [geyserAPY, setGeyserAPY] = useState(0);
   const [currency0, setCurrency0] = useState<Currency>();
   const [currency1, setCurrency1] = useState<Currency>();
+
+  
 
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
@@ -352,14 +355,14 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         {
           isVoltPool ?
           <StyledExternalLink
-          href={chainId === 361 ? `http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
+          href={chainId === 361 ? `https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
         >
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
         </StyledExternalLink>:
         <StyledExternalLink
-        href={chainId === 361 ?`http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
+        href={chainId === 361 ?`https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
       >
         <ButtonPrimary padding="8px" borderRadius="8px">
           Detail <span style={{ fontSize: '11px' }}>↗</span>

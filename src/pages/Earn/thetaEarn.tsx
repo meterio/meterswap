@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_GEYSERS } from '../../queries/geyser';
 import { Geyser, Lock, TokenPair, Vault } from './types';
-import { uniClient } from '../../queries/thetaclient';
+import { uniClientTheta } from '../../queries/thetaclient';
 import { GET_PAIRS } from '../../queries/uniswap';
 const MS_PER_SEC = 1000;
 
@@ -87,12 +87,13 @@ export default function ThetaEarn() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
 
+
   const [getGeysers, { loading: geyserLoading, data: geyserData }] = useLazyQuery(GET_GEYSERS, {
     pollInterval: POLL_INTERVAL
   });
   const [getPairs, { loading: pairLoading, data: pairData }] = useLazyQuery(GET_PAIRS, {
     pollInterval: 3000,
-    client: uniClient
+    client: uniClientTheta
   });
   // pagination
   const [page, setPage] = useState(1)

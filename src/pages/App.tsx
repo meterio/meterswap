@@ -80,7 +80,7 @@ function TopLevelModals() {
 
 export default function App() {
   const { chainId } = useActiveWeb3React()
-  console.log('chainId --> ',chainId)
+
   return (
     <Suspense fallback={null}>
       <Route component={GoogleAnalyticsReporter} />
@@ -103,9 +103,14 @@ export default function App() {
               {/*<Route exact strict path="/send" component={RedirectPathToSwapOnly} />*/}
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/pool" component={Pool} />
-            
-              <Route exact strict path="/rewards" component={Earn} />
-              <Route exact strict path="/thetarewards" component={ThetaEarn} />
+              {
+                chainId === 361 ? 
+                <Route exact strict path="/thetarewards" component={ThetaEarn} />:
+                <Route exact strict path="/rewards" component={Earn} />
+
+              }
+              
+              
               {/*<Route exact strict path="/vote" component={Vote} />*/}
               {/*<Route exact strict path="/create" component={RedirectToAddLiquidity} />*/}
               <Route exact path="/add" component={AddLiquidity} />
