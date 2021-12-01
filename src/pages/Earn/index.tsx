@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_GEYSERS } from '../../queries/geyser';
 import { Geyser, Lock, TokenPair, Vault } from './types';
-import { uniClient } from '../../queries/client';
+import { uniClient,client } from '../../queries/client';
 import { GET_PAIRS } from '../../queries/uniswap';
 const MS_PER_SEC = 1000;
 
@@ -88,12 +88,15 @@ export default function Earn() {
   const stakingInfos = useStakingInfo();
 
   const [getGeysers, { loading: geyserLoading, data: geyserData }] = useLazyQuery(GET_GEYSERS, {
-    pollInterval: POLL_INTERVAL
+    pollInterval: POLL_INTERVAL,
+    client
   });
   const [getPairs, { loading: pairLoading, data: pairData }] = useLazyQuery(GET_PAIRS, {
     pollInterval: 3000,
     client: uniClient
   });
+
+
   // pagination
   const [page, setPage] = useState(1)
   const [geysers, setGeysers] = useState<Geyser[]>([]);
