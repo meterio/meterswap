@@ -87,7 +87,6 @@ export default function ThetaEarn() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
 
-
   const [getGeysers, { loading: geyserLoading, data: geyserData }] = useLazyQuery(GET_GEYSERS, {
     pollInterval: POLL_INTERVAL
   });
@@ -111,6 +110,7 @@ export default function ThetaEarn() {
     if (geyserData && geyserData.geysers) {
       const geysers = [...geyserData.geysers];
 
+      console.log(geysers);
       const filtered = geysers
         .filter(g => g.rewardToken.toLowerCase() === VOLT_ON_THETA.toLowerCase())
         .map(
