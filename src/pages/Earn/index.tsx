@@ -109,7 +109,7 @@ export default function Earn() {
   }, []);
 
   useEffect(() => {
-    // console.log('geyser data updated:', geyserData);
+    
 
     if (geyserData && geyserData.geysers) {
       const geysers = [...geyserData.geysers];
@@ -141,6 +141,8 @@ export default function Earn() {
   const stakingRewardsExist = true;
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
+
+  
 
   return (
     <PageWrapper gap="lg" justify="center">

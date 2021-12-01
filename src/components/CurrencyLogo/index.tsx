@@ -15,8 +15,7 @@ const getTokenLogoURL = (address: string, symbol: string | undefined) => {
 
   let logoURI = `https://raw.githubusercontent.com/meterio/token-list/master/data/${symbol}/logo.png`;
   parsedList.map((token_data: any) => {
-    logoURI =
-      web3.utils.toChecksumAddress(token_data.address) === web3.utils.toChecksumAddress(address)
+    logoURI = token_data.symbol === symbol
         ? token_data.logoURI
         : logoURI;
   });

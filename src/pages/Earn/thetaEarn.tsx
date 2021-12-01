@@ -110,7 +110,7 @@ export default function ThetaEarn() {
     if (geyserData && geyserData.geysers) {
       const geysers = [...geyserData.geysers];
 
-      console.log(geysers);
+    
       const filtered = geysers
         .filter(g => g.rewardToken.toLowerCase() === VOLT_ON_THETA.toLowerCase())
         .map(

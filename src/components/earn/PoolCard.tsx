@@ -131,6 +131,7 @@ const getGeyserDuration = (geyser: Geyser) => {
   const schedulesEndTime = rewardSchedules.map(
     schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
   );
+
   return Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
 };
 
@@ -229,7 +230,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
   const [currency1, setCurrency1] = useState<Currency>();
 
   
-
+   
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
   const isVoltPool = geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()
@@ -355,14 +356,14 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         {
           isVoltPool ?
           <StyledExternalLink
-          href={chainId === 361 ? `https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
+          href={chainId === 361 ? `http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
         >
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
         </StyledExternalLink>:
         <StyledExternalLink
-        href={chainId === 361 ?`https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
+        href={chainId === 361 ?`http://thetavoltswapfarm.surge.sh?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
       >
         <ButtonPrimary padding="8px" borderRadius="8px">
           Detail <span style={{ fontSize: '11px' }}>↗</span>
