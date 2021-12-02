@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
-const uri = 'http://13.214.99.74:8000/subgraphs/name/theta/geyser-v2';
+const uri = 'https://geyser-graph-on-theta.voltswap.finance/subgraphs/name/theta/geyser-v2';
 
 export const tclient = new ApolloClient({
   uri,
