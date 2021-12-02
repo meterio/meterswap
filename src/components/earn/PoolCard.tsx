@@ -229,7 +229,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
-  const isVoltPool = geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()
+  
+  let isVoltPool = geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()
+
+  if(chainId === 361){
+    isVoltPool = geyserInfo.id.toLowerCase() === "0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4".toLocaleLowerCase()
+
+  }
   useEffect(() => {
     (async () => {
       try {
@@ -241,7 +247,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           if (isVoltPool) {
             
             const mtrgPrice_st = await getCurrentPrice('MTRG');
-            const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const mtrgVoltPair_st = getPairContract(chainId === 361 ? '0xbd346458ad37f2d3101ede54cb411d2636decbc6': '0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
             const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
          
             uniPrice = new BigNumber(mtrgPrice_st)
@@ -271,19 +277,19 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           if (isVoltPool) {
             setCurrency0(
               unwrappedToken(
-                new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
+                new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
               )
             );
             
           }else{
             setCurrency0(
               unwrappedToken(
-                new Token(82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
+                new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
               )
             );
             setCurrency1(
               unwrappedToken(
-                new Token(82, tokenPair.token1.id, Number(tokenPair.token1.decimals), tokenPair.token1.symbol)
+                new Token(chainId || 82, tokenPair.token1.id, Number(tokenPair.token1.decimals), tokenPair.token1.symbol)
               )
             );
           }
@@ -316,7 +322,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log('total stake:', totalStake.toFixed(2));
           if (isVoltPool || rewardSymbol === 'VOLT_AIR') {
             voltPrice = await getCurrentPrice(rewardSymbol);
-            const apy = await getPoolAPY(geyserInfo, voltPrice , 18, voltPrice, 18, library);
+            const apy = await getPoolAPY(geyserInfo, uniPrice , 18, voltPrice, 18, library);
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
@@ -344,6 +350,9 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
       <CardBGImage desaturate />
       <CardNoise />
       <TopSection>
+        {
+          tokenPair.token0.id === "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5"
+        }
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={30} />
 
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '20px' }}>

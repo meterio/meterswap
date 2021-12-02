@@ -160,7 +160,7 @@ export default function Earn() {
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your Liquidity Provider tokens to receive VOLT, the Voltswap token on meter.
+                  Deposit your Liquidity Provider tokens to receive VOLT, the VoltSwap governance token.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink

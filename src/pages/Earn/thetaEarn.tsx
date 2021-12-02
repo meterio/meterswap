@@ -62,22 +62,23 @@ const Arrow = styled.div`
   }
 `
 
-const VOLT_ON_THETA = '0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5';
+const INITIAL_VOLT_ON_THETA = '0xbd515e41df155112cc883f8981cb763a286261be';
+
 const voltsTokenPair = {
   __typename: "Pair",
-  id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+  id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
   reserveUSD: "0",
   token0: {
       __typename: "Token",
       decimals: "18",
-      id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+      id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
       symbol: "VOLT"
   },
   token0Price: "50",
   token1: {
     __typename: "Token",
     decimals: "18",
-    id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+    id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
     symbol: "VOLT"
 },
   token1Price: "50",
@@ -115,8 +116,11 @@ export default function ThetaEarn() {
      
       const geysers = [...geyserData.geysers]
 
+      
+
+      
       const filtered = geysers
-      .filter(g => g.rewardToken.toLowerCase() === VOLT_ON_THETA.toLowerCase())
+      .filter(g => g.id.toLowerCase() !== INITIAL_VOLT_ON_THETA.toLowerCase())
       .map(
         geyser =>
           ({
@@ -125,6 +129,7 @@ export default function ThetaEarn() {
             status: geyser.powerSwitch.status
           } as Geyser)
       );
+     
      
         
       setGeysers(filtered);
@@ -163,7 +168,7 @@ export default function ThetaEarn() {
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your Liquidity Provider tokens to receive VOLT, the Voltswap token on meter.
+                  Deposit your Liquidity Provider tokens to receive VOLT, the VoltSwap governance token.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
@@ -203,11 +208,14 @@ export default function ThetaEarn() {
               // need to sort by added liquidity here
               let tokenPair: TokenPair | undefined = undefined;
               for (const p of pairs) {
-                if (p.id === geyserInfo.stakingToken) {
+                if (p.id === geyserInfo.stakingToken ) {
+                  
                   tokenPair = p;
                   break;
                 }
               }
+
+             
 
               return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
             })
