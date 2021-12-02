@@ -328,18 +328,14 @@ export default function Header() {
           </StyledNavLink></li>
     
 
-{
-  chainId === 361 ?
-  <li>
-  <StyledNavLink id={`stake-nav-link`}  to={'/thetarewards'}>
-  Farm
-</StyledNavLink></li>:
+
+
  <li>
  <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
  Farm
 </StyledNavLink></li>
 
-}
+
 
          
     <li> <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
