@@ -229,6 +229,12 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
   const durationInDay = getGeyserDuration(geyserInfo) / DAY_IN_SEC;
   const totalStake = new BigNumber(geyserInfo.totalStake).dividedBy(1e18);
+
+  const numberWithCommas = (n:any) => {
+    var parts=n.toString().split(".");
+    return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+}
+
   
   let isVoltPool = geyserInfo.id.toLowerCase() === "0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc".toLowerCase()
 
@@ -313,6 +319,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           }
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
+          
          
           setTotalDeposit(totalStake.times(uniPrice));
          
@@ -381,7 +388,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
       <StatContainer>
         <RowBetween>
           <TYPE.white> Total staked value</TYPE.white>
-          <TYPE.white>{totalDeposit.isGreaterThan(0) ? totalDeposit.toFixed(2) : '--.--'} USD</TYPE.white>
+          <TYPE.white>{totalDeposit.isGreaterThan(0) ? numberWithCommas(totalDeposit.toFixed(2)) : '--.--'} USD</TYPE.white>
         </RowBetween>
 
         <RowBetween>

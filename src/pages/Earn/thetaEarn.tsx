@@ -117,7 +117,7 @@ export default function ThetaEarn() {
       const geysers = [...geyserData.geysers]
 
       
-
+     
       
       const filtered = geysers
       .filter(g => g.id.toLowerCase() !== INITIAL_VOLT_ON_THETA.toLowerCase())
@@ -130,6 +130,7 @@ export default function ThetaEarn() {
           } as Geyser)
       );
      
+      
      
         
       setGeysers(filtered);
