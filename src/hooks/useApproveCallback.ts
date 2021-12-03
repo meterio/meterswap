@@ -38,6 +38,7 @@ export function useApproveCallback(
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
     // amountToApprove will be defined if currentAllowance is
+    
     return currentAllowance.lessThan(amountToApprove)
       ? pendingApproval
         ? ApprovalState.PENDING
@@ -45,7 +46,9 @@ export function useApproveCallback(
       : ApprovalState.APPROVED
   }, [amountToApprove, currentAllowance, pendingApproval, spender])
 
+  
   const tokenContract = useTokenContract(token?.address)
+  
   const addTransaction = useTransactionAdder()
 
   const approve = useCallback(async (): Promise<void> => {
@@ -72,6 +75,8 @@ export function useApproveCallback(
       console.error('no spender')
       return
     }
+
+    
 
     let useExact = false
     
