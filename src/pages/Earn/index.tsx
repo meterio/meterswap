@@ -107,6 +107,7 @@ export default function Earn() {
     getGeysers();
   }, []);
 
+  
   useEffect(() => {
     // console.log('geyser data updated:', geyserData);
 
