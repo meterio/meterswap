@@ -113,7 +113,8 @@ export function getRouterContract(chainId: number, library: Web3Provider, accoun
   return getContract(chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5', IUniswapV2Router02ABI, library, account);
 }
 
-export function getPairContract(address: string, library: Web3Provider): Contract {
+
+export function getPairContract(address: string, library: any): Contract {
   return getContract(address, IUniswapV2Pair, library);
 }
 

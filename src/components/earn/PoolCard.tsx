@@ -4,6 +4,7 @@ import { formatUnits } from '@ethersproject/units';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
 import styled from 'styled-components';
+import {ethers} from 'ethers';
 import { useActiveWeb3React } from '../../hooks';
 import { TYPE, ExternalLink } from '../../theme';
 import { ButtonPrimary } from '../Button';
@@ -12,10 +13,11 @@ import { getCurrentPrice } from './price';
 import DoubleCurrencyLogo from '../DoubleLogo';
 import { unwrappedToken } from '../../utils/wrappedCurrency';
 import BigNumber from 'bignumber.js';
-import { getERC20Contract, getGeyserContract, getPairContract } from '../../utils';
+import { getERC20Contract, getGeyserContract, getPairContract} from '../../utils';
 import { Contract } from '@ethersproject/contracts';
 import { TokenPair } from '../../pages/Earn/types';
 import { Web3Provider } from '@ethersproject/providers';
+const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io', { name: 'meter mainnet', chainId: 82 })
 const MS_PER_SEC = 1000;
 const YEAR_IN_SEC = 12 * 30 * 24 * 3600;
 
@@ -193,10 +195,15 @@ const getPoolAPY = async (
   const inflow = 20000.0; // avg_deposit: 20,000 USD
   const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString());
   const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals);
+
   const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice));
   // console.log('stake token price: ', stakeTokenPriceBigNum.toString());
   // console.log('inflow fixed pt:', inflowFixedPt.toString());
-  const stake = inflowFixedPt.div(stakeTokenPriceBigNum);
+  
+  let stake = inflowFixedPt
+  if(stakeTokenPriceBigNum.gt(0)){
+  stake = inflowFixedPt.div(stakeTokenPriceBigNum);
+  }
   // console.log('stake: ', stake.toString());
   const calcPeriod = getCalcPeriod(geyser);
   const contract = getGeyserContract(geyser.id, library);
@@ -254,7 +261,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           if (isVoltPool) {
             
             const mtrgPrice_st = await getCurrentPrice('MTRG');
-            const mtrgVoltPair_st = getPairContract(chainId === 361 ? '0xbd346458ad37f2d3101ede54cb411d2636decbc6': '0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER);
             const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
          
             uniPrice = new BigNumber(mtrgPrice_st)
@@ -305,7 +312,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
             const mtrgPrice = await getCurrentPrice('MTRG');
-            const mtrgVoltPair = getPairContract( chainId === 361 ?'0xbd346458ad37f2d3101ede54cb411d2636decbc6':'0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', library);
+            const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER);
             const { reserve0, reserve1 } = await mtrgVoltPair.getReserves();
             // console.log('mtrg price:', mtrgPrice);
             // console.log('mtrg amount:', reserve0.toString());
