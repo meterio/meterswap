@@ -62,7 +62,10 @@ const Arrow = styled.div`
   }
 `
 
-const INITIAL_VOLT_ON_THETA = '0xbd515e41df155112cc883f8981cb763a286261be';
+
+const BLACKLIST_POOLS = ['0x490a0bc6ddabf084e89455440e74ce61b05efa9a','0xbd515e41df155112cc883f8981cb763a286261be']
+
+
 
 const voltsTokenPair = {
   __typename: "Pair",
@@ -120,7 +123,7 @@ export default function ThetaEarn() {
      
       
       const filtered = geysers
-      .filter(g => g.id.toLowerCase() !== INITIAL_VOLT_ON_THETA.toLowerCase())
+      .filter(g => !BLACKLIST_POOLS.includes(g.id))
       .map(
         geyser =>
           ({
@@ -130,6 +133,7 @@ export default function ThetaEarn() {
           } as Geyser)
       );
      
+
       
      
         
@@ -152,6 +156,9 @@ export default function ThetaEarn() {
   const stakingRewardsExist = true;
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
+
+  
+  
 
   return (
     
