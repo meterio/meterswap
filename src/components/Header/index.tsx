@@ -18,6 +18,7 @@ import { TYPE, ExternalLink } from '../../theme'
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
 import Menu from '../Menu'
+import NetworkSelect from '../NetworkSelect'
 
 
 import Row, { RowFixed } from '../Row'
@@ -26,6 +27,7 @@ import ClaimModal from '../claim/ClaimModal'
 import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
+
 import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
@@ -57,11 +59,29 @@ const HeaderFrame = styled.div`
   `}
 `
 
+
+
 const HeaderControls = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-self: flex-end;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    flex-direction: row;
+    justify-content: space-between;
+    justify-self: center;
+    width: 100%;
+    max-width: 960px;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 99;
+    height: 72px;
+    border-radius: 12px 12px 0 0;
+    background-color: ${({ theme }) => theme.bg1};
+  `};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     flex-direction: row;
     justify-content: space-between;
@@ -295,6 +315,8 @@ export default function Header() {
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
+  
+
   return (
     <HeaderFrame>
   
@@ -397,20 +419,12 @@ export default function Header() {
             <Web3Status />
           </AccountElement>
         </HeaderElement>
+        
         <HeaderElementWrap>
-        {/* <LanguageSelect
-        selected={true}
-    
-    className="open-currency-select-button"
-   
-  >
-    
-    <Aligner>
-    <img src="https://www.countryflags.io/be/shiny/64.png"></img> <StyledDropDown selected={true} />
-    </Aligner>
-    </LanguageSelect> */}
+      
 
           <Settings />
+          <NetworkSelect/>
           <Menu />
         </HeaderElementWrap>
       </HeaderControls>
