@@ -116,11 +116,11 @@ export default function ThetaEarn() {
     // console.log('geyser data updated:', geyserData);
 
     if (geyserData && geyserData.geysers) {
+      var voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
+      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
      
-      const geysers = [...geyserData.geysers]
-
+      const geysers = [...voltpool, ...withoutvoltpool]
       
-     
       
       const filtered = geysers
       .filter(g => !BLACKLIST_POOLS.includes(g.id))
@@ -134,13 +134,15 @@ export default function ThetaEarn() {
       );
      
 
+    
+
       
      
         
       setGeysers(filtered);
       if (pairData && pairData.pairs) {
       
-        setPairs([...pairData.pairs,voltsTokenPair] );
+        setPairs([voltsTokenPair,...pairData.pairs] );
        
         
       }
@@ -213,6 +215,8 @@ export default function ThetaEarn() {
               page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
               (page * ITEMS_PER_PAGE) < geysers.length ? (page * ITEMS_PER_PAGE): geysers.length  
             ).map(geyserInfo => {
+
+             
               // need to sort by added liquidity here
               let tokenPair: TokenPair | undefined = undefined;
               for (const p of pairs) {
@@ -222,6 +226,8 @@ export default function ThetaEarn() {
                   break;
                 }
               }
+
+              
 
              
 
