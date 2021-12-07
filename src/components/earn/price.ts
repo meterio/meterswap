@@ -31,6 +31,8 @@ const symbolMap: { [key: string]: Coin } = {
   'USDT.eth': { id: 'tether', price: 1 },
   MTRG: { id: 'meter', price: 3 },
   MTR: { id: 'meter-stable', price: 2.5 },
+  TFUEL:{id:'theta-fuel', price:0.3204},
+  WTFUEL:{id:'theta-fuel', price:0.3204},
   WETH: { id: 'ethereum', price: 3500 },
   'WETH.eth': { id: 'ethereum', price: 3500 },
   BUSD: { id: 'binance-usd', price: 1 },

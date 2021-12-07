@@ -4,7 +4,7 @@ import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
-
+import {MobileView} from 'react-device-detect'
 import styled from 'styled-components'
 
 import Logo from '../../assets/images/Voltswap_Logo.png'
@@ -422,7 +422,7 @@ export default function Header() {
         
         <HeaderElementWrap>
       
-
+       
           <Settings />
           <NetworkSelect/>
           <Menu />

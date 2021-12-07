@@ -17,7 +17,8 @@ import { getERC20Contract, getGeyserContract, getPairContract} from '../../utils
 import { Contract } from '@ethersproject/contracts';
 import { TokenPair } from '../../pages/Earn/types';
 import { Web3Provider } from '@ethersproject/providers';
-const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io', { name: 'meter mainnet', chainId: 82 })
+const THETA_PROVIDER = new ethers.providers.JsonRpcProvider('https://eth-rpc-api.thetatoken.org/rpc ', { name: 'theta mainnet', chainId: 361 })
+const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io ', { name: 'meter mainnet', chainId: 82 })
 const MS_PER_SEC = 1000;
 const YEAR_IN_SEC = 12 * 30 * 24 * 3600;
 
@@ -221,6 +222,8 @@ const getPoolAPY = async (
   return calculateAPY(inflow, outflow * 1e9, calcPeriod);
 };
 
+
+
 export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser; tokenPair: TokenPair }) {
   //console.log(geyserInfo)
 
@@ -259,16 +262,27 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
            
           let uniPrice = 0
           if (isVoltPool) {
-            
-            const mtrgPrice_st = await getCurrentPrice('MTRG');
-            const mtrgVoltPair_st = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER);
-            const { reserve0, reserve1 } = await mtrgVoltPair_st.getReserves();
+            if(chainId === 361){
+           
+            const tfuel_price = await getCurrentPrice('TFUEL');
+            const tfuelVoltPair = getPairContract('0x904a21bbce765c4771f7e139e19487b618c0da4d', THETA_PROVIDER);
+            const { reserve0, reserve1 } = await tfuelVoltPair.getReserves();
          
-            uniPrice = new BigNumber(mtrgPrice_st)
+            uniPrice = new BigNumber(tfuel_price)
               .times(reserve0.toString())
               .div(reserve1.toString())
               .toNumber();
-               
+               console.log('estimated volt price ', uniPrice)
+            }else{
+              const mtrgPrice = await getCurrentPrice('MTRG')
+              const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER)
+              const { reserve0, reserve1 } = await mtrgVoltPair.getReserves()
+              uniPrice = new BigNumber(mtrgPrice)
+              .times(reserve0.toString())
+              .div(reserve1.toString())
+              .toNumber();
+               console.log('estimated volt price ', uniPrice)
+            }
           } else {
           
             
@@ -311,16 +325,26 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
-            const mtrgPrice = await getCurrentPrice('MTRG');
-            const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER);
-            const { reserve0, reserve1 } = await mtrgVoltPair.getReserves();
-            // console.log('mtrg price:', mtrgPrice);
-            // console.log('mtrg amount:', reserve0.toString());
-            // console.log('volt amount:', reserve1.toString());
-            voltPrice = new BigNumber(mtrgPrice)
+            if(chainId === 361){
+            const tfuel_price = await getCurrentPrice('TFUEL');
+            const tfuelVoltPair = getPairContract('0x904a21bbce765c4771f7e139e19487b618c0da4d', THETA_PROVIDER);
+            const { reserve0, reserve1 } = await tfuelVoltPair.getReserves();
+         
+            voltPrice = new BigNumber(tfuel_price)
               .times(reserve0.toString())
               .div(reserve1.toString())
               .toNumber();
+            }else{
+              const mtrgPrice = await getCurrentPrice('MTRG')
+              const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER)
+              const { reserve0, reserve1 } = await mtrgVoltPair.getReserves()
+              voltPrice = new BigNumber(mtrgPrice)
+              .times(reserve0.toString())
+              .div(reserve1.toString())
+              .toNumber();
+               
+            }
+          
             
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);

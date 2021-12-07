@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
-import { BookOpen, Code, Info, MessageCircle, PieChart } from 'react-feather'
+
 import styled from 'styled-components'
 import detectEthereumProvider from "@metamask/detect-provider";
-import { ReactComponent as MenuIcon } from '../../assets/images/menu.svg'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+
+import {  useWeb3React } from '@web3-react/core'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 import meter_logo from "../../assets/images/meter.png";
@@ -81,7 +81,7 @@ const MenuItem = styled.div`
   }
 `
 
-const CODE_LINK = 'https://github.com/meterio/meterswap/tree/voltswap'
+
 
 export default function NetworkSelect() {
   const { account, chainId, active } = useWeb3React()
@@ -91,7 +91,7 @@ export default function NetworkSelect() {
 
   const [open, setOpen] = useState(false)
  
-  const [auxnetwork, setAuxNetwork] = useState('Theta')
+
 
 
 
@@ -136,10 +136,10 @@ export default function NetworkSelect() {
   useOnClickOutside(node, open ? togglePopup : undefined)
   
 
-  console.log(active)
+  
 
   return (
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
+    
     <StyledMenu ref={node as any}>
       <StyledMenuButton style={{color:"white"}} onClick={togglePopup}>
         { chainId ===82  &&  'Meter'}
@@ -161,11 +161,7 @@ export default function NetworkSelect() {
           <span>Theta</span>
           </MenuItem>
          
-          {/* {account && (
-            <ButtonPrimary onClick={openClaimModal} padding="8px 16px" width="100%" borderRadius="12px" mt="0.5rem">
-              Claim UNI
-            </ButtonPrimary>
-          )} */}
+         
         </MenuFlyout>
       )}
     </StyledMenu>
