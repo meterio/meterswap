@@ -301,8 +301,6 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
           rewardSymbol = rewardSymbol === 'VOLT_AIR' ? 'VOLT': rewardSymbol
 
-
-
           setRewardTokenSymbol(rewardSymbol);
 
           if (isVoltPool) {
