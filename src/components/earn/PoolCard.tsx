@@ -193,18 +193,20 @@ const getPoolAPY = async (
 ) => {
   const { scalingTime } = geyser;
 
-  const inflow = 20000.0; // avg_deposit: 20,000 USD
-  const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString());
-  const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals);
-
-  const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice));
+  const inflow = 20000.0 // avg_deposit: 20,000 USD
+  const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString())
+  const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals)
+  const stakeTokenPriceBigNum = new BigNumber(Math.round(stakingTokenPrice * 1000))
   // console.log('stake token price: ', stakeTokenPriceBigNum.toString());
   // console.log('inflow fixed pt:', inflowFixedPt.toString());
   
-  let stake = inflowFixedPt
+  //const stake = inflowFixedPt.times(1000).div(stakeTokenPriceBigNum)
+  let stake = inflowFixedPt 
   if(stakeTokenPriceBigNum.gt(0)){
-  stake = inflowFixedPt.div(stakeTokenPriceBigNum);
+    stake = inflowFixedPt.times(1000).div(stakeTokenPriceBigNum);
   }
+ 
+  // 39370078740157480314960
   // console.log('stake: ', stake.toString());
   const calcPeriod = getCalcPeriod(geyser);
   const contract = getGeyserContract(geyser.id, library);
@@ -287,6 +289,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           
             
             uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+            
           }
          
 
@@ -359,20 +362,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
-          if (isVoltPool || rewardSymbol === 'VOLT_AIR') {
-            voltPrice = await getCurrentPrice(rewardSymbol);
-            const apy = await getPoolAPY(geyserInfo, uniPrice , 18, voltPrice, 18, library);
+         
+          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
+        
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
           
-
-          }else{
-          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
-          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
-          // console.log('-'.repeat(40));
-          setGeyserAPY(apy);
-          }
           
         
         }
