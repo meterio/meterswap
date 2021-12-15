@@ -301,6 +301,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
           rewardSymbol = rewardSymbol === 'VOLT_AIR' ? 'VOLT': rewardSymbol
 
+
+
           setRewardTokenSymbol(rewardSymbol);
 
           if (isVoltPool) {
@@ -360,13 +362,22 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
-         
+          if (isVoltPool || rewardSymbol === 'VOLT_AIR') {
+            
+            voltPrice = await getCurrentPrice(rewardSymbol);
+            const apy = await getPoolAPY(geyserInfo, uniPrice , 18, voltPrice, 18, library);
+          // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
+          // console.log('-'.repeat(40));
+          setGeyserAPY(apy);
+          
+
+          }else{
           const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
         
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
-          
+          }
           
         
         }
