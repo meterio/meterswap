@@ -51,7 +51,7 @@ const symbolMap: { [key: string]: Coin } = {
   LINK: { id: 'chainlink', price: 1 },
   BAL: { id: 'balancer', price: 1 },
   COMP: { id: 'compound-governance-token', price: 1 },
-  TFUEL: { id: 'theta-fuel', price: 1 }
+ 
 };
 
 export const getCurrentPrice = async (symbol: string) => {

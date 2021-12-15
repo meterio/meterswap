@@ -352,7 +352,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);
           }
-          console.log('VOLT price: ', voltPrice);
+          
           setRewardTokenPrice(voltPrice);
           
          
