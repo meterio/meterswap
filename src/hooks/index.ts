@@ -51,8 +51,8 @@ export function useEagerConnect() {
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
-  const { active, error, activate } = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
-
+  const { active, error, activate, chainId} = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
+  
   useEffect(() => {
     const { ethereum } = window
 
@@ -72,6 +72,8 @@ export function useInactiveListener(suppress = false) {
           })
         }
       }
+
+      
 
       ethereum.on('chainChanged', handleChainChanged)
       ethereum.on('accountsChanged', handleAccountsChanged)

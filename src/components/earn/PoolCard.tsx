@@ -134,6 +134,7 @@ const getGeyserDuration = (geyser: Geyser) => {
   const schedulesEndTime = rewardSchedules.map(
     schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
   );
+
   return Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
 };
 
@@ -144,6 +145,7 @@ const getCalcPeriod = (geyser: Geyser) => {
     schedule => parseInt(schedule.start, 10) + parseInt(schedule.duration, 10)
   );
   const geyserDuration = Math.max(...schedulesEndTime.map(endTime => endTime - now), 0);
+
   return Math.max(Math.min(geyserDuration, parseInt(scalingTime, 10)), DAY_IN_SEC);
 };
 /**
@@ -259,10 +261,14 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     (async () => {
       try {
         if (library) {
-          const stakingSymbol = isVoltPool ? tokenPair.token0.symbol:  `${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL':tokenPair.token0.symbol }-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL':tokenPair.token1.symbol}`;
+          const stakingSymbol = isVoltPool
+            ? tokenPair.token0.symbol
+            : `${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' : tokenPair.token0.symbol}-${
+                tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' : tokenPair.token1.symbol
+              }`;
           setStakingTokenSymbol(stakingSymbol);
-           
-          let uniPrice = 0
+
+          let uniPrice = 0;
           if (isVoltPool) {
             if(chainId === 361){
            
@@ -291,17 +297,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
             uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
             
           }
-         
 
-         
           setStakingTokenPrice(uniPrice);
           const rewardToken = getERC20Contract(geyserInfo.rewardToken, library);
 
           let rewardSymbol = await rewardToken.symbol();
 
-          rewardSymbol = rewardSymbol === 'VOLT_AIR' ? 'VOLT': rewardSymbol
-
-
+          rewardSymbol = rewardSymbol === 'VOLT_AIR' ? 'VOLT' : rewardSymbol;
 
           setRewardTokenSymbol(rewardSymbol);
 
@@ -311,8 +313,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
                 new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
               )
             );
-            
-          }else{
+          } else {
             setCurrency0(
               unwrappedToken(
                 new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
@@ -324,7 +325,6 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               )
             );
           }
-         
 
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
@@ -352,12 +352,12 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);
           }
-          // console.log('VOLT price: ', voltPrice);
+          console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
           
          
           setTotalDeposit(totalStake.times(uniPrice));
-         
+
           // console.log(`Geyser  ${stakingSymbol} -- ${rewardSymbol}`);
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
@@ -378,8 +378,6 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
           }
-          
-        
         }
       } catch (e) {
         console.log('Error happened:', e);
@@ -402,15 +400,14 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         <TYPE.white fontWeight={400} fontSize={24} style={{ marginLeft: '20px' }}>
           {stakingTokenSymbol}
         </TYPE.white>
-        {
-          isVoltPool ?
+        {isVoltPool ? (
           <StyledExternalLink
           href={chainId === 361 ? `https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol}` : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`}
         >
           <ButtonPrimary padding="8px" borderRadius="8px">
             Detail <span style={{ fontSize: '11px' }}>↗</span>
           </ButtonPrimary>
-        </StyledExternalLink>:
+        </StyledExternalLink>):
         <StyledExternalLink
         href={chainId === 361 ?`https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :  `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
       >

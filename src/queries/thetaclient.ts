@@ -7,9 +7,8 @@ export const tclient = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
 const UNI_GRAPH_URI = 'https://theta-graph.voltswap.finance/subgraphs/name/theta/uniswap-v2-subgraph';
-export const uniClient = new ApolloClient({
+export const uniClientTheta = new ApolloClient({
   uri: UNI_GRAPH_URI,
   cache: new InMemoryCache()
 });
