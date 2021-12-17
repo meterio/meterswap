@@ -113,7 +113,7 @@ export default function ThetaEarn() {
   }, []);
 
   useEffect(() => {
-    // console.log('geyser data updated:', geyserData);
+   
 
     if (geyserData && geyserData.geysers) {
       var voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
