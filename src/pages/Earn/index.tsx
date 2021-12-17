@@ -127,7 +127,7 @@ export default function Earn() {
       const geysers = [...voltpool,  ...withoutvoltpool];
 
      
-        geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
+       const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
             ({
@@ -137,7 +137,7 @@ export default function Earn() {
             } as Geyser)
         );
 
-      setGeysers(geysers);
+      setGeysers(filtered);
       if (pairData && pairData.pairs) {
       
         setPairs([...pairData.pairs,voltsTokenPair] );
