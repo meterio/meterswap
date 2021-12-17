@@ -127,7 +127,7 @@ export default function Earn() {
      
     if (geyserData && geyserData.geysers) {
 
-      var voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+      const voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
     
       const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
       const geysers = [...voltpool,  ...withoutvoltpool];
