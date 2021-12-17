@@ -61,6 +61,14 @@ const Arrow = styled.div`
   }
 `
 
+const BLACKLIST_POOLS = [
+  "0xc12e91e9822234a04506053a884ba1269dc97245",
+  "0x3375ebc33bbb038623829a2f75461d8ce752a9cb", 
+  "0xb3ec01640ecac33505797d2933589ae486c0ce9f", 
+  "0xacb3687d8c184d7c61223df304163fd493351796", 
+  "0xd8c4e1091397d108791aefad536e906cc6940acb", 
+  "0xfaf03cd86f88d9aa3254af4a057570c53cbdd576"
+]
 
 const voltsTokenPair = {
   __typename: "Pair",
@@ -113,9 +121,13 @@ export default function Earn() {
 
     if (geyserData && geyserData.geysers) {
      
-      const geysers = [...geyserData.geysers]
+      const voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+    
+      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+      const geysers = [...voltpool,  ...withoutvoltpool];
+
      
-        geysers.filter(g => g.rewardToken.toLowerCase() === '0x8Df95e66Cb0eF38F91D2776DA3c921768982fBa0'.toLowerCase())
+        geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
             ({
