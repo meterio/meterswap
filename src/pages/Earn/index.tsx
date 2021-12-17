@@ -62,6 +62,16 @@ const Arrow = styled.div`
 `;
 
 const VOLT_ON_METER = '0x8df95e66cb0ef38f91d2776da3c921768982fba0';
+
+const BLACKLIST_POOLS = [
+  "0xc12e91e9822234a04506053a884ba1269dc97245",
+  "0x3375ebc33bbb038623829a2f75461d8ce752a9cb", 
+  "0xb3ec01640ecac33505797d2933589ae486c0ce9f", 
+  "0xacb3687d8c184d7c61223df304163fd493351796", 
+  "0xd8c4e1091397d108791aefad536e906cc6940acb", 
+  "0xfaf03cd86f88d9aa3254af4a057570c53cbdd576"
+]
+
 const voltsTokenPair = {
   __typename: 'Pair',
   id: VOLT_ON_METER,
@@ -113,12 +123,17 @@ export default function Earn() {
   
   useEffect(() => {
     
-
+    
+     
     if (geyserData && geyserData.geysers) {
-      const geysers = [...geyserData.geysers];
+
+      var voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+    
+      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+      const geysers = [...voltpool,  ...withoutvoltpool];
 
       const filtered = geysers
-        .filter(g => g.rewardToken.toLowerCase() === VOLT_ON_METER.toLowerCase())
+        .filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
             ({
