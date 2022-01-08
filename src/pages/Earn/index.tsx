@@ -122,18 +122,15 @@ export default function Earn() {
 
   
   useEffect(() => {
-    
-    
-     
-    if (geyserData && geyserData.geysers) {
+    // console.log('geyser data updated:', geyserData);
 
-      const voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
+    if (geyserData && geyserData.geysers) {
     
       const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
-      const geysers = [...voltpool,  ...withoutvoltpool];
+      const geysers = [ ...withoutvoltpool];
 
-      const filtered = geysers
-        .filter(g => !BLACKLIST_POOLS.includes(g.id) )
+     
+       const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
             ({

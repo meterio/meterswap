@@ -22,6 +22,8 @@ import {
 } from './AddLiquidity/redirects'
 import Earn from './Earn'
 import ThetaEarn from './Earn/thetaEarn'
+import ThetaStaking from './Earn/thetaStaking'
+import MeterStaking from './Earn/meterStaking'
 import Manage from './Earn/Manage'
 import MigrateV1 from './MigrateV1'
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
@@ -105,7 +107,11 @@ export default function App() {
               <Route exact strict path="/pool" component={Pool} />
 
               {
-                chainId === 361 ?<Route exact strict path="/rewards" component={ThetaEarn} />:<Route exact strict path="/rewards" component={Earn} />
+                chainId === 361 ?<Route exact strict path="/farm" component={ThetaEarn} />:<Route exact strict path="/farm" component={Earn} />
+              }
+
+              {
+                chainId === 361 ?<Route exact strict path="/staking" component={ThetaStaking} />:<Route exact strict path="/staking" component={MeterStaking} />
               }
             
               

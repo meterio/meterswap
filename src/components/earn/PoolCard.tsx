@@ -362,12 +362,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
-        
+          
           const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
         
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
+          
           
         }
       } catch (e) {
