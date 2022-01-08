@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import Layout from './Layout';
 import messages from './messages';
-import './styles/App.scss';
+import './styles/navStyles.css';
 
 function SideNav({collapsed,chainId,handleToggleCollapse}) {
   const [locale, setLocale] = useState('en');

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import {  ExternalLink } from '../../../theme'
-import { BookOpen, Code, Info, MessageCircle, PieChart, BarChart, Home, CreditCard } from 'react-feather'
+
+import { BookOpen, MessageCircle, BarChart, Home } from 'react-feather'
 import {
   ProSidebar,
   Menu,
@@ -12,11 +12,11 @@ import {
   SidebarContent,
 } from 'react-pro-sidebar';
 import styled from 'styled-components'
-import './styles/prosidebar.css';
-import Switch from 'react-switch';
+
 import { NavLink } from 'react-router-dom'
-import { FaTachometerAlt, FaGem, FaList, FaGithub, FaWallet, FaTractor, FaExchangeAlt, FaDatabase, FaGamepad, FaPassport, FaMoneyBillWave, FaPiggyBank } from 'react-icons/fa';
-import sidebarBg from './assets/bg2.jpg';
+import {  FaGithub, FaWallet, FaTractor, FaExchangeAlt, FaDatabase, FaGamepad, FaPassport, FaMoneyBillWave, FaPiggyBank } from 'react-icons/fa';
+import './styles/prosidebar.css';
+import {  ExternalLink } from '../../../theme'
 
 
 const activeClassName = 'ACTIVE'

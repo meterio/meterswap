@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Aside from './Aside';
-import Main from './Main';
+
 
 function Layout({ setLocale, collapsed,handleToggleCollapse,chainId}) {
   const [rtl, setRtl] = useState(false);
@@ -9,14 +9,6 @@ function Layout({ setLocale, collapsed,handleToggleCollapse,chainId}) {
   const [toggled, setToggled] = useState(false);
 
  
-
-  const handleRtlChange = (checked) => {
-    setRtl(checked);
-    setLocale(checked ? 'ar' : 'en');
-  };
-  const handleImageChange = (checked) => {
-    setImage(checked);
-  };
 
   const handleToggleSidebar = (value) => {
     setToggled(value);
