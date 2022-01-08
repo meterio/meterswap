@@ -3,9 +3,14 @@ import React, { useState } from 'react'
 import { Text } from 'rebass'
 import { NavLink } from 'react-router-dom'
 import { darken } from 'polished'
+import {isMobile} from "react-device-detect"
+import { FaBars } from 'react-icons/fa';
+
 import { useTranslation } from 'react-i18next'
 import {MobileView} from 'react-device-detect'
 import styled from 'styled-components'
+
+
 
 import Logo from '../../assets/images/Voltswap_Logo.png'
 import { useActiveWeb3React } from '../../hooks'
@@ -33,18 +38,20 @@ import Modal from '../Modal'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
+import SideNav from './SideBar/SideNav';
 
 const HeaderFrame = styled.div`
   display: grid;
   grid-template-columns: 1fr 120px;
   align-items: center;
   justify-content: space-between;
+  background:#0c1e35;
   align-items: center;
   flex-direction: row;
   height:70px;
   width: 100%;
   top: 0;
-  position: relative;
+  position: fixed;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 1rem;
   z-index: 2;
@@ -52,7 +59,7 @@ const HeaderFrame = styled.div`
     grid-template-columns: 1fr;
     padding: 0 1rem;
     width: calc(100%);
-    position: relative;
+    position: fixed;
   `};
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         padding: 0.5rem 1rem;
@@ -294,6 +301,18 @@ const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.KOVAN]: 'Kovan'
 }
 
+const panelStyles = {
+  padding: '15px 20px',
+  color: '#aaa',
+};
+
+const headerStyles = {
+  padding: 20,
+  fontSize: 16,
+  background: '#34c3ff',
+  color: ' #fff',
+};
+
 export default function Header() {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -310,29 +329,43 @@ export default function Header() {
   const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
 
   const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
+  const [collapsed, setCollapsed] = useState(isMobile ? true : false);
   const showClaimPopup = useShowClaimPopup()
 
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
+  const handleCollapsedChange = () => {
+    setCollapsed(!collapsed);
+  };
 
+  const handleToggleCollapse = () => {
+    isMobile ? setCollapsed(true) : setCollapsed(false)
+  }
   
 
   return (
+
+   
     <HeaderFrame>
+       
   
       <ClaimModal />
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
       <HeaderRow>
+      <div style={{marginRight:"30px", cursor:"pointer"}} className="btn-toggle" onClick={() => handleCollapsedChange()}>
+        <FaBars />
+      </div>
         <Title href=".">
           <UniIcon>
             <img width={'120px'} src={Logo} alt="logo"  />
           </UniIcon>
         </Title>
-       
-       
-          <header className="header" style={{top:"0px" }}>
+        <div >
+        <SideNav collapsed={collapsed}  chainId={chainId} handleToggleCollapse={handleToggleCollapse}/>
+        </div>
+          {/* <header className="header" style={{top:"0px" }}>
   
   <input className="menu-btn" type="checkbox" id="menu-btn" />
   <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
@@ -399,7 +432,7 @@ export default function Header() {
 
   
 
-</header>
+        </header> */}
       
       
       </HeaderRow>

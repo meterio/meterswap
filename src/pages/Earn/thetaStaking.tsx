@@ -88,7 +88,7 @@ const voltsTokenPair = {
   totalSupply: "0"
 }
 
-export default function ThetaEarn() {
+export default function ThetaStaking() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
 
@@ -117,10 +117,9 @@ export default function ThetaEarn() {
     
 
     if (geyserData && geyserData.geysers) {
+      var voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
       
-      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
-     
-      const geysers = [...withoutvoltpool]
+      const geysers = [...voltpool]
       
       
       const filtered = geysers

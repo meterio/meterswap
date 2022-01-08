@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 export const BodyWrapper = styled.div`
   position: relative;
+  margin-top:75px;
   max-width: 420px;
   width: 100%;
   background: rgba(0,0,0,0.1);
