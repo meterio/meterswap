@@ -45,21 +45,23 @@ const PageButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-size:20px;
+  font-size: 20px;
   margin-top: 2em;
   margin-bottom: 2em;
-`
+`;
 
 const Arrow = styled.div`
   color: ${({ theme }) => theme.primary1};
   padding: 0 20px;
-  font-weight:bolder;
-  font-size:20px;
+  font-weight: bolder;
+  font-size: 20px;
   user-select: none;
   :hover {
     cursor: pointer;
   }
-`
+`;
+
+const VOLT_ON_METER = '0x8df95e66cb0ef38f91d2776da3c921768982fba0';
 
 const BLACKLIST_POOLS = [
   "0xc12e91e9822234a04506053a884ba1269dc97245",
@@ -71,25 +73,25 @@ const BLACKLIST_POOLS = [
 ]
 
 const voltsTokenPair = {
-  __typename: "Pair",
-  id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
-  reserveUSD: "0",
+  __typename: 'Pair',
+  id: VOLT_ON_METER,
+  reserveUSD: '0',
   token0: {
-      __typename: "Token",
-      decimals: "18",
-      id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
-      symbol: "VOLT"
+    __typename: 'Token',
+    decimals: '18',
+    id: VOLT_ON_METER,
+    symbol: 'VOLT'
   },
-  token0Price: "50",
+  token0Price: '50',
   token1: {
-    __typename: "Token",
-    decimals: "18",
-    id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
-    symbol: "VOLT"
-},
-  token1Price: "50",
-  totalSupply: "0"
-}
+    __typename: 'Token',
+    decimals: '18',
+    id: VOLT_ON_METER,
+    symbol: 'VOLT'
+  },
+  token1Price: '50',
+  totalSupply: '0'
+};
 
 export default function Earn() {
   const { chainId } = useActiveWeb3React();
@@ -99,14 +101,17 @@ export default function Earn() {
     pollInterval: POLL_INTERVAL,
     client
   });
+
+  
+
   const [getPairs, { loading: pairLoading, data: pairData }] = useLazyQuery(GET_PAIRS, {
     pollInterval: 3000,
-    client: uniClient
+    client:  uniClient
   });
 
 
   // pagination
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const [geysers, setGeysers] = useState<Geyser[]>([]);
   const [pairs, setPairs] = useState<TokenPair[]>([]);
 
@@ -137,10 +142,7 @@ export default function Earn() {
 
       setGeysers(filtered);
       if (pairData && pairData.pairs) {
-      
-        setPairs([...pairData.pairs,voltsTokenPair] );
-       
-        
+        setPairs([...pairData.pairs, voltsTokenPair]);
       }
     }
   }, [geyserData, pairData]);
@@ -155,8 +157,9 @@ export default function Earn() {
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
 
+  
+
   return (
-    
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
         <DataCard>
@@ -197,46 +200,47 @@ export default function Earn() {
           <Countdown exactEnd={stakingInfos?.[0]?.periodFinish} />
         </DataRow>
 
-        
         <PoolSection>
           {geysers?.length === 0 || pairs?.length == 0 ? (
             <Loader style={{ margin: 'auto' }} />
           ) : !stakingRewardsExist ? (
             'No active rewards'
           ) : (
-            geysers?.slice(
-              page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
-              (page * ITEMS_PER_PAGE) < geysers.length ? (page * ITEMS_PER_PAGE): geysers.length  
-            ).map(geyserInfo => {
-              // need to sort by added liquidity here
-              let tokenPair: TokenPair | undefined = undefined;
-              for (const p of pairs) {
-                if (p.id === geyserInfo.stakingToken) {
-                  tokenPair = p;
-                  break;
+            geysers
+              ?.slice(
+                page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
+                page * ITEMS_PER_PAGE < geysers.length ? page * ITEMS_PER_PAGE : geysers.length
+              )
+              .map(geyserInfo => {
+                // need to sort by added liquidity here
+                let tokenPair: TokenPair | undefined = undefined;
+                for (const p of pairs) {
+                  if (p.id === geyserInfo.stakingToken) {
+                    tokenPair = p;
+                    break;
+                  }
                 }
-              }
 
-              return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
-            })
+                return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
+              })
           )}
           <PageButtons>
-        <div
-          onClick={(e) => {
-            setPage(page === 1 ? page : page - 1)
-          }}
-        >
-          <Arrow>←</Arrow>
-        </div>
-        <TYPE.body style={{fontSize:"20px"}}>{'Page ' + page + ' of ' + maxPage}</TYPE.body>
-        <div
-          onClick={(e) => {
-            setPage(page === maxPage ? page : page + 1)
-          }}
-        >
-          <Arrow>→</Arrow>
-        </div>
-      </PageButtons>
+            <div
+              onClick={e => {
+                setPage(page === 1 ? page : page - 1);
+              }}
+            >
+              <Arrow>←</Arrow>
+            </div>
+            <TYPE.body style={{ fontSize: '20px' }}>{'Page ' + page + ' of ' + maxPage}</TYPE.body>
+            <div
+              onClick={e => {
+                setPage(page === maxPage ? page : page + 1);
+              }}
+            >
+              <Arrow>→</Arrow>
+            </div>
+          </PageButtons>
         </PoolSection>
       </AutoColumn>
     </PageWrapper>
