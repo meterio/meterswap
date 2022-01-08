@@ -15,6 +15,7 @@ function Layout({ setLocale, collapsed,handleToggleCollapse,chainId}) {
   };
 
   
+  
 
   return (
     <div className={`app ${rtl ? 'rtl' : ''} ${toggled ? 'toggled' : ''}`}>
