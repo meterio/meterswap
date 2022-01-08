@@ -354,6 +354,7 @@
 }
 .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout .pro-sidebar-footer {
     border-top: 1px solid rgba(173, 173, 173, 0.2);
+    margin-bottom: 90px;
 }
 .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul {
     list-style-type: none;
@@ -546,7 +547,7 @@
     position: fixed;
     margin-top: 35px;
     left: 0px;
-    height: 90%;
+    height: 100%;
 }
 .app .btn-toggle {
     cursor: pointer;
