@@ -76,7 +76,7 @@ const Aside = ({ image, rtl, toggled, handleToggleSidebar,handleToggleCollapse, 
   
         <div
           style={{
-            padding: '24px',
+          
             textTransform: 'uppercase',
             fontWeight: 'bold',
             fontSize: 14,

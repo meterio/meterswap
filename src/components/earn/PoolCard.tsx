@@ -4,7 +4,6 @@ import { formatUnits } from '@ethersproject/units';
 import { AutoColumn } from '../Column';
 import { RowBetween } from '../Row';
 import styled from 'styled-components';
-import {ethers} from 'ethers';
 import { useActiveWeb3React } from '../../hooks';
 import { TYPE, ExternalLink } from '../../theme';
 import { ButtonPrimary } from '../Button';
@@ -17,8 +16,7 @@ import { getERC20Contract, getGeyserContract, getPairContract} from '../../utils
 import { Contract } from '@ethersproject/contracts';
 import { TokenPair } from '../../pages/Earn/types';
 import { Web3Provider } from '@ethersproject/providers';
-const THETA_PROVIDER = new ethers.providers.JsonRpcProvider('https://eth-rpc-api.thetatoken.org/rpc ', { name: 'theta mainnet', chainId: 361 })
-const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io ', { name: 'meter mainnet', chainId: 82 })
+import {THETA_PROVIDER, METER_PROVIDER} from '../../connectors'
 const MS_PER_SEC = 1000;
 const YEAR_IN_SEC = 12 * 30 * 24 * 3600;
 

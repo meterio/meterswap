@@ -3,9 +3,12 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { PortisConnector } from '@web3-react/portis-connector'
-
+import {ethers} from 'ethers';
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
+
+export const THETA_PROVIDER = new ethers.providers.JsonRpcProvider('https://eth-rpc-api.thetatoken.org/rpc ', { name: 'theta mainnet', chainId: 361 })
+export const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io ', { name: 'meter mainnet', chainId: 82 })
 
 const NETWORK_URL = "https://rpc.meter.io"
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
