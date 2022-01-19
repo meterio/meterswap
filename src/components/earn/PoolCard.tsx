@@ -307,19 +307,19 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
             setCurrency0(
               unwrappedToken(
                 new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
-              )
+              , chainId || 82)
             );
             
           }else{
             setCurrency0(
               unwrappedToken(
                 new Token(chainId || 82, tokenPair.token0.id, Number(tokenPair.token0.decimals), tokenPair.token0.symbol)
-              )
+              , chainId || 82)
             );
             setCurrency1(
               unwrappedToken(
                 new Token(chainId || 82, tokenPair.token1.id, Number(tokenPair.token1.decimals), tokenPair.token1.symbol)
-              )
+              , chainId || 82)
             );
           }
          

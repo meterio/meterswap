@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import detectEthereumProvider from "@metamask/detect-provider";
 import meter_logo from "../../assets/images/meter.png";
 import theta_logo from "../../assets/images/theta.png";
+import glmr_logo from "../../assets/images/glmr.png";
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { ButtonSecondary} from '../Button'
@@ -344,6 +345,10 @@ export default function WalletModal({
             <br></br>
             <ButtonSecondary onClick={()=>connectNetwork(361)}>
              Theta Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={theta_logo}></img>
+            </ButtonSecondary>
+            <br></br>
+            <ButtonSecondary onClick={()=>connectNetwork(1284)}>
+             Moonbeam Mainnet{" "} <img style={{marginLeft:"5px",width:'20px', height:'20px'}} src={glmr_logo}></img>
             </ButtonSecondary>
              </div>
            

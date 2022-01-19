@@ -1,7 +1,7 @@
-import { Currency, ETHER, Token } from 'voltswap-sdk';
+import { Currency, ETHER, Token, ChainId } from 'voltswap-sdk';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-
+import {useActiveWeb3React} from '../../hooks'
 import EthereumLogo from '../../assets/images/ethereum-logo.png';
 import useHttpLocations from '../../hooks/useHttpLocations';
 import { WrappedTokenInfo } from '../../state/lists/hooks';
@@ -46,11 +46,14 @@ export default function CurrencyLogo({
   currency?: Currency;
   size?: string;
   style?: React.CSSProperties;
+ 
 }) {
+
+  const {chainId} = useActiveWeb3React()
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined);
 
   const srcs: string[] = useMemo(() => {
-    if (currency?.symbol ===  ETHER.symbol) return [];
+    if (currency?.symbol ===  ETHER[chainId || 82].symbol) return [];
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
@@ -63,8 +66,8 @@ export default function CurrencyLogo({
   }, [currency, uriLocations]);
 
   
-  if (currency?.symbol === 'WTFUEL' || currency?.symbol === ETHER.symbol) {
-    return <StyledEthereumLogo src={'https://raw.githubusercontent.com/meterio/token-list/master/data/TFUEL/logo.png'} size={size} style={style} />;
+  if (currency?.symbol === ETHER[chainId || 82].symbol) {
+    return <StyledEthereumLogo src={`https://raw.githubusercontent.com/meterio/token-list/master/data/${currency?.symbol?.toUpperCase()}/logo.png`} size={size} style={style} />;
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />;

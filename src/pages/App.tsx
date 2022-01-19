@@ -20,10 +20,12 @@ import {
   RedirectOldAddLiquidityPathStructure,
   RedirectToAddLiquidity
 } from './AddLiquidity/redirects'
-import Earn from './Earn'
+import MeterEarn from './Earn/meterEarn'
 import ThetaEarn from './Earn/thetaEarn'
 import ThetaStaking from './Earn/thetaStaking'
 import MeterStaking from './Earn/meterStaking'
+import MoonBeamEarn from './Earn/moonbeamEarn'
+import MoonBeamStaking from './Earn/moonbeamStaking'
 import Manage from './Earn/Manage'
 import MigrateV1 from './MigrateV1'
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
@@ -107,11 +109,15 @@ export default function App() {
               <Route exact strict path="/pool" component={Pool} />
 
               {
-                chainId === 361 ?<Route exact strict path="/farm" component={ThetaEarn} />:<Route exact strict path="/farm" component={Earn} />
+                chainId === 361 ?<Route exact strict path="/farm" component={ThetaEarn} />:
+                chainId === 1284 ? <Route exact strict path="/farm" component={MoonBeamEarn} />:
+                <Route exact strict path="/farm" component={MeterEarn} />
               }
 
               {
-                chainId === 361 ?<Route exact strict path="/staking" component={ThetaStaking} />:<Route exact strict path="/staking" component={MeterStaking} />
+                chainId === 361 ?<Route exact strict path="/staking" component={ThetaStaking} />:
+                chainId === 1284 ? <Route exact strict path="/staking" component={MoonBeamStaking} />:
+                <Route exact strict path="/staking" component={MeterStaking} />
               }
             
               

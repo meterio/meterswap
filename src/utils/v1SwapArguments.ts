@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@ethersproject/constants'
-import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeType } from 'voltswap-sdk'
+import { CurrencyAmount, ETHER, SwapParameters, Token, Trade, TradeType,ChainId } from 'voltswap-sdk'
 import {TradeOptionsDeadline} from "voltswap-sdk"
 import { getTradeVersion } from '../data/V1'
 import { Version } from '../hooks/useToggledVersion'
@@ -15,7 +15,8 @@ function toHex(currencyAmount: CurrencyAmount): string {
  */
 export default function v1SwapArguments(
   trade: Trade,
-  options: Omit<TradeOptionsDeadline, 'feeOnTransfer'>
+  options: Omit<TradeOptionsDeadline, 'feeOnTransfer'>,
+  chainId:ChainId
 ): SwapParameters {
   if (getTradeVersion(trade) !== Version.v1) {
     throw new Error('invalid trade version')
@@ -24,8 +25,8 @@ export default function v1SwapArguments(
     throw new Error('too many pairs')
   }
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const inputETH = trade.inputAmount.currency?.symbol === ETHER.symbol
-  const outputETH = trade.outputAmount.currency?.symbol === ETHER.symbol
+  const inputETH = trade.inputAmount.currency?.symbol === ETHER[chainId ||82].symbol
+  const outputETH = trade.outputAmount.currency?.symbol === ETHER[chainId ||82].symbol
   if (inputETH && outputETH) throw new Error('ETHER to ETHER')
   const minimumAmountOut = toHex(trade.minimumAmountOut(options.allowedSlippage))
   const maximumAmountIn = toHex(trade.maximumAmountIn(options.allowedSlippage))

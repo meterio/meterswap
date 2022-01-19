@@ -28,7 +28,7 @@ export default function useWrapCallback(
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
-  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
+  const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency,chainId || 82), [inputCurrency, typedValue])
   const addTransaction = useTransactionAdder()
 
   return useMemo(() => {
@@ -36,7 +36,7 @@ export default function useWrapCallback(
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
-    if (inputCurrency?.symbol === ETHER.symbol && currencyEquals(WETH[chainId], outputCurrency)) {
+    if (inputCurrency?.symbol === ETHER[chainId || 82].symbol && currencyEquals(WETH[chainId], outputCurrency)) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -52,7 +52,7 @@ export default function useWrapCallback(
             : undefined,
         inputError: sufficientBalance ? undefined : 'Insufficient ETH balance'
       }
-    } else if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency?.symbol === ETHER.symbol) {
+    } else if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency?.symbol === ETHER[chainId || 82].symbol) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:

@@ -25,15 +25,16 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
+ 
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency?.symbol === ETHER.symbol) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.symbol === ETHER[chainId || 82].symbol) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -114,7 +115,7 @@ export function useApproveCallbackVariant(
   spender?: string,
   tokenAddress?:string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const token = passedToken
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(tokenAddress, spender)
@@ -122,7 +123,7 @@ export function useApproveCallbackVariant(
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency?.symbol === ETHER.symbol) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.symbol === ETHER[chainId || 82].symbol) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -201,5 +202,7 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) 
   const v1ExchangeAddress = useV1TradeExchangeAddress(trade)
   const { chainId } = useActiveWeb3React()
    
-  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
+  return useApproveCallback(amountToApprove, tradeIsV1 ? v1ExchangeAddress : chainId === 361 ? '0x8b962374AE63c628B1cd5dec8B08A95787F611E5': chainId === 1284 ?
+  '0xf7184FB77152697dAeAce960F335369a858Eff19':
+   ROUTER_ADDRESS)
 }

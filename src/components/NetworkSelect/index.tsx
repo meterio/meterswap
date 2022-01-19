@@ -8,6 +8,7 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 import meter_logo from "../../assets/images/meter.png";
 import theta_logo from "../../assets/images/theta.png";
+import glmr_logo from "../../assets/images/glmr.png";
 import getChain from '../../constants/chain'
 
 
@@ -48,7 +49,7 @@ const StyledMenu = styled.div`
 `
 
 const MenuFlyout = styled.span`
-  min-width: 9.125rem;
+  min-width: 10.125rem;
   background-color: ${({ theme }) => theme.bg3};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
@@ -144,7 +145,7 @@ export default function NetworkSelect() {
       <StyledMenuButton style={{color:"white"}} onClick={togglePopup}>
         { chainId ===82  &&  'Meter'}
         {chainId === 361 && 'Theta'}
-        
+        {chainId === 1284 && 'Moonbeam'}
         {!chainId &&  'Select Network'}
       </StyledMenuButton>
 
@@ -159,6 +160,11 @@ export default function NetworkSelect() {
           <MenuItem onClick={()=>connectNetwork(361)}>
           {chainId === 361 && <span style={{marginLeft:"-12px"}}>•</span>} <img style={{marginLeft:"5px",marginBottom:"-5px",marginRight:"5px",width:'20px', height:'20px'}} src={theta_logo}/>
           <span>Theta</span>
+          </MenuItem>
+
+          <MenuItem onClick={()=>connectNetwork(1284)}>
+          {chainId === 1284 && <span style={{marginLeft:"-12px"}}>•</span>} <img style={{marginLeft:"5px",marginBottom:"-5px",marginRight:"5px",width:'20px', height:'20px'}} src={glmr_logo}/>
+          <span>Moonbeam</span>
           </MenuItem>
          
          

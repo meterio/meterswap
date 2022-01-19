@@ -1,4 +1,4 @@
-import { Currency, Pair } from 'voltswap-sdk'
+import { Currency, Pair, ChainId } from 'voltswap-sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
@@ -170,6 +170,7 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
+ 
 }
 
 export default function CurrencyInputPanel({
@@ -188,6 +189,7 @@ export default function CurrencyInputPanel({
                                              id,
                                              showCommonBases,
                                              customBalanceText
+                                
                                            }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
 
@@ -268,7 +270,7 @@ export default function CurrencyInputPanel({
         </StyledTokenName>
       ) : (
         <>
-        {currency ? <CurrencyLogo currency={currency} size={'24px'} /> : null}
+        {currency ? <CurrencyLogo currency={currency}  size={'24px'} /> : null}
         <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
           {(currency?.symbol) || t('selectToken')}
         </StyledTokenName>
@@ -345,7 +347,7 @@ export default function CurrencyInputPanel({
       </StyledTokenName>
     ) : (
       <>
-      {currency ? <CurrencyLogo currency={currency} size={'24px'} /> : null}
+      {currency ? <CurrencyLogo  currency={currency} size={'24px'} /> : null}
       <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
         {(currency?.symbol) || t('selectToken')}
       </StyledTokenName>

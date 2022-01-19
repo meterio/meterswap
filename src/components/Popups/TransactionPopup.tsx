@@ -33,7 +33,7 @@ export default function TransactionPopup({
       <AutoColumn gap="8px">
         <TYPE.body fontWeight={500}>{summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}</TYPE.body>
         {chainId && (
-          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on {chainId === 82 ? 'Meterscan':'Thetascan'}</ExternalLink>
+          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on {chainId === 361 ? 'Thetascan': chainId === 1284 ? 'Blockscout':'Meterscan'}</ExternalLink>
         )}
       </AutoColumn>
     </RowNoFlex>

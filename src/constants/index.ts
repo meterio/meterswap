@@ -35,6 +35,7 @@ export const WBTC_eth = new Token(ChainId.METER, '0xc1f6C86ABEe8e2e0B6fd5BD80F0b
 export const WETH_eth = new Token(ChainId.METER, '0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C', 18, 'WETH.eth', 'WETH.eth')
 export const WETH_theta = new Token(ChainId.THETA, '0x07446A7e12C2d24d6b180d009e4255aE26fBF018', 18, 'Weth.eth', 'WETH.eth')
 
+export const WETH_MOONBEAM = new Token(ChainId.MOONBEAM, '0x3674D64AaB971aB974B2035667a4B3d09B5ec2B3', 18, 'Weth.eth', 'WETH.eth')
 
 
 
@@ -55,6 +56,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.METER]: new Token(ChainId.METER, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.THETA]: new Token(ChainId.THETA, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.MOONBEAM]: new Token(ChainId.MOONBEAM, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   
   
 }
@@ -77,7 +79,8 @@ const WETH_ONLY: ChainTokenList = {
   [ChainId.GÖRLI]: [MTR],
   [ChainId.KOVAN]: [MTR],
   [ChainId.METER]: [MTR],
-  [ChainId.THETA]:[WETH_theta]
+  [ChainId.THETA]:[WETH_theta],
+  [ChainId.MOONBEAM]:[WETH_MOONBEAM]
 }
 
 // used to construct intermediary pairs for trading

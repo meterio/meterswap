@@ -88,7 +88,7 @@ function TransactionSubmittedContent({
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
               <Text fontWeight={500} fontSize={14} color={theme.primary1}>
-                View on {chainId === 82 ? 'Meterscan':'Thetascan'}
+                View on {chainId === 361 ? 'Thetascan': chainId === 1284 ? 'Blockscout':'Meterscan'}
               </Text>
             </ExternalLink>
           )}

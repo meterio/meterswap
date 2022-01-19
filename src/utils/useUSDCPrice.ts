@@ -33,14 +33,14 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     if (wrapped.equals(WETH[chainId])) {
       if (usdcPair) {
         const price = usdcPair.priceOf(WETH[chainId])
-        return new Price(currency, USDC, price.denominator, price.numerator)
+        return new Price(currency, USDC, price.denominator, price.numerator, chainId ||82)
       } else {
         return undefined
       }
     }
     // handle usdc
     if (wrapped.equals(USDC)) {
-      return new Price(USDC, USDC, '1', '1')
+      return new Price(USDC, USDC, '1', '1', chainId ||82)
     }
 
     const ethPairETHAmount = ethPair?.reserveOf(WETH[chainId])
@@ -51,14 +51,14 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     // first try the usdc pair
     if (usdcPairState === PairState.EXISTS && usdcPair && usdcPair.reserveOf(USDC).greaterThan(ethPairETHUSDCValue)) {
       const price = usdcPair.priceOf(wrapped)
-      return new Price(currency, USDC, price.denominator, price.numerator)
+      return new Price(currency, USDC, price.denominator, price.numerator, chainId ||82)
     }
     if (ethPairState === PairState.EXISTS && ethPair && usdcEthPairState === PairState.EXISTS && usdcEthPair) {
       if (usdcEthPair.reserveOf(USDC).greaterThan('0') && ethPair.reserveOf(WETH[chainId]).greaterThan('0')) {
         const ethUsdcPrice = usdcEthPair.priceOf(USDC)
         const currencyEthPrice = ethPair.priceOf(WETH[chainId])
         const usdcPrice = ethUsdcPrice.multiply(currencyEthPrice).invert()
-        return new Price(currency, USDC, usdcPrice.denominator, usdcPrice.numerator)
+        return new Price(currency, USDC, usdcPrice.denominator, usdcPrice.numerator, chainId ||82)
       }
     }
     return undefined

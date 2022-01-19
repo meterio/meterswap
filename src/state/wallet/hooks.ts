@@ -16,6 +16,8 @@ import { useTotalUniEarned } from '../stake/hooks'
 export function useETHBalances(
   uncheckedAddresses?: (string | undefined)[]
 ): { [address: string]: CurrencyAmount | undefined } {
+
+  const {chainId} = useActiveWeb3React()
   const multicallContract = useMulticallContract()
 
   const addresses: string[] = useMemo(
@@ -39,7 +41,7 @@ export function useETHBalances(
     () =>
       addresses.reduce<{ [address: string]: CurrencyAmount }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value) memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()))
+        if (value) memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()), chainId || 82)
         return memo
       }, {}),
     [addresses, results]
@@ -101,12 +103,14 @@ export function useCurrencyBalances(
   account?: string,
   currencies?: (Currency | undefined)[]
 ): (CurrencyAmount | undefined)[] {
+
+  const {chainId} = useActiveWeb3React()
   const tokens = useMemo(() => currencies?.filter((currency): currency is Token => currency instanceof Token) ?? [], [
     currencies
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency?.symbol === ETHER.symbol) ?? false, [currencies])
+  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency?.symbol === ETHER[chainId || 82].symbol) ?? false, [currencies])
   const ethBalance = useETHBalances(containsETH ? [account] : [account])
   
 
@@ -116,14 +120,14 @@ export function useCurrencyBalances(
         
         if (!account || !currency) return undefined
         
-        if(currency?.symbol === ETHER.symbol){
+        if(currency?.symbol === ETHER[chainId || 82].symbol){
           
          
           return ethBalance[account]
 
         }
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency?.symbol === ETHER.symbol) return ethBalance[account]
+        if (currency?.symbol === ETHER[chainId || 82].symbol) return ethBalance[account]
         return undefined
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances]

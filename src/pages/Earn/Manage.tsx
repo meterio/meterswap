@@ -96,7 +96,7 @@ export default function Manage({
 
  
   // get currencies and pair
-  const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
+  const [currencyA, currencyB] = [useCurrency(currencyIdA, chainId || 82), useCurrency(currencyIdB, chainId || 82)]
   const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
   const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
 
@@ -118,8 +118,8 @@ export default function Manage({
   // fade cards if nothing staked or nothing earned yet
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
 
-  const token = currencyA === ETHER ? tokenB : tokenA
-  const WETH = currencyA === ETHER ? tokenA : tokenB
+  const token = currencyA === ETHER[chainId || 82] ? tokenB : tokenA
+  const WETH = currencyA === ETHER[chainId || 82] ? tokenA : tokenB
   const backgroundColor = useColor(token)
 
   // get WETH value of staked LP tokens
@@ -210,7 +210,7 @@ export default function Manage({
                 borderRadius="8px"
                 width={'fit-content'}
                 as={Link}
-                to={`/add/${currencyA && currencyId(currencyA)}/${currencyB && currencyId(currencyB)}`}
+                to={`/add/${currencyA && currencyId(currencyA, chainId || 82)}/${currencyB && currencyId(currencyB, chainId || 82)}`}
               >
                 {`Add ${currencyA?.symbol}-${currencyB?.symbol} liquidity`}
               </ButtonPrimary>

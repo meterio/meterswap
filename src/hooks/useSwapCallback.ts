@@ -96,7 +96,7 @@ function useSwapCallArguments(
             allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
             recipient,
             deadline: deadline
-          })
+          }, chainId || 82)
         )
         break
     }

@@ -47,6 +47,7 @@ export function useDerivedMintInfo(
     }),
     [currencyA, currencyB]
   )
+  
 
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
@@ -65,41 +66,53 @@ export function useDerivedMintInfo(
     [Field.CURRENCY_B]: balances[1]
   }
 
+ 
   // amounts
-  const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
+  const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField], chainId || 82)
+ 
   const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
     if (noLiquidity) {
+      
       if (otherTypedValue && currencies[dependentField]) {
-        return tryParseAmount(otherTypedValue, currencies[dependentField])
+        return tryParseAmount(otherTypedValue, currencies[dependentField],chainId || 82)
       }
+      
       return undefined
     } else if (independentAmount) {
       // we wrap the currencies just to get the price in terms of the other token
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
       const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+      
       if (tokenA && tokenB && wrappedIndependentAmount && pair) {
         const dependentCurrency = dependentField === Field.CURRENCY_B ? currencyB : currencyA
         const dependentTokenAmount =
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        return dependentCurrency?.symbol === ETHER.symbol ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
+           
+        return dependentCurrency?.symbol === ETHER[chainId || 82].symbol ? CurrencyAmount.ether(dependentTokenAmount.raw, chainId || 82) : dependentTokenAmount
       }
+    
       return undefined
     } else {
+     
       return undefined
     }
   }, [noLiquidity, otherTypedValue, currencies, dependentField, independentAmount, currencyA, chainId, currencyB, pair])
+
+  
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = {
     [Field.CURRENCY_A]: independentField === Field.CURRENCY_A ? independentAmount : dependentAmount,
     [Field.CURRENCY_B]: independentField === Field.CURRENCY_A ? dependentAmount : independentAmount
   }
+ 
+
 
   const price = useMemo(() => {
     if (noLiquidity) {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
       if (currencyAAmount && currencyBAmount) {
-        return new Price(currencyAAmount.currency, currencyBAmount.currency, currencyAAmount.raw, currencyBAmount.raw)
+        return new Price(currencyAAmount.currency, currencyBAmount.currency, currencyAAmount.raw, currencyBAmount.raw, chainId || 82)
       }
       return undefined
     } else {

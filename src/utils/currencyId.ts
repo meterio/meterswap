@@ -1,7 +1,7 @@
-import { Currency, ETHER, Token } from 'voltswap-sdk'
+import { Currency, ETHER, Token, ChainId } from 'voltswap-sdk'
 
-export function currencyId(currency: Currency): string {
-  if (currency?.symbol === ETHER.symbol) return 'ETH'
+export function currencyId(currency: Currency, chainId:ChainId): string {
+  if (currency?.symbol === ETHER[chainId || 82].symbol) return 'ETH'
   if (currency instanceof Token) return currency.address
   throw new Error('invalid currency')
 }

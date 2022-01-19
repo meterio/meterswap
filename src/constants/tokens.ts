@@ -32,7 +32,15 @@ export const MeterTokens: { [chainId in ChainId]: { [address: string]: Token } }
   ),
   
  },
-
+ [ChainId.MOONBEAM]:{
+  '0xAcc15dC74880C9944775448304B263D191c6077F': new Token(
+    ChainId.MOONBEAM,
+    '0xAcc15dC74880C9944775448304B263D191c6077F',
+    18,
+    'GLMR',
+    'GLMR'
+  )
+ },
   
 
   [ChainId.METER]: {

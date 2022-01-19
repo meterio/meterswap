@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from 'voltswap-sdk'
+import { Currency, CurrencyAmount, currencyEquals, ETHER, Token, ChainId } from 'voltswap-sdk'
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
@@ -17,8 +17,8 @@ import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList } from '../../utils'
 
-function currencyKey(currency: Currency): string {
-  return currency instanceof Token ? currency.address : currency?.symbol === ETHER.symbol ? 'ETHER' : ''
+function currencyKey(currency: Currency, chainId:ChainId): string {
+  return currency instanceof Token ? currency.address : currency?.symbol === ETHER[chainId || 82].symbol ? 'ETHER' : ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -96,7 +96,7 @@ function CurrencyRow({
 }) {
  
   const { account, chainId } = useActiveWeb3React()
-  const key = currencyKey(currency)
+  const key = currencyKey(currency, chainId || 82)
   const selectedTokenList = useSelectedTokenList()
   
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
@@ -175,7 +175,7 @@ export default function CurrencyList({
   showETH: boolean
 }) {
   const itemData = useMemo(() => (showETH ? [Currency.ETHER, ...currencies] : currencies), [currencies, showETH])
-
+  const { account, chainId } = useActiveWeb3React()
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
@@ -195,7 +195,7 @@ export default function CurrencyList({
     [onCurrencySelect, otherCurrency, selectedCurrency]
   )
 
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
+  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index], chainId || 82), [])
 
   return (
     <FixedSizeList

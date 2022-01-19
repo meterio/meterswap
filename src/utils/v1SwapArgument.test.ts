@@ -11,23 +11,23 @@ describe('v1SwapArguments', () => {
   const TEST_RECIPIENT_ADDRESS = USDC_WETH.liquidityToken.address
 
   it('exact eth to token', () => {
-    const trade = Trade.exactIn(new Route([USDC_WETH], ETHER), CurrencyAmount.ether('100'))
+    const trade = Trade.exactIn(new Route([USDC_WETH], ETHER[1]), CurrencyAmount.ether('100',1))
     const result = v1SwapArguments(trade, {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
-      deadline: 20 * 60
-    })
+      deadline: 20 * 60,
+    },1)
     expect(result.methodName).toEqual('ethToTokenTransferInput')
     expect(result.args).toEqual(['0x62', '0x4b0', TEST_RECIPIENT_ADDRESS])
     expect(result.value).toEqual('0x64')
   })
   it('exact token to eth', () => {
-    const trade = Trade.exactIn(new Route([USDC_WETH], USDC, ETHER), new TokenAmount(USDC, '100'))
+    const trade = Trade.exactIn(new Route([USDC_WETH], USDC, ETHER[1]), new TokenAmount(USDC, '100'))
     const result = v1SwapArguments(trade, {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
       deadline: 40 * 60
-    })
+    },1)
     expect(result.methodName).toEqual('tokenToEthTransferInput')
     expect(result.args[0]).toEqual('0x64')
     expect(result.args[1]).toEqual('0x62')
@@ -41,7 +41,7 @@ describe('v1SwapArguments', () => {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
       deadline: 20 * 60
-    })
+    },1)
     expect(result.methodName).toEqual('tokenToTokenTransferInput')
     expect(result.args[0]).toEqual('0x64')
     expect(result.args[1]).toEqual('0x61')
@@ -52,12 +52,12 @@ describe('v1SwapArguments', () => {
     expect(result.value).toEqual('0x0')
   })
   it('eth to exact token', () => {
-    const trade = Trade.exactOut(new Route([USDC_WETH], ETHER), new TokenAmount(USDC, '100'))
+    const trade = Trade.exactOut(new Route([USDC_WETH], ETHER[1]), new TokenAmount(USDC, '100'))
     const result = v1SwapArguments(trade, {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
       deadline: 20 * 60
-    })
+    },1)
     expect(result.methodName).toEqual('ethToTokenTransferOutput')
     expect(result.args[0]).toEqual('0x64')
     expect(result.args[1]).toEqual('0x4b0')
@@ -65,12 +65,12 @@ describe('v1SwapArguments', () => {
     expect(result.value).toEqual('0x66')
   })
   it('token to exact eth', () => {
-    const trade = Trade.exactOut(new Route([USDC_WETH], USDC, ETHER), CurrencyAmount.ether('100'))
+    const trade = Trade.exactOut(new Route([USDC_WETH], USDC, ETHER[1]), CurrencyAmount.ether('100',1))
     const result = v1SwapArguments(trade, {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
       deadline: 20 * 60
-    })
+    },1)
     expect(result.methodName).toEqual('tokenToEthTransferOutput')
     expect(result.args[0]).toEqual('0x64')
     expect(result.args[1]).toEqual('0x66')
@@ -84,7 +84,7 @@ describe('v1SwapArguments', () => {
       recipient: TEST_RECIPIENT_ADDRESS,
       allowedSlippage: new Percent('1', '100'),
       deadline: 20 * 60
-    })
+    },1)
     expect(result.methodName).toEqual('tokenToTokenTransferOutput')
     expect(result.args[0]).toEqual('0x64')
     expect(result.args[1]).toEqual('0x67')

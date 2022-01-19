@@ -48,8 +48,8 @@ export default function AddLiquidity({
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useContext(ThemeContext)
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
+  const currencyA = useCurrency(currencyIdA, chainId || 82)
+  const currencyB = useCurrency(currencyIdB, chainId || 82)
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
@@ -78,6 +78,7 @@ export default function AddLiquidity({
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
+ 
   const isValid = !error
 
   // modal and loading
@@ -116,9 +117,21 @@ export default function AddLiquidity({
     {}
   )
 
+
+ 
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5')
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], 
+    chainId === 361 ? '0x8b962374AE63c628B1cd5dec8B08A95787F611E5': chainId === 1284 ?
+  '0xf7184FB77152697dAeAce960F335369a858Eff19':
+   ROUTER_ADDRESS)
+
+  
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B],
+    chainId === 361 ? '0x8b962374AE63c628B1cd5dec8B08A95787F611E5': chainId === 1284 ?
+  '0xf7184FB77152697dAeAce960F335369a858Eff19':
+   ROUTER_ADDRESS)
+
+
 
   const addTransaction = useTransactionAdder()
 
@@ -140,9 +153,9 @@ export default function AddLiquidity({
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
       value: BigNumber | null
-    if (currencyA === ETHER || currencyB === ETHER) {
+    if (currencyA === ETHER[chainId || 82] || currencyB === ETHER[chainId || 82]) {
       
-      const tokenBIsETH = currencyB === ETHER
+      const tokenBIsETH = currencyB === ETHER[chainId || 82]
       estimate = router.estimateGas.addLiquidityETH
       method = router.addLiquidityETH
       args = [
@@ -269,7 +282,7 @@ export default function AddLiquidity({
 
   const handleCurrencyASelect = useCallback(
     (currencyA: Currency) => {
-      const newCurrencyIdA = currencyId(currencyA)
+      const newCurrencyIdA = currencyId(currencyA,chainId||82)
       if (newCurrencyIdA === currencyIdB) {
         history.push(`/add/${currencyIdB}/${currencyIdA}`)
       } else {
@@ -280,7 +293,7 @@ export default function AddLiquidity({
   )
   const handleCurrencyBSelect = useCallback(
     (currencyB: Currency) => {
-      const newCurrencyIdB = currencyId(currencyB)
+      const newCurrencyIdB = currencyId(currencyB, chainId||82)
       if (currencyIdA === newCurrencyIdB) {
         if (currencyIdB) {
           history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
@@ -304,6 +317,8 @@ export default function AddLiquidity({
   }, [onFieldAInput, txHash])
 
   const isCreate = history.location.pathname.includes('/create')
+
+
 
   return (
     <>

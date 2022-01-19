@@ -30,7 +30,8 @@ export const ChargeFactoryAddress: { [key in ChainId]: string } = {
   [ChainId.GÖRLI]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.KOVAN]: '0x205532D70FffcfBBDA46b9559D8e3D4aa9E484CD',
   [ChainId.METER]: '0x56aD9A9149685b290ffeC883937caE191e193135',
-  [ChainId.THETA]:'0xdB29b2314F0E3c6d04CCD0C303223f28d6aF2d8E'
+  [ChainId.THETA]:'0xdB29b2314F0E3c6d04CCD0C303223f28d6aF2d8E',
+  [ChainId.MOONBEAM]:'0xeC550D7cE45CD0cEC9eE471C9B52A7D9cf92476C'
 }
 
 export const ChargeEthProxyAddress: { [key in ChainId]: string } = {
@@ -40,7 +41,8 @@ export const ChargeEthProxyAddress: { [key in ChainId]: string } = {
   [ChainId.GÖRLI]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.KOVAN]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
   [ChainId.METER]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
-  [ChainId.THETA]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c'
+  [ChainId.THETA]: '0x053caB1Ba35F99991F8dD43CCca58D97a702490c',
+  [ChainId.MOONBEAM]:'0x053caB1Ba35F99991F8dD43CCca58D97a702490c'
 }
 
 export function useChargeFactory(): Contract | null {

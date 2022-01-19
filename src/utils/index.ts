@@ -8,7 +8,7 @@ import { abi as IUniswapV2Pair } from '@uniswap/v2-periphery/build/IUniswapV2Pai
 import { abi as IERC20 } from '@uniswap/v2-periphery/build/IERC20.json';
 import { abi as Geyser } from '../constants/abis/Geyser.json';
 import { ROUTER_ADDRESS } from '../constants';
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from 'voltswap-sdk';
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER} from 'voltswap-sdk';
 import { TokenAddressMap } from '../state/lists/hooks';
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -27,7 +27,8 @@ const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
   5: 'goerli.',
   42: 'kovan.',
   82: 'meter.',
-  361: 'thetatoken'
+  361: 'thetatoken',
+  1284: 'blockscout.moonbeam.network'
 };
 
 export function getEtherscanLink(
@@ -38,6 +39,9 @@ export function getEtherscanLink(
   let prefix = `https://scan.meter.io`;
   if (chainId === 361){
    prefix = `https://explorer.thetatoken.org`
+  }
+  if(chainId === 1284) {
+    prefix = 'https://blockscout.moonbeam.network'
   }
 
   switch (type) {
@@ -110,7 +114,9 @@ export function getRouterContract(chainId: number, library: Web3Provider, accoun
   
 
   
-  return getContract(chainId === 82 ? ROUTER_ADDRESS : '0x8b962374AE63c628B1cd5dec8B08A95787F611E5', IUniswapV2Router02ABI, library, account);
+  return getContract(chainId === 361 ? '0x8b962374AE63c628B1cd5dec8B08A95787F611E5': chainId === 1284 ?
+  '0xf7184FB77152697dAeAce960F335369a858Eff19':
+   ROUTER_ADDRESS , IUniswapV2Router02ABI, library, account);
 }
 
 
@@ -130,7 +136,7 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency?.symbol === ETHER.symbol) return true;
+export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency, chainId?:ChainId): boolean {
+  if (currency?.symbol === ETHER[chainId ||82].symbol) return true;
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address]);
 }

@@ -366,74 +366,7 @@ export default function Header() {
         <div >
         <SideNav collapsed={collapsed}  chainId={chainId} handleToggleCollapse={handleToggleCollapse}/>
         </div>
-          {/* <header className="header" style={{top:"0px" }}>
-  
-  <input className="menu-btn" type="checkbox" id="menu-btn" />
-  <label className="menu-icon" htmlFor="menu-btn"><span className="navicon"></span></label>
-
-  <ul className="menu" >
-    
-
-       <li><StyledNavLink id={`stake-nav-link`}  to={'/swap'}>
-       Swap
-     </StyledNavLink></li>
-    
-   
-    <li> <StyledNavLink id={`stake-nav-link`}  to={'/pool'}>
-            Pool
-          </StyledNavLink></li>
-    
-
-
-
- <li>
- <StyledNavLink id={`stake-nav-link`}  to={'/rewards'}>
- Farm
-</StyledNavLink></li>
-
-
-
          
-    <li> <StyledExternalLink id={`gov-nav-link`} href={'https://passport.meter.io'}>
-          Passport <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink></li>
-          
-      
-            {
-              chainId === 82  &&  <li> <StyledExternalLink id={`gov-nav-link`} href={'https://golucky.io'}>
-              Lottery <span style={{ fontSize: '11px' }}>↗</span>
-              </StyledExternalLink></li>
-            
-            }
-
-          
-
-          {
-              chainId === 82  &&
-            <li>
-          <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
-          Wallet <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-
-          </li>
-          }
-
-          <li>
-
-          <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/home?network=${chainId === 361 ? 'theta':'meter'}`}>
-          Charts <span style={{ fontSize: '11px' }}>↗</span>
-          </StyledExternalLink>
-         
-
-          </li>
-  </ul>
-
-
-
-
-  
-
-        </header> */}
       
       
       </HeaderRow>
@@ -447,7 +380,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} {chainId === 82 ? 'MTR' :'TFUEL' }
+                {userEthBalance?.toSignificant(4)} {chainId === 361 ? 'TFUEL' :chainId === 1284 ? 'GLMR' : 'MTR' }
               </BalanceText>
             ) : null}
             <Web3Status />
