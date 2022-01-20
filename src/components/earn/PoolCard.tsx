@@ -242,7 +242,7 @@ const estimateVoltPrice = async (chainId:ChainId) => {
     const mtrgGlmrPair = getPairContract('0x17507b7753b106369f6855c7a8cbddee19e8e464',MOONBEAM_PROVIDER)
     const { reserve0, reserve1 } = await mtrgGlmrPair.getReserves()
    
-    const uniPrice = new BigNumber(glmrPrice).times(reserve0.toString()).div(reserve1.toString()).toNumber()
+    uniPrice = new BigNumber(glmrPrice).times(reserve0.toString()).div(reserve1.toString()).toNumber()
    
     console.log('est. VOLT price: ', uniPrice)
   }else{
@@ -405,7 +405,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
         tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' :tokenPair.token1.symbol}` :
         chainId === 1284 ? `https://moonfarm.voltswap.finance?farm=${tokenPair.token0.symbol === 'WGLMR' ? 'GLMR' :
         tokenPair.token0.symbol}-${tokenPair.token1.symbol === 'WGLMR' ? 'GLMR' :tokenPair.token1.symbol}`:
-        
+
         `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`}
       >
         <ButtonPrimary padding="8px" borderRadius="8px">
