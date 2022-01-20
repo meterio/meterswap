@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_GEYSERS } from '../../queries/geyser';
 import { Geyser, Lock, TokenPair, Vault } from './types';
-import { uniClient,client } from '../../queries/client';
+import { uniClient,client } from '../../queries/moonbeamclient';
 import { GET_PAIRS } from '../../queries/uniswap';
 const MS_PER_SEC = 1000;
 
@@ -61,14 +61,7 @@ const Arrow = styled.div`
   }
 `
 
-const BLACKLIST_POOLS = [
-  "0xc12e91e9822234a04506053a884ba1269dc97245",
-  "0x3375ebc33bbb038623829a2f75461d8ce752a9cb", 
-  "0xb3ec01640ecac33505797d2933589ae486c0ce9f", 
-  "0xacb3687d8c184d7c61223df304163fd493351796", 
-  "0xd8c4e1091397d108791aefad536e906cc6940acb", 
-  "0xfaf03cd86f88d9aa3254af4a057570c53cbdd576"
-]
+
 
 const voltsTokenPair = {
   __typename: "Pair",
@@ -126,8 +119,7 @@ export default function MoonBeamStaking() {
       const geysers = [...voltpool];
 
      
-       const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
-        .map(
+       const filtered = geysers.map(
           geyser =>
             ({
               ...geyser,
@@ -152,7 +144,7 @@ export default function MoonBeamStaking() {
   `};
   `;
 
-  const stakingRewardsExist = false;
+  const stakingRewardsExist = true;
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
 

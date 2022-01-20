@@ -9,7 +9,7 @@ import { NetworkConnector } from './NetworkConnector'
 
 export const THETA_PROVIDER = new ethers.providers.JsonRpcProvider('https://eth-rpc-api.thetatoken.org/rpc ', { name: 'theta mainnet', chainId: 361 })
 export const METER_PROVIDER = new ethers.providers.JsonRpcProvider('https://rpc.meter.io ', { name: 'meter mainnet', chainId: 82 })
-export const MOONBEAM_PROVIDER = new ethers.providers.JsonRpcProvider('https://moonbeam.api.onfinality.io/public ', { name: 'moonbeam mainnet', chainId: 1284 })
+export const MOONBEAM_PROVIDER = new ethers.providers.JsonRpcProvider('http://13.251.150.97:9933 ', { name: 'moonbeam mainnet', chainId: 1284 })
 
 const NETWORK_URL = "https://rpc.meter.io"
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY

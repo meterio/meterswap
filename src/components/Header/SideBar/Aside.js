@@ -139,22 +139,26 @@ const Aside = ({ image, rtl, toggled, handleToggleSidebar,handleToggleCollapse, 
             icon={<BarChart />}
           >
             <MenuItem>
-            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/home?network=${chainId === 361 ? 'theta':'meter'}`}>
+            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/home?network=${chainId === 361 ? 'theta':
+           chainId === 1284 ? 'moonbeam': 'meter'}`}>
           Overview <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
             </MenuItem>
             <MenuItem> 
-            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/tokens?network=${chainId === 361 ? 'theta':'meter'}`}>
+            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/tokens?network=${chainId === 361 ? 'theta':
+           chainId === 1284 ? 'moonbeam': 'meter'}`}>
           Tokens <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
             </MenuItem>
             <MenuItem>
-            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/pairs?network=${chainId === 361 ? 'theta':'meter'}`}>
+            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/pairs?network=${chainId === 361 ? 'theta':
+           chainId === 1284 ? 'moonbeam': 'meter'}`}>
           Pairs <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
             </MenuItem>
             <MenuItem>
-            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/accounts?network=${chainId === 361 ? 'theta':'meter'}`}>
+            <StyledExternalLink id={`gov-nav-link`} href={`https://info.voltswap.finance/#/accounts?network=${chainId === 361 ? 'theta':
+           chainId === 1284 ? 'moonbeam': 'meter'}`}>
           Accounts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
             </MenuItem>

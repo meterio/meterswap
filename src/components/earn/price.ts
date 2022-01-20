@@ -50,7 +50,9 @@ const symbolMap: { [key: string]: Coin } = {
   YFI: { id: 'yearn-finance', price: 1 },
   LINK: { id: 'chainlink', price: 1 },
   BAL: { id: 'balancer', price: 1 },
-  COMP: { id: 'compound-governance-token', price: 1 }
+  COMP: { id: 'compound-governance-token', price: 1 },
+  WGLMR: { id: 'moonbeam', price: 10 },
+  GLMR: { id: 'moonbeam', price: 10 }
 };
 
 export const getCurrentPrice = async (symbol: string) => {
