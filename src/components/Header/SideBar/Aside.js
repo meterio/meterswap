@@ -172,12 +172,18 @@ const Aside = ({ image, rtl, toggled, handleToggleSidebar,handleToggleCollapse, 
           </StyledExternalLink>
           </MenuItem>
 
+          {
+            (chainId === 361 || chainId === 82 ) &&
+            <MenuItem icon={<FaGamepad />}> 
+         
+            <StyledExternalLink id={`gov-nav-link`} href={'https://golucky.io'}>
+                Lottery <span style={{ fontSize: '11px' }}>↗</span>
+                </StyledExternalLink>
+            </MenuItem> 
 
-          <MenuItem icon={<FaGamepad />}> 
-          <StyledExternalLink id={`gov-nav-link`} href={'https://golucky.io'}>
-              Lottery <span style={{ fontSize: '11px' }}>↗</span>
-              </StyledExternalLink>
-          </MenuItem>
+          }
+
+         
 
           <MenuItem icon={<FaWallet />}> 
           <StyledExternalLink id={`gov-nav-link`} href={'https://wallet.meter.io'}>
