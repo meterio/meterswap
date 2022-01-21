@@ -65,19 +65,19 @@ const Arrow = styled.div`
 
 const voltsTokenPair = {
   __typename: "Pair",
-  id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+  id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
   reserveUSD: "0",
   token0: {
       __typename: "Token",
       decimals: "18",
-      id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+      id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
       symbol: "VOLT"
   },
   token0Price: "50",
   token1: {
     __typename: "Token",
     decimals: "18",
-    id: "0x8df95e66cb0ef38f91d2776da3c921768982fba0",
+    id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
     symbol: "VOLT"
 },
   token1Price: "50",
@@ -113,9 +113,9 @@ export default function MoonBeamStaking() {
     // console.log('geyser data updated:', geyserData);
 
     if (geyserData && geyserData.geysers) {
-     
+   
       const voltpool = geyserData.geysers.filter((g: { id: string; }) => g.id === "0xdb84a42f23f2fcc91531df06a48da5e3a970f1cf")
-    
+      
       const geysers = [...voltpool];
 
      
@@ -128,6 +128,7 @@ export default function MoonBeamStaking() {
             } as Geyser)
         );
 
+      
       setGeysers(filtered);
       if (pairData && pairData.pairs) {
       

@@ -291,6 +291,9 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     isVoltPool = geyserInfo.id.toLowerCase() === "0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4".toLocaleLowerCase()
 
   }
+  if(chainId === 1284) {
+    isVoltPool = geyserInfo.id.toLowerCase() === "0xdb84a42f23f2fcc91531df06a48da5e3a970f1cf".toLocaleLowerCase() 
+  }
   useEffect(() => {
     (async () => {
       try {
