@@ -85,6 +85,10 @@ const voltsTokenPair = {
   totalSupply: '0'
 };
 
+const BLACKLIST_POOLS = [
+  "0x8e789b5393f5b4614b75698075c08e6a89a9fb74"
+]
+
 export default function MoonBeamEarn() {
   const { chainId } = useActiveWeb3React();
   const stakingInfos = useStakingInfo();
@@ -122,7 +126,7 @@ export default function MoonBeamEarn() {
       const geysers = [ ...withoutvoltpool];
 
      
-       const filtered = geysers
+       const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
             ({
