@@ -125,7 +125,6 @@ export default function MoonBeamEarn() {
       const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xdb84a42f23f2fcc91531df06a48da5e3a970f1cf")
       const geysers = [ ...withoutvoltpool];
 
-     
        const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
         .map(
           geyser =>
