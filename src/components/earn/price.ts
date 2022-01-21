@@ -52,7 +52,8 @@ const symbolMap: { [key: string]: Coin } = {
   BAL: { id: 'balancer', price: 1 },
   COMP: { id: 'compound-governance-token', price: 1 },
   WGLMR: { id: 'moonbeam', price: 10 },
-  GLMR: { id: 'moonbeam', price: 10 }
+  GLMR: { id: 'moonbeam', price: 10 },
+  'USDC.movr':{id:'usd-coin', price:1}
 };
 
 export const getCurrentPrice = async (symbol: string) => {
