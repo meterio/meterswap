@@ -39,9 +39,10 @@ const symbolMap: { [key: string]: Coin } = {
   'BUSD.bsc': { id: 'binance-usd', price: 1 },
   BNB: { id: 'binancecoin', price: 400 },
   'BNB.bsc': { id: 'binancecoin', price: 400 },
+  MOVR: { id: 'moonriver', price: 312.97 },
 
   // pending
-  VOLT: { id: 'volt', price: 50 },
+  VOLT: { id: 'voltswap', price: 0.2 },
   VOLT_AIR: { id: 'volt', price: 50 },
   AMPL: { id: 'ampleforth', price: 1 },
 

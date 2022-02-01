@@ -222,45 +222,7 @@ const getPoolAPY = async (
   return calculateAPY(inflow, outflow * 1e9, calcPeriod);
 };
 
-const estimateVoltPrice = async (chainId:ChainId) => {
-  let uniPrice = 0
 
-  if(chainId === 361){
-           
-    const tfuel_price = await getCurrentPrice('TFUEL');
-    const tfuelVoltPair = getPairContract('0x904a21bbce765c4771f7e139e19487b618c0da4d', THETA_PROVIDER);
-    const { reserve0, reserve1 } = await tfuelVoltPair.getReserves();
- 
-    uniPrice = new BigNumber(tfuel_price)
-      .times(reserve0.toString())
-      .div(reserve1.toString())
-      .toNumber();
-       console.log('estimated volt price ', uniPrice)
-    } else if(chainId === 1284) {
-    const glmrPrice = await getCurrentPrice('GLMR')
-
-    const mtrgGlmrPair = getPairContract('0x17507b7753b106369f6855c7a8cbddee19e8e464',MOONBEAM_PROVIDER)
-    const { reserve0, reserve1 } = await mtrgGlmrPair.getReserves()
-   
-    uniPrice = new BigNumber(glmrPrice).times(reserve0.toString()).div(reserve1.toString()).toNumber()
-   
-    console.log('est. VOLT price: ', uniPrice)
-  }else{
-    const mtrgPrice = await getCurrentPrice('MTRG')
-    const mtrgVoltPair = getPairContract('0x1071392e4cdf7c01d433b87be92beb1f8fd663a8', METER_PROVIDER)
-    const { reserve0, reserve1 } = await mtrgVoltPair.getReserves()
-    uniPrice = new BigNumber(mtrgPrice)
-    .times(reserve0.toString())
-    .div(reserve1.toString())
-    .toNumber();
-     console.log('estimated volt price ', uniPrice)
-  }
-
-  return uniPrice
-    
-    
-
-}
 
 export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser; tokenPair: TokenPair }) {
   //console.log(geyserInfo)
@@ -304,9 +266,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let uniPrice = 0
           if (isVoltPool) {
          
-            uniPrice = await estimateVoltPrice(chainId || 82)
+            uniPrice = await getCurrentPrice("VOLT")
           }else{
             uniPrice = parseFloat( tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
+            
+          if(geyserInfo.stakingToken.toLowerCase() === "0xd6475de0ad4fce946eb4219ba6f1fc8e54a78314".toLowerCase()){
+          console.log(parseFloat( tokenPair.reserveUSD))
+            }
           }
          
 
@@ -346,7 +312,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let voltPrice = 0;
           if (rewardSymbol === 'VOLT') {
 
-            voltPrice = await estimateVoltPrice(chainId || 82)
+            voltPrice = await getCurrentPrice("VOLT")
            
             
           } else {
