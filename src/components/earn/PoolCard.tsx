@@ -227,6 +227,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
 
   const { library, chainId } = useActiveWeb3React();
   const [stakingTokenSymbol, setStakingTokenSymbol] = useState('');
+  const [farmSymbol, setFarmSymbol] = useState('');
   const [stakingTokenPrice, setStakingTokenPrice] = useState(1);
   const [rewardTokenSymbol, setRewardTokenSymbol] = useState('');
   const [rewardTokenPrice, setRewardTokenPrice] = useState(1);
@@ -262,10 +263,6 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               }`;
           setStakingTokenSymbol(stakingSymbol);
           if (chainId === 361) {
-            console.log(geyserInfo.id);
-            console.log(geyserInfo.stakingToken);
-            console.log(geyserInfo.rewardToken);
-            console.log('-------------');
             if (geyserInfo.id.toLowerCase() === '0x6ae05Db50e1D9343188b0758885c4dB4896aF4B2'.toLowerCase()) {
               setStakingTokenSymbol(stakingSymbol + ': Earning TDROP');
             }
@@ -273,6 +270,25 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
               setStakingTokenSymbol(stakingSymbol + ': Earning VOLT');
             }
           }
+          let farmSymbol = '';
+          if (isVoltPool) {
+            farmSymbol = tokenPair.token0.symbol;
+          } else {
+            farmSymbol = `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
+
+            if (chainId === 361) {
+              farmSymbol = farmSymbol.replace('WTFUEL', 'TFUEL');
+              if (geyserInfo.id.toLowerCase() === '0x6ae05Db50e1D9343188b0758885c4dB4896aF4B2'.toLowerCase()) {
+                farmSymbol += ': Earning TDROP';
+              }
+              if (geyserInfo.id.toLowerCase() === '0xF8dCEA3c9bBf8c61d5a67B8BCD5787f0A99c3B03'.toLowerCase()) {
+                farmSymbol += ': Earning VOLT';
+              }
+            } else if (chainId === 1284) {
+              farmSymbol = farmSymbol.replace('WGLMR', 'GLMR');
+            }
+          }
+          setFarmSymbol(farmSymbol);
 
           let uniPrice = 0;
           if (isVoltPool) {
@@ -376,10 +392,10 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           <StyledExternalLink
             href={
               chainId === 361
-                ? `https://thetafarm.voltswap.finance?farm=${tokenPair.token0.symbol}`
+                ? `https://thetafarm.voltswap.finance?farm=${farmSymbol}`
                 : chainId === 1284
-                ? `https://moonfarm.voltswap.finance?farm=${tokenPair.token0.symbol}`
-                : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}`
+                ? `https://moonfarm.voltswap.finance?farm=${farmSymbol}`
+                : `https://farm.voltswap.finance?farm=${farmSymbol}`
             }
           >
             <ButtonPrimary padding="8px" borderRadius="8px">
@@ -390,14 +406,10 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           <StyledExternalLink
             href={
               chainId === 361
-                ? `https://thetafarm.voltswap.finance?farm=${
-                    tokenPair.token0.symbol === 'WTFUEL' ? 'TFUEL' : tokenPair.token0.symbol
-                  }-${tokenPair.token1.symbol === 'WTFUEL' ? 'TFUEL' : tokenPair.token1.symbol}`
+                ? `https://thetafarm.voltswap.finance?farm=${farmSymbol}`
                 : chainId === 1284
-                ? `https://moonfarm.voltswap.finance?farm=${
-                    tokenPair.token0.symbol === 'WGLMR' ? 'GLMR' : tokenPair.token0.symbol
-                  }-${tokenPair.token1.symbol === 'WGLMR' ? 'GLMR' : tokenPair.token1.symbol}`
-                : `https://farm.voltswap.finance?farm=${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`
+                ? `https://moonfarm.voltswap.finance?farm=${farmSymbol}`
+                : `https://farm.voltswap.finance?farm=${farmSymbol}`
             }
           >
             <ButtonPrimary padding="8px" borderRadius="8px">
