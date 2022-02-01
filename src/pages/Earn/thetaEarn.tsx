@@ -46,47 +46,44 @@ const PageButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  font-size:20px;
+  font-size: 20px;
   margin-top: 2em;
   margin-bottom: 2em;
-`
+`;
 
 const Arrow = styled.div`
   color: ${({ theme }) => theme.primary1};
   padding: 0 20px;
-  font-weight:bolder;
-  font-size:20px;
+  font-weight: bolder;
+  font-size: 20px;
   user-select: none;
   :hover {
     cursor: pointer;
   }
-`
+`;
 
-
-const BLACKLIST_POOLS = ['0x490a0bc6ddabf084e89455440e74ce61b05efa9a','0xbd515e41df155112cc883f8981cb763a286261be']
-
-
+const BLACKLIST_POOLS = ['0x490a0bc6ddabf084e89455440e74ce61b05efa9a', '0xbd515e41df155112cc883f8981cb763a286261be'];
 
 const voltsTokenPair = {
-  __typename: "Pair",
-  id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
-  reserveUSD: "0",
+  __typename: 'Pair',
+  id: '0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5',
+  reserveUSD: '0',
   token0: {
-      __typename: "Token",
-      decimals: "18",
-      id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
-      symbol: "VOLT"
+    __typename: 'Token',
+    decimals: '18',
+    id: '0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5',
+    symbol: 'VOLT'
   },
-  token0Price: "50",
+  token0Price: '50',
   token1: {
-    __typename: "Token",
-    decimals: "18",
-    id: "0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5",
-    symbol: "VOLT"
-},
-  token1Price: "50",
-  totalSupply: "0"
-}
+    __typename: 'Token',
+    decimals: '18',
+    id: '0xe6a991ffa8cfe62b0bf6bf72959a3d4f11b2e0f5',
+    symbol: 'VOLT'
+  },
+  token1Price: '50',
+  totalSupply: '0'
+};
 
 export default function ThetaEarn() {
   const { chainId } = useActiveWeb3React();
@@ -101,9 +98,8 @@ export default function ThetaEarn() {
     client: uniClient
   });
 
-  
   // pagination
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const [geysers, setGeysers] = useState<Geyser[]>([]);
   const [pairs, setPairs] = useState<TokenPair[]>([]);
 
@@ -113,39 +109,27 @@ export default function ThetaEarn() {
   }, []);
 
   useEffect(() => {
-   
-    
-
     if (geyserData && geyserData.geysers) {
-      
-      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4')
-     
-      const geysers = [...withoutvoltpool]
-      
-      
-      const filtered = geysers
-      .filter(g => !BLACKLIST_POOLS.includes(g.id))
-      .map(
-        geyser =>
-          ({
-            ...geyser,
-
-            status: geyser.powerSwitch.status
-          } as Geyser)
+      const withoutvoltpool = geyserData.geysers.filter(
+        (g: { id: string }) => g.id !== '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4'
       );
-     
 
-    
+      const geysers = [...withoutvoltpool];
 
-      
-     
-        
+      const filtered = geysers
+        .filter(g => !BLACKLIST_POOLS.includes(g.id))
+        .map(
+          geyser =>
+            ({
+              ...geyser,
+
+              status: geyser.powerSwitch.status
+            } as Geyser)
+        );
+
       setGeysers(filtered);
       if (pairData && pairData.pairs) {
-      
-        setPairs([voltsTokenPair,...pairData.pairs] );
-       
-        
+        setPairs([voltsTokenPair, ...pairData.pairs]);
       }
     }
   }, [geyserData, pairData]);
@@ -160,11 +144,7 @@ export default function ThetaEarn() {
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
 
-  
-  
-
   return (
-    
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
         <DataCard>
@@ -205,53 +185,50 @@ export default function ThetaEarn() {
           <Countdown exactEnd={stakingInfos?.[0]?.periodFinish} />
         </DataRow>
 
-        
         <PoolSection>
           {geysers?.length === 0 || pairs?.length == 0 ? (
             <Loader style={{ margin: 'auto' }} />
           ) : !stakingRewardsExist ? (
             'No active rewards'
           ) : (
-            geysers?.slice(
-              page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
-              (page * ITEMS_PER_PAGE) < geysers.length ? (page * ITEMS_PER_PAGE): geysers.length  
-            ).map(geyserInfo => {
-
-             
-              // need to sort by added liquidity here
-              let tokenPair: TokenPair | undefined = undefined;
-              for (const p of pairs) {
-                if (p.id === geyserInfo.stakingToken ) {
-                  
-                  tokenPair = p;
-                  break;
+            geysers
+              ?.slice(
+                page === 1 ? 0 : (page - 1) * ITEMS_PER_PAGE,
+                page * ITEMS_PER_PAGE < geysers.length ? page * ITEMS_PER_PAGE : geysers.length
+              )
+              .filter(geyserInfo => {
+                return geyserInfo.id.toLowerCase() !== '0x004428fd1915a14eb9efbfc17aa9b4d793defc43'.toLowerCase();
+              })
+              .map(geyserInfo => {
+                // need to sort by added liquidity here
+                let tokenPair: TokenPair | undefined = undefined;
+                for (const p of pairs) {
+                  if (p.id === geyserInfo.stakingToken) {
+                    tokenPair = p;
+                    break;
+                  }
                 }
-              }
 
-              
-
-             
-
-              return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
-            })
+                return tokenPair && <PoolCard geyserInfo={geyserInfo} tokenPair={tokenPair} key={geyserInfo.id} />;
+              })
           )}
           <PageButtons>
-        <div
-          onClick={(e) => {
-            setPage(page === 1 ? page : page - 1)
-          }}
-        >
-          <Arrow>←</Arrow>
-        </div>
-        <TYPE.body style={{fontSize:"20px"}}>{'Page ' + page + ' of ' + maxPage}</TYPE.body>
-        <div
-          onClick={(e) => {
-            setPage(page === maxPage ? page : page + 1)
-          }}
-        >
-          <Arrow>→</Arrow>
-        </div>
-      </PageButtons>
+            <div
+              onClick={e => {
+                setPage(page === 1 ? page : page - 1);
+              }}
+            >
+              <Arrow>←</Arrow>
+            </div>
+            <TYPE.body style={{ fontSize: '20px' }}>{'Page ' + page + ' of ' + maxPage}</TYPE.body>
+            <div
+              onClick={e => {
+                setPage(page === maxPage ? page : page + 1);
+              }}
+            >
+              <Arrow>→</Arrow>
+            </div>
+          </PageButtons>
         </PoolSection>
       </AutoColumn>
     </PageWrapper>

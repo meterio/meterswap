@@ -15,7 +15,7 @@ import { useActiveWeb3React } from '../../hooks';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_GEYSERS } from '../../queries/geyser';
 import { Geyser, Lock, TokenPair, Vault } from './types';
-import { uniClient,client } from '../../queries/client';
+import { uniClient, client } from '../../queries/client';
 import { GET_PAIRS } from '../../queries/uniswap';
 const MS_PER_SEC = 1000;
 
@@ -64,13 +64,13 @@ const Arrow = styled.div`
 const VOLT_ON_METER = '0x8df95e66cb0ef38f91d2776da3c921768982fba0';
 
 const BLACKLIST_POOLS = [
-  "0xc12e91e9822234a04506053a884ba1269dc97245",
-  "0x3375ebc33bbb038623829a2f75461d8ce752a9cb", 
-  "0xb3ec01640ecac33505797d2933589ae486c0ce9f", 
-  "0xacb3687d8c184d7c61223df304163fd493351796", 
-  "0xd8c4e1091397d108791aefad536e906cc6940acb", 
-  "0xfaf03cd86f88d9aa3254af4a057570c53cbdd576"
-]
+  '0xc12e91e9822234a04506053a884ba1269dc97245',
+  '0x3375ebc33bbb038623829a2f75461d8ce752a9cb',
+  '0xb3ec01640ecac33505797d2933589ae486c0ce9f',
+  '0xacb3687d8c184d7c61223df304163fd493351796',
+  '0xd8c4e1091397d108791aefad536e906cc6940acb',
+  '0xfaf03cd86f88d9aa3254af4a057570c53cbdd576'
+];
 
 const voltsTokenPair = {
   __typename: 'Pair',
@@ -102,13 +102,10 @@ export default function MeterEarn() {
     client
   });
 
-  
-
   const [getPairs, { loading: pairLoading, data: pairData }] = useLazyQuery(GET_PAIRS, {
     pollInterval: 3000,
-    client:  uniClient
+    client: uniClient
   });
-
 
   // pagination
   const [page, setPage] = useState(1);
@@ -120,17 +117,17 @@ export default function MeterEarn() {
     getGeysers();
   }, []);
 
-  
   useEffect(() => {
     // console.log('geyser data updated:', geyserData);
 
     if (geyserData && geyserData.geysers) {
-    
-      const withoutvoltpool = geyserData.geysers.filter((g: { id: string; }) => g.id !== "0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc")
-      const geysers = [ ...withoutvoltpool];
+      const withoutvoltpool = geyserData.geysers.filter(
+        (g: { id: string }) => g.id !== '0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc'
+      );
+      const geysers = [...withoutvoltpool];
 
-     
-       const filtered = geysers.filter(g => !BLACKLIST_POOLS.includes(g.id) )
+      const filtered = geysers
+        .filter(g => !BLACKLIST_POOLS.includes(g.id))
         .map(
           geyser =>
             ({
@@ -156,8 +153,6 @@ export default function MeterEarn() {
   const stakingRewardsExist = true;
   const maxPage = geysers.length <= 10 ? 1 : Math.ceil(geysers.length / 10);
   const ITEMS_PER_PAGE = 10;
-
-  
 
   return (
     <PageWrapper gap="lg" justify="center">
