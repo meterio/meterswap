@@ -293,6 +293,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let uniPrice = 0;
           if (isVoltPool) {
             uniPrice = await getCurrentPrice('VOLT');
+           
+            
           } else {
             uniPrice = parseFloat(tokenPair.reserveUSD) / parseFloat(tokenPair.totalSupply);
 

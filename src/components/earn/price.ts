@@ -43,7 +43,7 @@ const symbolMap: { [key: string]: Coin } = {
 
   // pending
   VOLT: { id: 'voltswap', price: 0.2 },
-  VOLT_AIR: { id: 'volt', price: 50 },
+  VOLT_AIR: { id: 'voltswap', price: 0.2 },
   AMPL: { id: 'ampleforth', price: 1 },
 
   // extended
@@ -66,6 +66,7 @@ export const getCurrentPrice = async (symbol: string) => {
   if (!coin) {
     throw new Error(`Can't fetch price for ${symbol}`);
   }
+  
 
   try {
     const query = coin.id;
