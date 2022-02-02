@@ -54,7 +54,7 @@ const symbolMap: { [key: string]: Coin } = {
   COMP: { id: 'compound-governance-token', price: 1 },
   WGLMR: { id: 'moonbeam', price: 10 },
   GLMR: { id: 'moonbeam', price: 10 },
-  TDROP:{id:'cryptodrop', price: 0.00046770},
+  TDROP:{id:'thetadrop', price: 1},
   
   'USDC.movr':{id:'usd-coin', price:1}
 };
