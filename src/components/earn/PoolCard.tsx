@@ -244,7 +244,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
     return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (parts[1] ? '.' + parts[1] : '');
   };
 
-  let isVoltPool = geyserInfo.id.toLowerCase() === '0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc'.toLowerCase();
+  let isVoltPool = geyserInfo.id.toLowerCase() === '0xBfC69a757Dd7DB8C59e10c63aB023dc8c8cc95Dc'.toLowerCase() ||
+  geyserInfo.id.toLowerCase() === "0x55126153332d7b0d50D89572D73B7C3c9C7f0291".toLocaleLowerCase();
 
   if (chainId === 361) {
     isVoltPool = geyserInfo.id.toLowerCase() === '0xcd872033f3ed9227bc78f47fb0e0dff7dbdbe5b4'.toLocaleLowerCase();
@@ -268,6 +269,13 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
             }
             if (geyserInfo.id.toLowerCase() === '0xF8dCEA3c9bBf8c61d5a67B8BCD5787f0A99c3B03'.toLowerCase()) {
               setStakingTokenSymbol(stakingSymbol + ': Earning VOLT');
+            } 
+          }
+
+          if (chainId === 82){
+
+            if (geyserInfo.id.toLowerCase() === '0x55126153332d7b0d50D89572D73B7C3c9C7f0291'.toLowerCase()) {
+              setStakingTokenSymbol(stakingSymbol + ': Earning AMPL');
             }
           }
           let farmSymbol = '';

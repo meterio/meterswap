@@ -122,7 +122,7 @@ export default function MeterEarn() {
 
     if (geyserData && geyserData.geysers) {
       const withoutvoltpool = geyserData.geysers.filter(
-        (g: { id: string }) => g.id !== '0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc'
+        (g: { id: string }) => g.id !== '0xbfc69a757dd7db8c59e10c63ab023dc8c8cc95dc' && g.id !== '0x55126153332d7b0d50d89572d73b7c3c9c7f0291'
       );
       const geysers = [...withoutvoltpool];
 

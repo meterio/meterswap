@@ -11,7 +11,9 @@ import { tokens } from '../../constants/swap_tokens_list.json';
 
 const getTokenLogoURL = (address: string, symbol: string | undefined) => {
   const parsedList = JSON.parse(JSON.stringify(tokens));
-  symbol = symbol === 'MTR' ? 'MTRG' : symbol;
+  
+  symbol = symbol ==="MTR" ? "MTRG": symbol === "ETH_SWAP" ? "ETH" : symbol === "BNB_SWAP" ? "BNB" : symbol
+
 
   let logoURI = `https://raw.githubusercontent.com/meterio/token-list/master/data/${symbol}/logo.png`;
   parsedList.map((token_data: any) => {
