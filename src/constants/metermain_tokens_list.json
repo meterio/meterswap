@@ -45,7 +45,7 @@
       {
         "name": "BNB from BSC on Meter",
         "address": "0xF8BBb44E6fD13632D36fe09eB61820f9A44f5D74",
-        "symbol": "BNB.bsc",
+        "symbol": "BNB_SWAP",
         "decimals": 18,
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BNB/logo.png"
@@ -98,7 +98,7 @@
 
         "name": "ETH from Ethereum on Meter",
         "address": "0x79A61D3A28F8c8537A3DF63092927cFa1150Fb3C",
-        "symbol": "WETH.eth",
+        "symbol": "ETH_SWAP",
         "decimals": 18,
         "chainId": 82,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
@@ -116,7 +116,7 @@
       {
         "name": "BNB from BSC on Theta",
         "address": "0xdFf772186aCe9b5513FB46d7B05b36Efa0A4a20d",
-        "symbol": "BNB.bsc",
+        "symbol": "BNB_SWAP",
         "decimals": 18,
         "chainId": 361,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BNB/logo.png"
@@ -172,7 +172,7 @@
       {
         "name": "ETH from Ethereum on Theta",
         "address": "0x3674D64AaB971aB974B2035667a4B3d09B5ec2B3",
-        "symbol": "WETH",
+        "symbol": "ETH_SWAP",
         "decimals": 18,
         "chainId": 361,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
@@ -197,7 +197,7 @@
 
         "name": "ETH from Ethereum on Moonbeam",
         "address": "0x3674D64AaB971aB974B2035667a4B3d09B5ec2B3",
-        "symbol": "WETH",
+        "symbol": "ETH_SWAP",
         "decimals": 18,
         "chainId": 1284,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/ETH/logo.png"
@@ -273,7 +273,7 @@
       {
         "name": "BNB from BSC on Moonbeam",
         "address": "0xdFf772186aCe9b5513FB46d7B05b36Efa0A4a20d",
-        "symbol": "BNB.bsc",
+        "symbol": "BNB_SWAP",
         "decimals": 18,
         "chainId": 1284,
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/BNB/logo.png"

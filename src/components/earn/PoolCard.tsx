@@ -16,6 +16,7 @@ import { getERC20Contract, getGeyserContract, getPairContract } from '../../util
 import { Contract } from '@ethersproject/contracts';
 import { TokenPair } from '../../pages/Earn/types';
 import { Web3Provider } from '@ethersproject/providers';
+import { getTokenDecimal} from './tokenUtils';
 import { THETA_PROVIDER, METER_PROVIDER, MOONBEAM_PROVIDER } from '../../connectors';
 const MS_PER_SEC = 1000;
 const YEAR_IN_SEC = 12 * 30 * 24 * 3600;
@@ -190,7 +191,7 @@ const getPoolAPY = async (
   library: Web3Provider
 ) => {
   const { scalingTime } = geyser;
-
+ 
   const inflow = 20000.0; // avg_deposit: 20,000 USD
   const inflowDecimals = new BigNumber((10 ** stakingTokenDecimals).toString());
   const inflowFixedPt = new BigNumber(inflow).times(inflowDecimals);
@@ -303,6 +304,7 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           setFarmSymbol(farmSymbol);
 
           let uniPrice = 0;
+          
           if (isVoltPool) {
             uniPrice = await getCurrentPrice('VOLT');
            
@@ -366,6 +368,8 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
             voltPrice = await getCurrentPrice('VOLT');
           } else {
             voltPrice = await getCurrentPrice(rewardSymbol);
+           
+            
           }
           // console.log('VOLT price: ', voltPrice);
           setRewardTokenPrice(voltPrice);
@@ -376,12 +380,15 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
+          const rewardTokenDecimal = await getTokenDecimal(geyserInfo.rewardToken)
+          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, rewardTokenDecimal, library);
 
-          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, 18, library);
+         
 
           // console.log(`apy: ${(apy * 100).toFixed(2)}%`);
           // console.log('-'.repeat(40));
           setGeyserAPY(apy);
+          
         }
       } catch (e) {
         console.log('Error happened:', e);
