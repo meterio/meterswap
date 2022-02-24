@@ -281,6 +281,10 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           let farmSymbol = '';
           if (isVoltPool) {
             farmSymbol = tokenPair.token0.symbol;
+            if (geyserInfo.id.toLowerCase() === '0x55126153332d7b0d50D89572D73B7C3c9C7f0291'.toLowerCase()) {
+              farmSymbol+= ': Earning AMPL'
+
+            }
           } else {
             farmSymbol = `${tokenPair.token0.symbol}-${tokenPair.token1.symbol}`;
 
