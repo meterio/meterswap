@@ -1,11 +1,16 @@
 
 import Web3 from 'web3'
-const rpcUrl = 'https://rpc.meter.io'
+
+const theta_rpc = 'https://eth-rpc-api.thetatoken.org/rpc'
+const meter_rpc = 'https://rpc.meter.io'
+const moonbeam_rpc = 'https://moonbeam.api.onfinality.io/public'
 
 
 
-export const getTokenSymbol = async (tokenAddress: string) => {
-    const web3s = new Web3(new Web3.providers.HttpProvider(rpcUrl));
+export const getTokenSymbol = async (tokenAddress: string, chainId:number) => {
+    const web3s = new Web3(new Web3.providers.HttpProvider(
+        chainId === 1284 ? moonbeam_rpc : chainId === 361 ? theta_rpc : meter_rpc
+    ));
 
     let contract = new web3s.eth.Contract([
         {
@@ -30,9 +35,11 @@ export const getTokenSymbol = async (tokenAddress: string) => {
 
   
 
-export const getTokenDecimal = async (tokenAddress: string) => {
-    const web3s = new Web3(new Web3.providers.HttpProvider(rpcUrl));
-
+export const getTokenDecimal = async (tokenAddress: string, chainId:number) => {
+    
+    const web3s = new Web3(new Web3.providers.HttpProvider(
+        chainId === 1284 ? moonbeam_rpc : chainId === 361 ? theta_rpc : meter_rpc
+    ));
     let contract = new web3s.eth.Contract([
         {
             "constant": true,
@@ -54,8 +61,10 @@ export const getTokenDecimal = async (tokenAddress: string) => {
 
 }
 
-export const getTokenName = async (tokenAddress: string) => {
-    const web3s = new Web3(new Web3.providers.HttpProvider(rpcUrl));
+export const getTokenName = async (tokenAddress: string,chainId:number) => {
+    const web3s = new Web3(new Web3.providers.HttpProvider(
+        chainId === 1284 ? moonbeam_rpc : chainId === 361 ? theta_rpc : meter_rpc
+    ));
 
     let contract = new web3s.eth.Contract([
         {

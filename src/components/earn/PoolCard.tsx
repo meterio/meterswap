@@ -380,8 +380,11 @@ export default function PoolCard({ geyserInfo, tokenPair }: { geyserInfo: Geyser
           // console.log(`staking ${stakingSymbol} price ${uniPrice}`);
           // console.log(`reward ${rewardSymbol} price ${voltPrice}`);
           // console.log('total stake:', totalStake.toFixed(2));
-          const rewardTokenDecimal = await getTokenDecimal(geyserInfo.rewardToken)
-          const apy = await getPoolAPY(geyserInfo, uniPrice, 18, voltPrice, rewardTokenDecimal, library);
+
+          
+          const rewardTokenDecimal = await getTokenDecimal(geyserInfo.rewardToken, chainId || 82)
+          const stakingTokenDecimal = await getTokenDecimal(geyserInfo.stakingToken,chainId || 82)
+          const apy = await getPoolAPY(geyserInfo, uniPrice, stakingTokenDecimal, voltPrice, rewardTokenDecimal, library);
 
          
 
