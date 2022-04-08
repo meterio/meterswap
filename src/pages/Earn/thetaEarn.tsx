@@ -62,7 +62,13 @@ const Arrow = styled.div`
   }
 `;
 
-const BLACKLIST_POOLS = ['0x490a0bc6ddabf084e89455440e74ce61b05efa9a', '0xbd515e41df155112cc883f8981cb763a286261be'];
+const BLACKLIST_POOLS = [
+  '0x490a0bc6ddabf084e89455440e74ce61b05efa9a',
+ '0xbd515e41df155112cc883f8981cb763a286261be',
+ '0x139b2305da9d000dde725203857d9ca90d58db3b', // TFUEL-WETH
+ '0xa1cb648e50527b954e36a9e9c0e8ca29942b38c2' // TFUEL-BNB.bsc
+
+];
 
 const voltsTokenPair = {
   __typename: 'Pair',

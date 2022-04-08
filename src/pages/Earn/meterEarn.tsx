@@ -69,7 +69,13 @@ const BLACKLIST_POOLS = [
   '0xb3ec01640ecac33505797d2933589ae486c0ce9f',
   '0xacb3687d8c184d7c61223df304163fd493351796',
   '0xd8c4e1091397d108791aefad536e906cc6940acb',
-  '0xfaf03cd86f88d9aa3254af4a057570c53cbdd576'
+  '0xfaf03cd86f88d9aa3254af4a057570c53cbdd576',
+
+  '0x2d31ef0b7edfaa43374331675376028e4da7fcb1', // MTRG-WETH.eth
+  '0x82df620865abca1c1b6ae6d7c5334163982e6e5a', // VOLT-WETH.eth
+  '0x97b68ce711dd5912ffe52779a739fb3cb82ef05f', // WBTC.eth-WETH.eth
+  '0x78129302d999fff62feb4f3ce35bb2ff49369ee4', // WETH.eth-BUSD.bsc
+  '0x2775b56aea3d054a72edc72c8dec6e13a0b2aa9c' // WETH-BNB
 ];
 
 const voltsTokenPair = {

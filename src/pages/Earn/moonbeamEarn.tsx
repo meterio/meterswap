@@ -86,7 +86,9 @@ const voltsTokenPair = {
 };
 
 const BLACKLIST_POOLS = [
-  "0x8e789b5393f5b4614b75698075c08e6a89a9fb74"
+  "0x8e789b5393f5b4614b75698075c08e6a89a9fb74",
+  "0x05097e2ba96b8870949475115b9b91f75a0b308f", // GLMR-WETH.eth
+  "0x524dc5743a1c74bdda624de54cd0949cd9353be0" , // GLMR-BNB.bsc
 ]
 
 export default function MoonBeamEarn() {
