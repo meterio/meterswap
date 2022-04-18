@@ -43,6 +43,14 @@
         "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/AMPL/logo.png"
       },
       {
+        "name": "Factory Builders Token",
+        "address": "0x6CFe9AdaD5215195c1Aa9755DAed29360e6Ab986",
+        "symbol": "FTB",
+        "decimals": 18,
+        "chainId": 82,
+        "logoURI": "https://raw.githubusercontent.com/meterio/token-list/master/data/FTB/logo.png"
+      },
+      {
         "name": "BNB from BSC on Meter",
         "address": "0xF8BBb44E6fD13632D36fe09eB61820f9A44f5D74",
         "symbol": "BNB_SWAP",
