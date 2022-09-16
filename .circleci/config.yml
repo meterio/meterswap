@@ -46,7 +46,7 @@ workflows:
     jobs:
       - build_and_deploy_mainnet:
           context:
-            - new-aws-s3
+            - aws-s3
             - slack-secrets
           filters:
             tags:
